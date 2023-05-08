@@ -1,2 +1,2 @@
 # workout
-Sistema de gerenciamento de academias e lojas, e-commerce e vitrine de academia. || Gym/Store management system, an e-commerce  and gym showcase.
+Esse é nosso projeto de AP II, um sistema de gerenciamento de academias e lojas com um e-commerce para clientes e uma vitrine para as academias exporem seus planos e diferenciais.
