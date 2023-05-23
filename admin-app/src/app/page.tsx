@@ -42,7 +42,7 @@ export default function Home() {
           <form className="p-4 max-w-[300px] m-auto flex flex-col items-center gap-4">
             <Input icon={BiRename} placeholder="Nome" />
             <Input icon={MdAlternateEmail} placeholder="Email" />
-            <Input icon={FaLock} password placeholder="Senha" />
+            <Input icon={FaLock} password placeholder="Senha" visibility />
             <Input icon={MdPassword} password placeholder="Confirmar senha" />
             <Input icon={HiOutlineDocumentText} placeholder="CNPJ" />
             <div className="flex gap-2 justify-between w-full mb-2">
