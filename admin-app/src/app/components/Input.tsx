@@ -26,7 +26,7 @@ const Input = ({
   return (
     <div
       className={`flex transition w-full max-w-[280px] items-center px-3 py-2 border-[1px]  rounded-sm shadow-md ${
-        focus ? "border-primary-500 shadow-md" : "border-gray-500"
+        focus ? "border-primary-500 shadow-lg" : "border-gray-500"
       }`}
     >
       {Icon && <Icon size={20} className="mr-2 text-primary-500  " />}
@@ -34,7 +34,7 @@ const Input = ({
         {...registerField}
         placeholder={placeholder}
         type={password && !visible ? "password" : "text"}
-        className="w-full text-zinc-500 placeholder:text-zinc-400 text-lg outline-transparent font-light"
+        className="w-full bg-transparent text-zinc-500 placeholder:text-zinc-400 text-lg outline-transparent font-light"
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
       />

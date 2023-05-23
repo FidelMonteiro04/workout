@@ -14,7 +14,7 @@ interface Props {
 const Button = ({ icon: Icon, onClick, text, halfWidth, outline }: Props) => {
   return (
     <button
-      className={`flex items-center justify-center font-semibold rounded-sm transition hover:bg-primary-400 py-2 ${
+      className={`flex items-center justify-center font-bold rounded-sm transition hover:bg-primary-400 py-2 ${
         halfWidth ? "w-1/2" : "w-full"
       } ${
         outline
