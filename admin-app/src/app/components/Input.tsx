@@ -13,6 +13,7 @@ interface Props {
   registerField?: any;
   visibility?: boolean;
   error?: string;
+  forget?: boolean;
 }
 
 const Input = ({
@@ -21,6 +22,7 @@ const Input = ({
   password,
   visibility,
   error,
+  forget,
   icon: Icon,
 }: Props) => {
   const [focus, setFocus] = useState(false);
@@ -50,6 +52,11 @@ const Input = ({
           </div>
         )}
       </div>
+      {!error && forget && (
+        <span className="text-zinc-600 transition hover:text-primary-500 text-xs cursor-pointer mt-1">
+          Esqueci a senha
+        </span>
+      )}
       <small className="text-red-600 text-xs">{error}</small>
     </div>
   );

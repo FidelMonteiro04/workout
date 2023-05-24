@@ -91,8 +91,9 @@ export default function Home() {
               error={errors.password && "Senha é obrigatória!"}
               icon={FaLock}
               password
-              placeholder="Senha"
               visibility
+              forget={pageOption === "login"}
+              placeholder="Senha"
             />
             {pageOption === "register" && (
               <>
@@ -105,30 +106,30 @@ export default function Home() {
                   password
                   placeholder="Confirmar senha"
                 />
+                <Input
+                  registerField={{ ...register("cnpj", { required: true }) }}
+                  error={errors.cnpj && "CNPJ é obrigatório!"}
+                  icon={HiOutlineDocumentText}
+                  placeholder="CNPJ"
+                />
+
+                <div className="flex gap-2 justify-between w-full mb-2">
+                  <PropertySelector
+                    selected={propertyType === "gym"}
+                    onClick={() => setPropertyType("gym")}
+                    icon={GymIcon}
+                    text="Academia"
+                  />
+                  <PropertySelector
+                    selected={propertyType === "store"}
+                    onClick={() => setPropertyType("store")}
+                    icon={StoreIcon}
+                    text="Loja"
+                  />
+                </div>
               </>
             )}
-            <Input
-              registerField={{ ...register("cnpj", { required: true }) }}
-              error={errors.cnpj && "CNPJ é obrigatório!"}
-              icon={HiOutlineDocumentText}
-              placeholder="CNPJ"
-            />
-            {pageOption === "register" && (
-              <div className="flex gap-2 justify-between w-full mb-2">
-                <PropertySelector
-                  selected={propertyType === "gym"}
-                  onClick={() => setPropertyType("gym")}
-                  icon={GymIcon}
-                  text="Academia"
-                />
-                <PropertySelector
-                  selected={propertyType === "store"}
-                  onClick={() => setPropertyType("store")}
-                  icon={StoreIcon}
-                  text="Loja"
-                />
-              </div>
-            )}
+
             <Button
               text={pageOption === "register" ? "Criar conta" : "Entrar"}
               onClick={() => null}
