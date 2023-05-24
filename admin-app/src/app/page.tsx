@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,6 +18,15 @@ import PropertySelector from "./components/PropertySelector";
 
 export default function Home() {
   const [propertyType, setPropertyType] = useState("gym");
+  const {
+    register,
+    handleSubmit,
+    clearErrors,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data: any) => console.log(data);
+
   return (
     <>
       <header className="w-full flex items-center justify-center py-8 lg:hidden">
@@ -48,12 +58,47 @@ export default function Home() {
             height={160}
             className="hidden lg:block mb-2"
           />
-          <form className="p-4 max-w-[300px] mx-auto flex flex-col items-center gap-4 lg:py-2">
-            <Input icon={BiRename} placeholder="Nome" />
-            <Input icon={MdAlternateEmail} placeholder="Email" />
-            <Input icon={FaLock} password placeholder="Senha" visibility />
-            <Input icon={MdPassword} password placeholder="Confirmar senha" />
-            <Input icon={HiOutlineDocumentText} placeholder="CNPJ" />
+          <form
+            onSubmit={handleSubmit(onSubmit, () =>
+              setTimeout(clearErrors, 5000)
+            )}
+            className="p-4 max-w-[300px] mx-auto flex flex-col items-center gap-4 lg:py-2"
+          >
+            <Input
+              registerField={{ ...register("name", { required: true }) }}
+              error={errors.name && "Nome é obrigatório!"}
+              icon={BiRename}
+              placeholder="Nome"
+            />
+            <Input
+              registerField={{ ...register("email", { required: true }) }}
+              error={errors.email && "Email é obrigatório!"}
+              icon={MdAlternateEmail}
+              placeholder="Email"
+            />
+            <Input
+              registerField={{ ...register("password", { required: true }) }}
+              error={errors.password && "Senha é obrigatória!"}
+              icon={FaLock}
+              password
+              placeholder="Senha"
+              visibility
+            />
+            <Input
+              registerField={{
+                ...register("confirmPassword", { required: true }),
+              }}
+              error={errors.confirmPassword && "Este campo é obrigatório!"}
+              icon={MdPassword}
+              password
+              placeholder="Confirmar senha"
+            />
+            <Input
+              registerField={{ ...register("cnpj", { required: true }) }}
+              error={errors.cnpj && "CNPJ é obrigatório!"}
+              icon={HiOutlineDocumentText}
+              placeholder="CNPJ"
+            />
             <div className="flex gap-2 justify-between w-full mb-2">
               <PropertySelector
                 selected={propertyType === "gym"}
