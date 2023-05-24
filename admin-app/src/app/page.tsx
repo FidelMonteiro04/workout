@@ -18,6 +18,10 @@ import PropertySelector from "./components/PropertySelector";
 
 export default function Home() {
   const [propertyType, setPropertyType] = useState("gym");
+  const [pageOption, setPageOption] = useState<"register" | "login">(
+    "register"
+  );
+
   const {
     register,
     handleSubmit,
@@ -25,7 +29,8 @@ export default function Home() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => console.log(data);
+  const onRegister = (data: any) => console.log(data);
+  const onLogin = (data: any) => console.log(data);
 
   return (
     <>
@@ -46,7 +51,9 @@ export default function Home() {
               Seja nosso <span className="text-primary-500">parceiro!</span>
             </h2>
             <p className="font-medium text-gray-500 text-2xl max-w-[300px]">
-              Cadastre sua loja ou academia
+              {pageOption === "register"
+                ? "Cadastre sua loja ou academia"
+                : "Coloque seus dados para acessar sua conta"}
             </p>
           </div>
         </div>
@@ -59,17 +66,20 @@ export default function Home() {
             className="hidden lg:block mb-2"
           />
           <form
-            onSubmit={handleSubmit(onSubmit, () =>
-              setTimeout(clearErrors, 5000)
+            onSubmit={handleSubmit(
+              pageOption === "register" ? onRegister : onLogin,
+              () => setTimeout(clearErrors, 5000)
             )}
             className="p-4 max-w-[300px] mx-auto flex flex-col items-center gap-4 lg:py-2"
           >
-            <Input
-              registerField={{ ...register("name", { required: true }) }}
-              error={errors.name && "Nome é obrigatório!"}
-              icon={BiRename}
-              placeholder="Nome"
-            />
+            {pageOption === "register" && (
+              <Input
+                registerField={{ ...register("name", { required: true }) }}
+                error={errors.name && "Nome é obrigatório!"}
+                icon={BiRename}
+                placeholder="Nome"
+              />
+            )}
             <Input
               registerField={{ ...register("email", { required: true }) }}
               error={errors.email && "Email é obrigatório!"}
@@ -84,44 +94,59 @@ export default function Home() {
               placeholder="Senha"
               visibility
             />
-            <Input
-              registerField={{
-                ...register("confirmPassword", { required: true }),
-              }}
-              error={errors.confirmPassword && "Este campo é obrigatório!"}
-              icon={MdPassword}
-              password
-              placeholder="Confirmar senha"
-            />
+            {pageOption === "register" && (
+              <>
+                <Input
+                  registerField={{
+                    ...register("confirmPassword", { required: true }),
+                  }}
+                  error={errors.confirmPassword && "Este campo é obrigatório!"}
+                  icon={MdPassword}
+                  password
+                  placeholder="Confirmar senha"
+                />
+              </>
+            )}
             <Input
               registerField={{ ...register("cnpj", { required: true }) }}
               error={errors.cnpj && "CNPJ é obrigatório!"}
               icon={HiOutlineDocumentText}
               placeholder="CNPJ"
             />
-            <div className="flex gap-2 justify-between w-full mb-2">
-              <PropertySelector
-                selected={propertyType === "gym"}
-                onClick={() => setPropertyType("gym")}
-                icon={GymIcon}
-                text="Academia"
-              />
-              <PropertySelector
-                selected={propertyType === "store"}
-                onClick={() => setPropertyType("store")}
-                icon={StoreIcon}
-                text="Loja"
-              />
-            </div>
-            <Button text="Criar conta" onClick={() => null} />
+            {pageOption === "register" && (
+              <div className="flex gap-2 justify-between w-full mb-2">
+                <PropertySelector
+                  selected={propertyType === "gym"}
+                  onClick={() => setPropertyType("gym")}
+                  icon={GymIcon}
+                  text="Academia"
+                />
+                <PropertySelector
+                  selected={propertyType === "store"}
+                  onClick={() => setPropertyType("store")}
+                  icon={StoreIcon}
+                  text="Loja"
+                />
+              </div>
+            )}
+            <Button
+              text={pageOption === "register" ? "Criar conta" : "Entrar"}
+              onClick={() => null}
+            />
             <span className="font-light text-secondary-500">
-              Já é parceiro?{" "}
-              <Link
-                href={{}}
-                className="text-primary-500 underline transition hover:text-primary-600"
+              {pageOption === "register"
+                ? "Já é parceiro?"
+                : "Ainda não é parceiro?"}{" "}
+              <span
+                onClick={() =>
+                  setPageOption((prev) =>
+                    prev === "register" ? "login" : "register"
+                  )
+                }
+                className="text-primary-500 cursor-pointer underline transition hover:text-primary-600"
               >
                 Clique aqui!
-              </Link>
+              </span>
             </span>
           </form>
         </div>
