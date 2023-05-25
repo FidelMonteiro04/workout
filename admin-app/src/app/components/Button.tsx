@@ -14,12 +14,12 @@ interface Props {
 const Button = ({ icon: Icon, onClick, text, halfWidth, outline }: Props) => {
   return (
     <button
-      className={`flex items-center justify-center font-bold rounded-sm transition hover:bg-primary-400 py-2 ${
+      className={`flex gap-2 items-center justify-center font-bold rounded-sm transition py-2 ${
         halfWidth ? "w-1/2" : "w-full"
       } ${
         outline
-          ? "border-[1px] border-primary-500 text-primary-500"
-          : "bg-primary-500 text-white"
+          ? "border-[1px] border-primary-500 text-primary-500 hover:border-primary-600 hover:text-primary-600 hover:shadow-md"
+          : "bg-primary-500 text-white hover:bg-primary-400"
       }`}
       onClick={onClick}
     >
