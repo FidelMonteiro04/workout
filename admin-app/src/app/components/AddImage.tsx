@@ -14,7 +14,7 @@ const AddImage = () => {
           Imagem
         </span>
       </label>
-      <input hidden id="inputFile" type="file" />
+      <input accept=".jpg, .png, .jpeg" hidden id="inputFile" type="file" />
     </div>
   );
 };
