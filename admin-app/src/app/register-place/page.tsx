@@ -50,6 +50,7 @@ const RegisterPlace = () => {
                   errors.quantPersonals &&
                   "O número de personais é obrigatório!"
                 }
+                type="number"
                 placeholder="Número de personais"
                 icon={PersonalIcon}
               />

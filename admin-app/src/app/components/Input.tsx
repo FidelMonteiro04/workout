@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { InputHTMLAttributes, useState } from "react";
 import { IconType } from "react-icons";
 
 import { AiOutlineEyeInvisible as InvisibleIcon } from "react-icons/ai";
@@ -8,7 +8,7 @@ import { AiOutlineEye as VisibleIcon } from "react-icons/ai";
 
 interface Props {
   icon?: IconType;
-  placeholder: string;
+
   password?: boolean;
   registerField?: any;
   visibility?: boolean;
@@ -17,14 +17,14 @@ interface Props {
 }
 
 const Input = ({
-  placeholder,
   registerField,
   password,
   visibility,
   error,
   forget,
   icon: Icon,
-}: Props) => {
+  ...rest
+}: Props & InputHTMLAttributes<HTMLInputElement>) => {
   const [focus, setFocus] = useState(false);
   const [visible, setVisible] = useState(false);
   return (
@@ -37,8 +37,10 @@ const Input = ({
         {Icon && <Icon size={20} className="mr-2 text-primary-500  " />}
         <input
           {...registerField}
-          placeholder={placeholder}
-          type={password && !visible ? "password" : "text"}
+          {...rest}
+          type={
+            rest.type ? rest.type : password && !visible ? "password" : "text"
+          }
           className="w-full bg-transparent text-zinc-500 placeholder:text-zinc-400 text-lg outline-transparent font-light"
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}

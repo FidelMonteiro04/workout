@@ -84,6 +84,7 @@ export default function Home() {
               error={errors.email && "Email é obrigatório!"}
               icon={MdAlternateEmail}
               placeholder="Email"
+              type="email"
             />
             <Input
               registerField={{ ...register("password", { required: true }) }}
