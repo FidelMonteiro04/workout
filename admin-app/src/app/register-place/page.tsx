@@ -1,5 +1,10 @@
 "use client";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { ImageContext } from "./layout";
+
+import { generateFileName } from "@/utils/generateFileName";
+import { cloudinaryURL } from "@/config/cloudinary";
 
 import AddImage from "../components/AddImage";
 import Button from "../components/Button";
@@ -16,13 +21,33 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterPlace = () => {
+  const { image }: any = useContext(ImageContext);
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isLoading },
     clearErrors,
   } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    const formData = new FormData();
+    const newFileName = generateFileName(image);
+
+    formData.append("file", image, newFileName);
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME as string
+    );
+
+    const response = await fetch(cloudinaryURL, {
+      method: "POST",
+      body: formData,
+    });
+
+    const { public_id } = await response.json();
+
+    console.log(public_id);
+  };
   return (
     <>
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
@@ -43,6 +68,9 @@ const RegisterPlace = () => {
                 icon={BsBuildings}
               />
               <Input
+                max={200}
+                min={0}
+                maxLength={4}
                 registerField={{
                   ...register("quantPersonals", { required: true }),
                 }}
@@ -77,6 +105,7 @@ const RegisterPlace = () => {
                 error={errors.placeName && "O número de contato é obrigatório!"}
                 placeholder="Contato"
                 icon={ContactIcon}
+                type="tel"
               />
               <Button
                 text="Localização"
