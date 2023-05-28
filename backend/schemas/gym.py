@@ -5,7 +5,7 @@ import uuid
 
 class GymSchema(Schema):
     id = fields.UUID(default=uuid.uuid4, required=True)
-    cnpj = fields.String(required=True, validate=validate.Length(equal=14, unique=True))
+    cnpj = fields.String(required=True, validate=validate.Length(equal=14), unique=True)
     name = fields.String(required=True, validate=validate.Length(min=3, max= 255))
     owner = fields.ReferenceField(OwnerSchema, required=True, referencefield='id')
     airConditioning = fields.Boolean(required=True)
