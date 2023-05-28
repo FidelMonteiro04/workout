@@ -30,7 +30,7 @@ Esse é nosso projeto de AP II, um sistema de gerenciamento de academias e lojas
 
 ## 👥 Equipe <a id="equipe"></a>
 
-* [Felipe](https://github.com/)
+* [Felipe](https://github.com/Felipe-15)
 * [Julio](https://github.com/JC-Rodrigues)
-* [Fidel](https://github.com/)
-* [Kaue](https://github.com/)
+* [Fidel](https://github.com/FidelMonteiro04)
+* [Kaue](https://github.com/kaue154510)
