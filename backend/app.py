@@ -1,12 +1,20 @@
-from flask import Flask
-from .routes.user import user
-from .extensions import db
-from .routes.gym import gym
+from flask import Flask, request
 
-def create_app():
-    app = Flask(__name__)
-    app.register_blueprint(user)
-    app.register_blueprint(gym)
-    db.init_app(app)
-    return app
+app = Flask(__name__)
 
+import db
+
+@app.route('/')
+def index():
+    return "index"
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    db.db.get_collection("admins").insert_one(data)
+    
+    return "User created"
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
