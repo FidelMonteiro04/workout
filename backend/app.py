@@ -2,7 +2,7 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-import db
+from db import db
 
 @app.route('/')
 def index():
@@ -11,7 +11,7 @@ def index():
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
-    db.db.get_collection("admins").insert_one(data)
+    db.get_collection("admins").insert_one(data)
     
     return "User created"
 
