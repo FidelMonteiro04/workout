@@ -1,35 +1,51 @@
 "use client";
 
-import { useRef, useState, useContext } from "react";
+import { MutableRefObject } from "react";
 import Image from "next/image";
 
 import { AiOutlinePlus } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
-import { ImageContext } from "../register-place/layout";
 
 interface Props {
   registerField?: any;
   error?: string;
+  proportions?: {
+    defaultHeight?: number;
+    defaultWidth?: number;
+    imageWidth?: number;
+    imageHeight?: number;
+  };
+  noAnimation?: boolean;
+  imageRef: MutableRefObject<HTMLImageElement>;
+  callback: (newState: any) => void;
+  imageState: any;
+  alt: string;
 }
 
-const AddImage = ({ registerField, error }: Props) => {
-  const { image, setImage }: any = useContext(ImageContext);
-  const imageRef = useRef({} as HTMLImageElement);
+const AddImage = ({
+  registerField,
+  error,
+  proportions,
+  noAnimation,
+  imageRef,
+  alt,
+  callback,
+  imageState: image,
+}: Props) => {
   const onAddImage = (event: any) => {
-    setImage(event.target.files[0]);
     const reader = new FileReader();
     reader.onload = () => {
       if (!imageRef.current || !reader.result) return;
+      callback(reader.result.toString());
       imageRef.current.src = reader.result.toString();
     };
     reader.readAsDataURL(event.target.files[0]);
   };
+
   return (
     <div
-      className={`relative h-full w-full max-h-[240px] group ${
-        !image
-          ? "max-w-[240px]"
-          : "max-w-[300px] lg:max-w-full flex justify-center items-center overflow-hidden rounded-md"
+      className={`relative h-full w-full group flex flex-col max-h-[300px] max-w-[300px] lg:max-w-full justify-center items-center ${
+        image && "rounded-md overflow-hidden"
       }`}
     >
       <img
@@ -37,7 +53,7 @@ const AddImage = ({ registerField, error }: Props) => {
         ref={imageRef}
         className="transition group-hover:brightness-50 w-full h-auto"
         hidden={!image}
-        alt="Imagem da academia"
+        alt={alt}
       />
       {image && (
         <label
@@ -51,7 +67,9 @@ const AddImage = ({ registerField, error }: Props) => {
       {!image && (
         <label
           htmlFor="inputFile"
-          className="cursor-pointer hover:border-primary-600 hover:text-primary-600 transition min-w-[120px] min-h-[120px] w-full h-full flex flex-col items-center justify-center rounded-md border-[1px] border-primary-500 text-primary-500 p-6 hover:shadow-md hover:-translate-y-2 duration-200"
+          className={`cursor-pointer hover:border-primary-600 hover:text-primary-600 transition max-w-[300px] max-h-[120px] w-full h-full flex flex-col items-center justify-center rounded-md border-[1px] border-primary-500 text-primary-500 p-6 hover:shadow-md duration-200 ${
+            !noAnimation && "hover:-translate-y-2"
+          }`}
         >
           <AiOutlinePlus size={32} />
           <span className="font-light text-lg text-primary-500">Imagem</span>
