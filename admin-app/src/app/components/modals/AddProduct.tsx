@@ -3,7 +3,7 @@
 import "./animations.css";
 
 import { useContext, useState, useRef, ChangeEvent } from "react";
-import { RegisterContext } from "@/app/register-place/layout";
+import { RegisterContext } from "@/app/register/layout";
 import { useForm, Controller } from "react-hook-form";
 
 import AddImage from "../AddImage";

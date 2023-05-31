@@ -77,7 +77,6 @@ const RegisterPlace = () => {
                 placeholder="Nome"
                 icon={BsBuildings}
               />
-
               <Input
                 max={200}
                 min={0}
@@ -93,7 +92,6 @@ const RegisterPlace = () => {
                 placeholder="Número de personais"
                 icon={PersonalIcon}
               />
-
               <Input
                 registerField={{ ...register("address", { required: true }) }}
                 error={errors.address && "O endereço é obrigatório!"}
