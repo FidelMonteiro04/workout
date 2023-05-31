@@ -4,7 +4,7 @@ import "./animations.css";
 
 import { useContext, useState, useRef, ChangeEvent } from "react";
 import { RegisterContext } from "@/app/register-place/layout";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import AddImage from "../AddImage";
 import Button from "../Button";
@@ -31,13 +31,14 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors },
     clearErrors,
   } = useForm({
     defaultValues: {
       name: "",
-      price: "",
+
       type: "",
       distributor: "",
     },
@@ -70,6 +71,7 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
   const handleClose = () => {
     backgroundRef.current.classList.remove("fade-in");
     backgroundRef.current.classList.add("fade-out");
+    reset();
     setTimeout(() => setModalIsOpened(false), 400);
   };
 
@@ -111,13 +113,31 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
             placeholder="Nome"
             icon={AiOutlineTags}
           />
-          <Input
+          <Controller
+            control={control}
+            name="price"
+            defaultValue=""
+            rules={{ required: true }}
+            render={({ field, fieldState: { error } }) => (
+              <Input
+                error={error && "Preço do produto é obrigatório!"}
+                placeholder="Preço"
+                icon={MdAttachMoney}
+                value={field.value}
+                onChange={(e) => {
+                  const formattedValue = "R$ " + formatPrice(e.target.value);
+                  field.onChange(formattedValue);
+                }}
+              />
+            )}
+          />
+          {/*<Input
             registerField={{ ...register("price", { required: true }) }}
             error={errors.price && "Preço do produto é obrigatório!"}
             placeholder="Preço"
             icon={MdAttachMoney}
             onChange={formatPriceInput}
-          />
+          />*/}
           <Input
             registerField={{ ...register("type", { required: true }) }}
             error={errors.type && "O tipo do produto é obrigatório!"}
@@ -136,8 +156,9 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
               icon={BsCheck}
               onClick={handleSubmit(
                 (data) => {
-                  reset();
+                  console.log(data);
                   onAdd({ ...data, image });
+                  reset();
                   setImage(null);
                   handleClose();
                 },
