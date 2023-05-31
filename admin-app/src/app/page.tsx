@@ -134,10 +134,10 @@ export default function Home() {
               text={pageOption === "register" ? "Criar conta" : "Entrar"}
               onClick={() => null}
             />
-            <span className="font-light text-secondary-500">
+            <span className="font-light text-secondary-500 text-center">
               {pageOption === "register"
                 ? "Já é parceiro?"
-                : "Ainda não é parceiro?"}{" "}
+                : "Ainda não é nosso parceiro?"}{" "}
               <span
                 onClick={() =>
                   setPageOption((prev) =>

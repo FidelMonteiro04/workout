@@ -1,7 +1,10 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useState, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { ImageContext } from "./layout";
+import { RegisterContext } from "./layout";
+
+import { IProduct } from "@/interfaces/Product";
 
 import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
@@ -10,6 +13,9 @@ import AddImage from "../components/AddImage";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Plan from "../components/Plan";
+import AddButton from "../components/AddButton";
+import Product from "../components/Product";
+import AddProductModal from "../components/modals/AddProduct";
 
 import { BsBuildings } from "react-icons/bs";
 import { HiOutlineUserGroup as PersonalIcon } from "react-icons/hi";
@@ -17,47 +23,68 @@ import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
-import { AiOutlinePlus } from "react-icons/ai";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterPlace = () => {
-  const { image }: any = useContext(ImageContext);
+  const { image, setImage, modalIsOpened, setModalIsOpened } =
+    useContext(RegisterContext);
+
+  const params = useSearchParams();
+  const placeType = params.get("type");
+
+  const [products, setProducts] = useState<IProduct[]>([]);
+
   const {
     handleSubmit,
     register,
     formState: { errors, isLoading },
     clearErrors,
   } = useForm();
+
+  const imageRef = useRef({} as HTMLImageElement);
+
+  const handleAddProduct = (product: IProduct) => {
+    setProducts((prev) => [product, ...prev]);
+  };
+
   const onSubmit = async (data: any) => {
     console.log(data);
     const formData = new FormData();
-    const newFileName = generateFileName(image);
+    // const newFileName = generateFileName(image);
 
-    formData.append("file", image, newFileName);
+    formData.append("file", image);
     formData.append(
       "upload_preset",
       process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME as string
     );
+    formData.append("folder", "workout/gyms");
 
     const response = await fetch(cloudinaryURL, {
       method: "POST",
       body: formData,
     });
 
-    const { public_id } = await response.json();
+    const { url } = await response.json();
 
-    console.log(public_id);
+    console.log(url);
   };
   return (
     <>
+      {placeType === "store" && (
+        <AddProductModal onAdd={handleAddProduct} isOpen={modalIsOpened} />
+      )}
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
-        Cadastro da Academia
+        Cadastro da {placeType === "gym" ? "Academia" : "Loja"}
       </h2>
       <div className="flex flex-col mb-4">
         <div className="max-w-[600px] mx-auto w-full h-full flex flex-col items-center">
           <AddImage
             registerField={{ ...register("image", { required: true }) }}
+            callback={setImage}
+            imageState={image}
+            imageRef={imageRef}
             error={errors.image && "É necessário ter uma imagem!"}
+            alt="Imagem da academia"
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="flex flex-col gap-3 pt-4">
@@ -67,21 +94,23 @@ const RegisterPlace = () => {
                 placeholder="Nome"
                 icon={BsBuildings}
               />
-              <Input
-                max={200}
-                min={0}
-                maxLength={4}
-                registerField={{
-                  ...register("quantPersonals", { required: true }),
-                }}
-                error={
-                  errors.quantPersonals &&
-                  "O número de personais é obrigatório!"
-                }
-                type="number"
-                placeholder="Número de personais"
-                icon={PersonalIcon}
-              />
+              {placeType === "gym" && (
+                <Input
+                  max={200}
+                  min={0}
+                  maxLength={4}
+                  registerField={{
+                    ...register("quantPersonals", { required: true }),
+                  }}
+                  error={
+                    errors.quantPersonals &&
+                    "O número de personais é obrigatório!"
+                  }
+                  type="number"
+                  placeholder="Número de personais"
+                  icon={PersonalIcon}
+                />
+              )}
               <Input
                 registerField={{ ...register("address", { required: true }) }}
                 error={errors.address && "O endereço é obrigatório!"}
@@ -114,72 +143,111 @@ const RegisterPlace = () => {
               />
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
-              <h3 className="font-bold text-xl mb-2 ">Planos</h3>
-              <div className="grid gap-2 mb-6 grid-flow-col max-w-[250px] overflow-x-auto grid-rows-2 pb-2">
-                <div className="w-full flex items-center justify-center">
-                  <button
-                    onClick={() => null}
-                    className="p-2 rounded-full transition border-[1px] text-primary-500 border-primary-500 hover:border-primary-600 hover:shadow-md hover:text-primary-600"
-                  >
-                    <AiOutlinePlus size={20} />
-                  </button>
-                </div>
-                <Plan days="3" value="60,00" />
-                <Plan days="5" value="70,00" />
-                <Plan days="7" value="90,00" />
-                <Plan days="5" value="70,00" />
-                <Plan days="7" value="90,00" />
-              </div>
-              <div className="grid grid-cols-2 gap-3 mb-6">
-                <div className="flex flex-col gap-2">
-                  <span className="font-semibold text-sm">Climatizado?</span>
-                  <div className="flex gap-3">
-                    <div className="flex gap-2">
-                      <input
-                        type="radio"
-                        id="has-air"
-                        name="airConditioned"
-                        value="true"
-                      />
-                      <label htmlFor="has-air">Sim</label>
+              {placeType === "gym" ? (
+                <>
+                  <h3 className="font-bold text-xl mb-2 ">Planos</h3>
+                  <div className="grid gap-2 mb-6 grid-flow-col max-w-[250px] overflow-x-auto grid-rows-2 pb-2">
+                    <div className="w-full flex items-center justify-center">
+                      <AddButton onClick={() => null} />
                     </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="radio"
-                        id="no-air"
-                        name="airConditioned"
-                        value="false"
-                        defaultChecked
-                      />
-                      <label htmlFor="no-air">Não</label>
+                    <Plan days="3" value="60,00" />
+                    <Plan days="5" value="70,00" />
+                    <Plan days="7" value="90,00" />
+                    <Plan days="5" value="70,00" />
+                    <Plan days="7" value="90,00" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    <div className="flex flex-col gap-2">
+                      <span className="font-semibold text-sm">
+                        Climatizado?
+                      </span>
+                      <div className="flex gap-3">
+                        <div className="flex gap-2">
+                          <input
+                            {...register("airCondioned")}
+                            type="radio"
+                            id="has-air"
+                            name="airConditioned"
+                            value="true"
+                          />
+                          <label htmlFor="has-air">Sim</label>
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            {...register("airCondioned")}
+                            type="radio"
+                            id="no-air"
+                            name="airConditioned"
+                            value={"false"}
+                            defaultChecked
+                          />
+                          <label htmlFor="no-air">Não</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <span className="font-semibold text-sm">
+                        Acessibilidade?
+                      </span>
+                      <div className="flex gap-3">
+                        <div className="flex gap-2">
+                          <input
+                            {...register("accessibility")}
+                            type="radio"
+                            id="has-accessibility"
+                            name="accessibility"
+                            value="true"
+                          />
+                          <label htmlFor="has-accessibility">Sim</label>
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            {...register("accessibility")}
+                            type="radio"
+                            id="no-accessibility"
+                            name="accessibility"
+                            value="false"
+                            defaultChecked
+                          />
+                          <label htmlFor="no-accessibility">Não</label>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <span className="font-semibold text-sm">Acessibilidade?</span>
-                  <div className="flex gap-3">
-                    <div className="flex gap-2">
-                      <input
-                        type="radio"
-                        id="has-accessibility"
-                        name="accessibility"
-                        value="true"
-                      />
-                      <label htmlFor="has-accessibility">Sim</label>
+                </>
+              ) : (
+                <div>
+                  <h3 className="font-bold text-xl mb-2 ">Produtos</h3>
+                  <div className="flex gap-3 overflow-x-auto pt-2 pb-3 px-1 max-w-[250px] mb-4">
+                    <div className="flex items-center justify-center">
+                      <AddButton onClick={() => setModalIsOpened(true)} />
                     </div>
-                    <div className="flex gap-2">
-                      <input
-                        type="radio"
-                        id="no-accessibility"
-                        name="accessibility"
-                        value="false"
-                        defaultChecked
+                    {products.map((product, index) => (
+                      <Product
+                        key={`${index}`}
+                        {...product}
+                        id={`${product.id}`}
+                        img={product.image}
+                        onClick={() => null}
                       />
-                      <label htmlFor="no-accessibility">Não</label>
-                    </div>
+                    ))}
+                    <Product
+                      img="https://cdn.shopify.com/s/files/1/0273/2323/6455/products/WPCMORANGONOVO.png?v=1679949271"
+                      name="Whey Protein"
+                      price="240"
+                      onClick={() => null}
+                      distributor="Iridium"
+                    />
+                    <Product
+                      img="https://www.corpoevidasuplementos.com.br/images/products/full/10473-bcaa-2-1-1-2044-mg-90-capsulas-integralmedica.1626808819.png"
+                      name="BCAA"
+                      price="240"
+                      onClick={() => null}
+                      distributor="IntegralMedica"
+                    />
                   </div>
                 </div>
-              </div>
+              )}
               <Button
                 outline
                 onClick={handleSubmit(onSubmit, () =>

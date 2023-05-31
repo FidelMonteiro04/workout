@@ -2,15 +2,25 @@
 import Header from "../components/Header";
 import { createContext, useState } from "react";
 
-export const ImageContext = createContext({});
+interface IRegisterContext {
+  image?: any | null;
+  setImage: (image: any) => void;
+  modalIsOpened: boolean;
+  setModalIsOpened: (value: boolean) => void;
+}
 
-const ImageCtxProvider = ({ children }: { children: React.ReactNode }) => {
-  const [image, setImage] = useState<any>(null);
+export const RegisterContext = createContext({} as IRegisterContext);
+
+const RegisterCtxProvider = ({ children }: { children: React.ReactNode }) => {
+  const [image, setImage] = useState(null);
+  const [modalIsOpened, setModalIsOpened] = useState(false);
 
   return (
-    <ImageContext.Provider value={{ image, setImage }}>
+    <RegisterContext.Provider
+      value={{ image, setImage, modalIsOpened, setModalIsOpened }}
+    >
       {children}
-    </ImageContext.Provider>
+    </RegisterContext.Provider>
   );
 };
 
@@ -22,11 +32,11 @@ export default function RegisterLayout({
   return (
     <>
       <Header />
-      <ImageCtxProvider>
+      <RegisterCtxProvider>
         <section className="flex w-full min-h-full flex-col px-6">
           {children}
         </section>
-      </ImageCtxProvider>
+      </RegisterCtxProvider>
     </>
   );
 }
