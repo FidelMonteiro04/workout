@@ -14,6 +14,7 @@ interface Props {
   visibility?: boolean;
   error?: string;
   forget?: boolean;
+  customStyles?: string;
 }
 
 const Input = ({
@@ -23,6 +24,7 @@ const Input = ({
   error,
   forget,
   icon: Icon,
+  customStyles,
   ...rest
 }: Props & InputHTMLAttributes<HTMLInputElement>) => {
   const [focus, setFocus] = useState(false);
@@ -32,7 +34,7 @@ const Input = ({
       <div
         className={`flex transition items-center px-3 py-2 border-[1px]  rounded-sm shadow-md ${
           focus ? "border-primary-500 shadow-lg" : "border-gray-500"
-        } ${error ? "border-red-600" : ""}`}
+        } ${error ? "border-red-600" : ""} ${customStyles}`}
       >
         {Icon && <Icon size={20} className="mr-2 text-primary-500  " />}
         <input
