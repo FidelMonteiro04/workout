@@ -19,8 +19,9 @@ import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
+import AddPlanModal from "@/app/components/modals/AddPlan";
 
-const RegisterPlace = () => {
+const RegisterGym = () => {
   const { image, setImage, modalIsOpened, setModalIsOpened } =
     useContext(RegisterContext);
 
@@ -56,6 +57,7 @@ const RegisterPlace = () => {
   };
   return (
     <>
+      <AddPlanModal isOpen={modalIsOpened} />
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Academia
       </h2>
@@ -127,7 +129,7 @@ const RegisterPlace = () => {
               <h3 className="font-bold text-xl mb-2 ">Planos</h3>
               <div className="grid gap-2 mb-6 grid-flow-col max-w-[250px] overflow-x-auto grid-rows-2 pb-2">
                 <div className="w-full flex items-center justify-center">
-                  <AddButton onClick={() => null} />
+                  <AddButton onClick={() => setModalIsOpened(true)} />
                 </div>
                 <Plan days="3" value="60,00" />
                 <Plan days="5" value="70,00" />
@@ -206,4 +208,4 @@ const RegisterPlace = () => {
   );
 };
 
-export default RegisterPlace;
+export default RegisterGym;

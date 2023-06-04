@@ -22,7 +22,7 @@ import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
-const RegisterPlace = () => {
+const RegisterStore = () => {
   const { image, setImage, modalIsOpened, setModalIsOpened } =
     useContext(RegisterContext);
 
@@ -167,4 +167,4 @@ const RegisterPlace = () => {
   );
 };
 
-export default RegisterPlace;
+export default RegisterStore;
