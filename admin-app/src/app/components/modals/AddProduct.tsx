@@ -37,7 +37,6 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
   } = useForm({
     defaultValues: {
       name: "",
-
       type: "",
       distributor: "",
     },
