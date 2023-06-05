@@ -11,6 +11,9 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import Plan from "@/app/components/Plan";
 import AddButton from "@/app/components/AddButton";
+import AddPlanModal from "@/app/components/modals/AddPlan";
+
+import { IPlan } from "@/interfaces/Plan";
 
 import { BsBuildings } from "react-icons/bs";
 import { HiOutlineUserGroup as PersonalIcon } from "react-icons/hi";
@@ -19,7 +22,6 @@ import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
-import AddPlanModal from "@/app/components/modals/AddPlan";
 
 const RegisterGym = () => {
   const { image, setImage, modalIsOpened, setModalIsOpened } =
@@ -31,6 +33,8 @@ const RegisterGym = () => {
     formState: { errors, isLoading },
     clearErrors,
   } = useForm();
+
+  const [plans, setPlans] = useState<IPlan[]>([]);
 
   const imageRef = useRef({} as HTMLImageElement);
 
@@ -57,7 +61,10 @@ const RegisterGym = () => {
   };
   return (
     <>
-      <AddPlanModal isOpen={modalIsOpened} />
+      <AddPlanModal
+        onAdd={(plan) => setPlans((prev) => [...prev, plan])}
+        isOpen={modalIsOpened}
+      />
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Academia
       </h2>
@@ -131,11 +138,9 @@ const RegisterGym = () => {
                 <div className="w-full flex items-center justify-center">
                   <AddButton onClick={() => setModalIsOpened(true)} />
                 </div>
-                <Plan days="3" value="60,00" />
-                <Plan days="5" value="70,00" />
-                <Plan days="7" value="90,00" />
-                <Plan days="5" value="70,00" />
-                <Plan days="7" value="90,00" />
+                {plans.map((plan, index) => (
+                  <Plan key={index} {...plan} />
+                ))}
               </div>
               <div className="grid grid-cols-2 gap-3 mb-6">
                 <div className="flex flex-col gap-2">
