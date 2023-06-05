@@ -2,6 +2,8 @@ import { ChangeEvent, useContext, useRef } from "react";
 import { RegisterContext } from "@/app/register/layout";
 import { useForm, Controller } from "react-hook-form";
 
+import { formatPrice } from "@/utils/formatPrice";
+
 import Modal from "./Modal";
 import Input from "../Input";
 import Button from "../Button";
@@ -55,24 +57,6 @@ const AddPlanModal = ({ isOpen, onAdd }: Props) => {
     let value = amountRef.current.value;
     if (Number(value) === 1) return;
     amountRef.current.value = (Number(amountRef.current.value) - 1).toString();
-  };
-
-  const formatPrice = (price: string) => {
-    const rawNumbers: any = price.replace(/[^0-9]/g, "").split("");
-
-    for (let digit in rawNumbers) {
-      let index = Number(digit);
-      if (rawNumbers[index] != "0") break;
-      rawNumbers[index] = "";
-    }
-
-    const correctLength = rawNumbers.join("").padStart(4, "0");
-    const withComma =
-      correctLength.slice(0, correctLength.length - 2) +
-      "," +
-      correctLength.slice(correctLength.length - 2);
-
-    return withComma;
   };
 
   const Submit = (data: any) => {
