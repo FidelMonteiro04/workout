@@ -18,7 +18,7 @@ const Plan = ({ days, value, span }: Props) => {
       <MdAttachMoney size={24} />
       <div className="flex flex-col gap-1 w-full items-center justify-center">
         <span className="font-light">{days} dia(s)</span>
-        <span className="font-semibold">R$ {value}</span>
+        <span className="font-semibold whitespace-nowrap">{value}</span>
       </div>
     </div>
   );
