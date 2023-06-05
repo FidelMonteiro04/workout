@@ -1,15 +1,16 @@
 from flask_pymongo import PyMongo
 import pymongo
+from schemas.owner import ownerSchema
 
-mongo = PyMongo()
-CONNECTION_STRING = "mongodb+srv://workout:WGQb34JuE6mG0jle@cluster0.vy4mzcd.mongodb.net/?retryWrites=true&w=majority"
-client = pymongo.MongoClient(CONNECTION_STRING)
-db = client.get_database("workout")
+db = None
 
 def init_app(app):
-    mongo.init_app(app)
-    return mongo.db
+    global db
+
+    app.config['MONGO_URI'] = "mongodb+srv://workout:WGQb34JuE6mG0jle@cluster0.vy4mzcd.mongodb.net/?retryWrites=true&w=majority"
+    client = pymongo.MongoClient(app.config['MONGO_URI'])
+    db = client.get_database("workout")
+    
 
 def get_db():
-    return mongo.db
-
+    return db
