@@ -2,22 +2,23 @@
 import Header from "../components/Header";
 import { createContext, useState } from "react";
 
+type Modals = "location" | "product" | "plan" | null;
 interface IRegisterContext {
   image?: any | null;
   setImage: (image: any) => void;
-  modalIsOpened: boolean;
-  setModalIsOpened: (value: boolean) => void;
+  modalOpened: Modals;
+  setModalOpened: (value: Modals) => void;
 }
 
 export const RegisterContext = createContext({} as IRegisterContext);
 
 const RegisterCtxProvider = ({ children }: { children: React.ReactNode }) => {
   const [image, setImage] = useState(null);
-  const [modalIsOpened, setModalIsOpened] = useState(false);
+  const [modalOpened, setModalOpened] = useState<Modals>(null);
 
   return (
     <RegisterContext.Provider
-      value={{ image, setImage, modalIsOpened, setModalIsOpened }}
+      value={{ image, setImage, modalOpened, setModalOpened }}
     >
       {children}
     </RegisterContext.Provider>

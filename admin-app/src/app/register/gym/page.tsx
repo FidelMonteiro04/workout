@@ -12,6 +12,7 @@ import Input from "@/app/components/Input";
 import Plan from "@/app/components/Plan";
 import AddButton from "@/app/components/AddButton";
 import AddPlanModal from "@/app/components/modals/AddPlan";
+import LocationModal from "@/app/components/modals/Location";
 
 import { IPlan } from "@/interfaces/Plan";
 
@@ -24,7 +25,7 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterGym = () => {
-  const { image, setImage, modalIsOpened, setModalIsOpened } =
+  const { image, setImage, modalOpened, setModalOpened } =
     useContext(RegisterContext);
 
   const {
@@ -61,9 +62,10 @@ const RegisterGym = () => {
   };
   return (
     <>
+      <LocationModal isOpen={modalOpened === "location"} />
       <AddPlanModal
         onAdd={(plan) => setPlans((prev) => [...prev, plan])}
-        isOpen={modalIsOpened}
+        isOpen={modalOpened === "plan"}
       />
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Academia
@@ -129,14 +131,14 @@ const RegisterGym = () => {
               <Button
                 text="Localização"
                 icon={LocationIcon}
-                onClick={() => null}
+                onClick={() => setModalOpened("location")}
               />
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
               <h3 className="font-bold text-xl mb-2 ">Planos</h3>
               <div className="grid gap-2 mb-6 grid-flow-col max-w-[250px] overflow-x-auto grid-rows-2 pb-2">
                 <div className="w-full flex items-center justify-center">
-                  <AddButton onClick={() => setModalIsOpened(true)} />
+                  <AddButton onClick={() => setModalOpened("plan")} />
                 </div>
                 {plans.map((plan, index) => (
                   <Plan key={index} {...plan} />

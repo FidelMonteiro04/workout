@@ -14,6 +14,7 @@ import Input from "@/app/components/Input";
 import AddButton from "@/app/components/AddButton";
 import Product from "@/app/components/Product";
 import AddProductModal from "@/app/components/modals/AddProduct";
+import LocationModal from "@/app/components/modals/Location";
 
 import { BsBuildings } from "react-icons/bs";
 import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
@@ -23,7 +24,7 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterStore = () => {
-  const { image, setImage, modalIsOpened, setModalIsOpened } =
+  const { image, setImage, modalOpened, setModalOpened } =
     useContext(RegisterContext);
 
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -64,7 +65,11 @@ const RegisterStore = () => {
   };
   return (
     <>
-      <AddProductModal onAdd={handleAddProduct} isOpen={modalIsOpened} />
+      <LocationModal isOpen={modalOpened === "location"} />
+      <AddProductModal
+        onAdd={handleAddProduct}
+        isOpen={modalOpened === "product"}
+      />
 
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Loja
@@ -116,7 +121,7 @@ const RegisterStore = () => {
               <Button
                 text="Localização"
                 icon={LocationIcon}
-                onClick={() => null}
+                onClick={() => setModalOpened("location")}
               />
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
@@ -124,7 +129,7 @@ const RegisterStore = () => {
                 <h3 className="font-bold text-xl mb-2 ">Produtos</h3>
                 <div className="flex gap-3 overflow-x-auto pt-2 pb-3 px-1 max-w-[250px] mb-4">
                   <div className="flex items-center justify-center">
-                    <AddButton onClick={() => setModalIsOpened(true)} />
+                    <AddButton onClick={() => setModalOpened("product")} />
                   </div>
                   {products.map((product, index) => (
                     <Product

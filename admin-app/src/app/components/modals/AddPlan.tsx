@@ -19,7 +19,7 @@ interface Props {
 }
 
 const AddPlanModal = ({ isOpen, onAdd }: Props) => {
-  const { setModalIsOpened } = useContext(RegisterContext);
+  const { setModalOpened } = useContext(RegisterContext);
   const {
     register,
     handleSubmit,
@@ -38,7 +38,8 @@ const AddPlanModal = ({ isOpen, onAdd }: Props) => {
   const amountRef = useRef({} as HTMLInputElement);
 
   const handleClose = () => {
-    setModalIsOpened(false);
+    reset();
+    setModalOpened(null);
   };
 
   const handleAmountDaysInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -67,7 +68,6 @@ const AddPlanModal = ({ isOpen, onAdd }: Props) => {
       });
     console.log({ value: data.price, days: amountRef.current.value });
     onAdd({ value: data.price, days: amountRef.current.value });
-    reset();
     handleClose();
   };
 

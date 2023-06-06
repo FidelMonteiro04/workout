@@ -24,7 +24,7 @@ interface Props {
 }
 
 const AddProductModal = ({ isOpen, onAdd }: Props) => {
-  const { setModalIsOpened } = useContext(RegisterContext);
+  const { setModalOpened } = useContext(RegisterContext);
   const [image, setImage] = useState<any>(null);
   const imageRef = useRef({} as HTMLImageElement);
   const backgroundRef = useRef({} as HTMLDivElement);
@@ -46,7 +46,7 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
 
   const handleClose = () => {
     reset();
-    setModalIsOpened(false);
+    setModalOpened(null);
   };
 
   const body = (
