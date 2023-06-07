@@ -29,17 +29,17 @@ export default function Home() {
   const onRegister = (data: any) => console.log(data);
 
   return (
-    <div className="lg:flex lg:flex-col lg:items-center lg:justify-center">
+    <div className="md:flex md:flex-col md:items-center md:justify-center">
       <Image
         src="./logo.svg"
         alt="Workout Logo"
         width={160}
         height={160}
-        className="hidden lg:block mb-2"
+        className="hidden md:block h-auto mb-2"
       />
       <form
         onSubmit={handleSubmit(onRegister, () => setTimeout(clearErrors, 5000))}
-        className="p-4 max-w-[300px] mx-auto flex flex-col items-center gap-4 lg:py-2"
+        className="p-4 max-w-[300px] mx-auto flex flex-col items-center gap-4 md:py-2"
       >
         <Input
           registerField={{ ...register("name", { required: true }) }}

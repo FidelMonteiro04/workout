@@ -18,24 +18,30 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${montserrat.className} min-h-full`}>
-        <header className="w-full flex items-center justify-center py-8 lg:hidden">
-          <Image src="./logo.svg" alt="Workout Logo" width={160} height={160} />
+        <header className="w-full flex items-center justify-center py-8 md:hidden">
+          <Image
+            src="./logo.svg"
+            alt="Workout Logo"
+            width={160}
+            height={160}
+            className="h-auto"
+          />
         </header>
-        <section className="w-full grid grid-cols-1 p-4 lg:grid-cols-2 lg:self-center lg:justify-self-center lg:min-h-screen">
-          <div className="lg:flex lg:flex-col lg:items-center lg:justify-center ">
+        <section className="w-full grid grid-cols-1 p-4 md:grid-cols-2 md:self-center md:justify-self-center md:min-h-screen">
+          <div className="md:flex md:flex-col md:items-center md:justify-center ">
             <Image
               src="./partner.svg"
               width={540}
               height={540}
               alt="Seja nosso parceiro!"
-              className="hidden h-auto lg:block mb-4"
+              className="hidden h-auto w-full max-w-[540px] md:block mb-4"
               priority
             />
-            <div className="w-full lg:px-5">
-              <h2 className="text-4xl font-bold text-secondary-500  mb-3">
+            <div className="w-full md:px-5">
+              <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-1 md:mb-3">
                 Seja nosso <span className="text-primary-500">parceiro!</span>
               </h2>
-              <p className="font-medium text-gray-500 text-2xl max-w-[320px]">
+              <p className="font-medium text-gray-500 text-1xl md:text-2xl max-w-[320px]">
                 Um jeito muito mais fácil de crescer seu negócio!
               </p>
             </div>
