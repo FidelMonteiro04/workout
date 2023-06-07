@@ -80,6 +80,9 @@ const RegisterStore = () => {
     <>
       <LocationModal isOpen={modalOpened === "location"} />
       <ProductModal
+        onDelete={(id) =>
+          setProducts((prev) => prev.filter((p) => p.id !== id))
+        }
         onAdd={handleAddProduct}
         onEdit={editProduct}
         isOpen={modalOpened === "product"}

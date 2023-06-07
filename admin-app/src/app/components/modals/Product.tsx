@@ -9,22 +9,24 @@ import { formatPrice } from "@/utils/formatPrice";
 import AddImage from "../AddImage";
 import Button from "../Button";
 import Input from "../Input";
+import Modal from "./Modal";
 
 import { AiOutlineTags } from "react-icons/ai";
 import { MdAttachMoney } from "react-icons/md";
 import { BsTruck } from "react-icons/bs";
 import { BsCheck } from "react-icons/bs";
+import { BsFillTrashFill } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
-import Modal from "./Modal";
 
 interface Props {
   isOpen: boolean;
   onAdd: (data: any) => void;
   onEdit: (data: any) => void;
+  onDelete: (data: any) => void;
 }
 
-const ProductModal = ({ isOpen, onAdd, onEdit }: Props) => {
+const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
   const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
   const [image, setImage] = useState<any>(editData?.image || null);
   const imageRef = useRef({} as HTMLImageElement);
@@ -59,6 +61,11 @@ const ProductModal = ({ isOpen, onAdd, onEdit }: Props) => {
     reset();
     setModalOpened(null);
     setEditData(null);
+  };
+
+  const handleDelete = () => {
+    onDelete(editData.id);
+    handleClose();
   };
 
   console.log("Edit data: ", editData);
@@ -113,7 +120,14 @@ const ProductModal = ({ isOpen, onAdd, onEdit }: Props) => {
         placeholder="Distribuidora"
         icon={BsTruck}
       />
-      <div className="pt-3 flex w-full">
+      <div className="flex gap-2 pt-3 flex w-full">
+        {editData && (
+          <Button
+            text="Excluir"
+            icon={BsFillTrashFill}
+            onClick={handleDelete}
+          />
+        )}
         <Button
           outline
           text="Salvar"
