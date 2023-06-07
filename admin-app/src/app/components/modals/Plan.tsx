@@ -86,8 +86,6 @@ const AddPlanModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
 
   const handleDelete = () => {
     onDelete(editData.id);
-    setEditData(null);
-    reset();
     handleClose();
   };
 
