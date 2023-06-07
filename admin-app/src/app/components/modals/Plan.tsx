@@ -12,14 +12,16 @@ import { MdAttachMoney } from "react-icons/md";
 import { AiOutlineMinus } from "react-icons/ai";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsCheck } from "react-icons/bs";
+import { BsFillTrashFill } from "react-icons/bs";
 
 interface Props {
   isOpen: boolean;
   onAdd: (plan: any) => void;
   onEdit: (plan: any) => void;
+  onDelete: (plan: any) => void;
 }
 
-const AddPlanModal = ({ isOpen, onAdd, onEdit }: Props) => {
+const AddPlanModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
   const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
   const {
     register,
@@ -79,6 +81,13 @@ const AddPlanModal = ({ isOpen, onAdd, onEdit }: Props) => {
     } else {
       onEdit({ ...formattedData, id: editData.id });
     }
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    onDelete(editData.id);
+    setEditData(null);
+    reset();
     handleClose();
   };
 
@@ -142,7 +151,14 @@ const AddPlanModal = ({ isOpen, onAdd, onEdit }: Props) => {
         </div>
       </div>
       <div className="w-full flex justify-center">
-        <div className="w-[80%]">
+        <div className="w-[80%] flex gap-2">
+          {editData && (
+            <Button
+              text="Excluir"
+              onClick={handleDelete}
+              icon={BsFillTrashFill}
+            />
+          )}
           <Button
             icon={BsCheck}
             text="Salvar"

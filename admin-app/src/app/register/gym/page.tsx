@@ -70,6 +70,7 @@ const RegisterGym = () => {
     <>
       <LocationModal isOpen={modalOpened === "location"} />
       <AddPlanModal
+        onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
         onAdd={(plan) =>
           setPlans((prev) => [...prev, { ...plan, id: plans.length + 1 }])
         }
