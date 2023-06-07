@@ -164,20 +164,6 @@ const RegisterStore = () => {
                       }
                     />
                   ))}
-                  {/* {<Product
-                    img="https://cdn.shopify.com/s/files/1/0273/2323/6455/products/WPCMORANGONOVO.png?v=1679949271"
-                    name="Whey Protein"
-                    price="119,90"
-                    onClick={() => null}
-                    distributor="Iridium"
-                  />
-                  <Product
-                    img="https://www.corpoevidasuplementos.com.br/images/products/full/10473-bcaa-2-1-1-2044-mg-90-capsulas-integralmedica.1626808819.png"
-                    name="BCAA"
-                    price="89,90"
-                    onClick={() => null}
-                    distributor="IntegralMedica"
-                  />} */}
                 </div>
               </div>
               <Button
