@@ -42,8 +42,6 @@ const AddImage = ({
     reader.readAsDataURL(event.target.files[0]);
   };
 
-  console.log("Addimage imageState: ", image);
-
   return (
     <div
       className={`relative h-full w-full group flex flex-col max-h-[300px] max-w-[300px] lg:max-w-full justify-center items-center ${

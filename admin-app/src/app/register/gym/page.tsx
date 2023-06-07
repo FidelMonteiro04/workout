@@ -40,7 +40,6 @@ const RegisterGym = () => {
   const imageRef = useRef({} as HTMLImageElement);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     const formData = new FormData();
     // const newFileName = generateFileName(image);
 
@@ -57,8 +56,6 @@ const RegisterGym = () => {
     });
 
     const { url } = await response.json();
-
-    console.log(url);
   };
 
   const handleEditPlan = (data: any) => {

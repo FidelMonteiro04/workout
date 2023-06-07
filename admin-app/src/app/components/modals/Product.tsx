@@ -68,8 +68,6 @@ const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
     handleClose();
   };
 
-  console.log("Edit data: ", editData);
-
   const body = (
     <div className="flex flex-col gap-2 mx-6 items-center justify-center">
       <div className="mb-2 max-w-[120px] max-h-[120]">
@@ -134,8 +132,6 @@ const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
           icon={BsCheck}
           onClick={handleSubmit(
             (data: any) => {
-              console.log(data);
-              console.log("Edited Data on finish: ", editData);
               if (!editData) {
                 onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
               } else {

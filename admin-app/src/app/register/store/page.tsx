@@ -46,7 +46,6 @@ const RegisterStore = () => {
   };
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     const formData = new FormData();
     // const newFileName = generateFileName(image);
 
@@ -63,8 +62,6 @@ const RegisterStore = () => {
     });
 
     const { url } = await response.json();
-
-    console.log(url);
   };
 
   const handleProductEdit = (product: IProduct) => {

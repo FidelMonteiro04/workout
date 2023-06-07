@@ -74,7 +74,6 @@ const AddPlanModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
         message: "Os dias são obrigatórios",
         type: "value",
       });
-    console.log({ price: data.price, days: amountRef.current.value });
     const formattedData = { price: data.price, days: amountRef.current.value };
     if (!editData) {
       onAdd(formattedData);
