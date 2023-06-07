@@ -11,7 +11,7 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import Plan from "@/app/components/Plan";
 import AddButton from "@/app/components/AddButton";
-import AddPlanModal from "@/app/components/modals/AddPlan";
+import AddPlanModal from "@/app/components/modals/Plan";
 import LocationModal from "@/app/components/modals/Location";
 
 import { IPlan } from "@/interfaces/Plan";
