@@ -1,4 +1,5 @@
 "use client";
+import "../../styles/noScroll.css";
 
 import { MdAttachMoney } from "react-icons/md";
 
@@ -11,9 +12,12 @@ interface Props {
   onClick: () => void;
 }
 
-const Product = ({ img, name, price, distributor }: Props) => {
+const Product = ({ id, img, name, price, distributor, onClick }: Props) => {
   return (
-    <div className="flex flex-col p-2 shrink-0 w-[120px] rounded-md shadow-md cursor-pointer transition hover:shadow-lg">
+    <div
+      onClick={onClick}
+      className="flex flex-col p-2 shrink-0 w-[120px] rounded-md shadow-md cursor-pointer transition hover:shadow-lg"
+    >
       <div className="flex w-full items-center justify-center mb-2">
         <img
           src={img}
@@ -21,9 +25,11 @@ const Product = ({ img, name, price, distributor }: Props) => {
           className="w-auto h-full max-h-[80px]"
         />
       </div>
-      <span className="font-semibold text-secondary-500 text-sm mb-1 ">
-        {name}
-      </span>
+      <div className="little-scroll transition-all overflow-hidden hover:max-w-full hover:overflow-x-auto hover:text-clip no-scroll text-ellipsis mb-2 max-w-[100px]">
+        <span className=" font-semibold w-full  whitespace-nowrap  hover:max-w-full transition-all text-ellipsis text-secondary-500 text-sm mb-1 ">
+          {name}
+        </span>
+      </div>
       <div className="flex justify-between -mt-1 items-center w-full relative">
         <div className="hover:bg-white z-[5] max-w-[50%] hover:max-w-full w-full text-ellipsis transition-all overflow-x-hidden overflow-hidden">
           <span className="font-semibold text-zinc-600 text-xs  ">

@@ -21,13 +21,13 @@ import Modal from "./Modal";
 interface Props {
   isOpen: boolean;
   onAdd: (data: any) => void;
+  onEdit: (data: any) => void;
 }
 
-const AddProductModal = ({ isOpen, onAdd }: Props) => {
-  const { setModalOpened } = useContext(RegisterContext);
-  const [image, setImage] = useState<any>(null);
+const ProductModal = ({ isOpen, onAdd, onEdit }: Props) => {
+  const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
+  const [image, setImage] = useState<any>(editData?.image);
   const imageRef = useRef({} as HTMLImageElement);
-  const backgroundRef = useRef({} as HTMLDivElement);
 
   const {
     register,
@@ -41,19 +41,30 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
       name: "",
       type: "",
       distributor: "",
+      price: "",
+    },
+    values: {
+      name: editData?.name || "",
+      type: editData?.type || "",
+      distributor: editData?.distributor || "",
+      price: formatPrice(editData?.price || ""),
     },
   });
 
   const handleClose = () => {
     reset();
     setModalOpened(null);
+    setEditData(null);
   };
 
+  console.log("Edit data: ", editData);
   const body = (
     <div className="flex flex-col gap-2 mx-6 items-center justify-center">
       <div className="mb-2 max-w-[120px] max-h-[120]">
         <AddImage
-          registerField={{ ...register("image", { required: true }) }}
+          registerField={{
+            ...register("image", { required: true }),
+          }}
           error={errors.image && "A imagem do produto é obrigatória!"}
           noAnimation
           callback={setImage}
@@ -105,7 +116,9 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
           onClick={handleSubmit(
             (data: any) => {
               console.log(data);
-              onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
+              console.log("Edited Data on finish: ", editData);
+              if (!editData)
+                onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
               reset();
               setImage(null);
               handleClose();
@@ -119,7 +132,13 @@ const AddProductModal = ({ isOpen, onAdd }: Props) => {
 
   if (!isOpen) return <></>;
 
-  return <Modal title="Novo produto" body={body} handleClose={handleClose} />;
+  return (
+    <Modal
+      title={editData ? "Editar Produto" : "Novo produto"}
+      body={body}
+      handleClose={handleClose}
+    />
+  );
 };
 
-export default AddProductModal;
+export default ProductModal;
