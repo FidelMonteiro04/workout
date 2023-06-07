@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState, useRef, ChangeEvent } from "react";
+import { useContext, useState, useRef, ChangeEvent, useEffect } from "react";
 import { RegisterContext } from "@/app/register/layout";
 import { useForm, Controller } from "react-hook-form";
 
@@ -26,8 +26,12 @@ interface Props {
 
 const ProductModal = ({ isOpen, onAdd, onEdit }: Props) => {
   const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
-  const [image, setImage] = useState<any>(editData?.image);
+  const [image, setImage] = useState<any>(editData?.image || null);
   const imageRef = useRef({} as HTMLImageElement);
+
+  useEffect(() => {
+    setImage(editData?.image || null);
+  }, [editData?.image]);
 
   const {
     register,
@@ -58,12 +62,13 @@ const ProductModal = ({ isOpen, onAdd, onEdit }: Props) => {
   };
 
   console.log("Edit data: ", editData);
+
   const body = (
     <div className="flex flex-col gap-2 mx-6 items-center justify-center">
       <div className="mb-2 max-w-[120px] max-h-[120]">
         <AddImage
           registerField={{
-            ...register("image", { required: true }),
+            ...register("image", { required: !image }),
           }}
           error={errors.image && "A imagem do produto é obrigatória!"}
           noAnimation
@@ -117,8 +122,16 @@ const ProductModal = ({ isOpen, onAdd, onEdit }: Props) => {
             (data: any) => {
               console.log(data);
               console.log("Edited Data on finish: ", editData);
-              if (!editData)
+              if (!editData) {
                 onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
+              } else {
+                onEdit({
+                  ...data,
+                  price: data.price.replace("R$ ", ""),
+                  image,
+                  id: editData.id,
+                });
+              }
               reset();
               setImage(null);
               handleClose();

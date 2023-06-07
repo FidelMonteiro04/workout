@@ -13,7 +13,7 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import AddButton from "@/app/components/AddButton";
 import Product from "@/app/components/Product";
-import AddProductModal from "@/app/components/modals/AddProduct";
+import ProductModal from "@/app/components/modals/Product";
 import LocationModal from "@/app/components/modals/Location";
 
 import { BsBuildings } from "react-icons/bs";
@@ -24,7 +24,7 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterStore = () => {
-  const { image, setImage, modalOpened, setModalOpened } =
+  const { image, setImage, modalOpened, setModalOpened, setEditData } =
     useContext(RegisterContext);
 
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -39,7 +39,10 @@ const RegisterStore = () => {
   const imageRef = useRef({} as HTMLImageElement);
 
   const handleAddProduct = (product: IProduct) => {
-    setProducts((prev) => [product, ...prev]);
+    setProducts((prev) => [
+      { ...product, id: product.id || prev.length + 1 },
+      ...prev,
+    ]);
   };
 
   const onSubmit = async (data: any) => {
@@ -63,11 +66,22 @@ const RegisterStore = () => {
 
     console.log(url);
   };
+
+  const handleProductEdit = (product: IProduct) => {
+    setEditData(product);
+    setModalOpened("product");
+  };
+
+  const editProduct = (product: IProduct) => {
+    setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
+  };
+
   return (
     <>
       <LocationModal isOpen={modalOpened === "location"} />
-      <AddProductModal
+      <ProductModal
         onAdd={handleAddProduct}
+        onEdit={editProduct}
         isOpen={modalOpened === "product"}
       />
 
@@ -137,10 +151,15 @@ const RegisterStore = () => {
                       {...product}
                       id={`${product.id}`}
                       img={product.image}
-                      onClick={() => null}
+                      onClick={() =>
+                        handleProductEdit({
+                          ...product,
+                          price: "R$ " + product.price,
+                        })
+                      }
                     />
                   ))}
-                  <Product
+                  {/* {<Product
                     img="https://cdn.shopify.com/s/files/1/0273/2323/6455/products/WPCMORANGONOVO.png?v=1679949271"
                     name="Whey Protein"
                     price="119,90"
@@ -153,7 +172,7 @@ const RegisterStore = () => {
                     price="89,90"
                     onClick={() => null}
                     distributor="IntegralMedica"
-                  />
+                  />} */}
                 </div>
               </div>
               <Button

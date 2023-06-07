@@ -42,6 +42,8 @@ const AddImage = ({
     reader.readAsDataURL(event.target.files[0]);
   };
 
+  console.log("Addimage imageState: ", image);
+
   return (
     <div
       className={`relative h-full w-full group flex flex-col max-h-[300px] max-w-[300px] lg:max-w-full justify-center items-center ${
@@ -49,7 +51,7 @@ const AddImage = ({
       }`}
     >
       <img
-        src=""
+        src={image}
         ref={imageRef}
         className="transition group-hover:brightness-50 w-full h-auto"
         hidden={!image}

@@ -8,6 +8,8 @@ interface IRegisterContext {
   setImage: (image: any) => void;
   modalOpened: Modals;
   setModalOpened: (value: Modals) => void;
+  editData: any;
+  setEditData: (value: any) => void;
 }
 
 export const RegisterContext = createContext({} as IRegisterContext);
@@ -15,10 +17,18 @@ export const RegisterContext = createContext({} as IRegisterContext);
 const RegisterCtxProvider = ({ children }: { children: React.ReactNode }) => {
   const [image, setImage] = useState(null);
   const [modalOpened, setModalOpened] = useState<Modals>(null);
+  const [editData, setEditData] = useState<any>(null);
 
   return (
     <RegisterContext.Provider
-      value={{ image, setImage, modalOpened, setModalOpened }}
+      value={{
+        image,
+        setImage,
+        modalOpened,
+        setModalOpened,
+        editData,
+        setEditData,
+      }}
     >
       {children}
     </RegisterContext.Provider>
