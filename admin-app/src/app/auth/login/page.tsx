@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
 
-import Input from "../components/Input";
-import Button from "../components/Button";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
 import { MdAlternateEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
@@ -23,7 +23,7 @@ export default function Home() {
   return (
     <div className="md:flex md:flex-col md:items-center md:justify-center">
       <Image
-        src="./logo.svg"
+        src="../../logo.svg"
         alt="Workout Logo"
         width={160}
         height={160}
@@ -54,7 +54,7 @@ export default function Home() {
         <span className="font-light text-secondary-500 text-center">
           Ainda não é nosso parceiro?{" "}
           <Link
-            href={"/"}
+            href={"/auth/register"}
             className="text-primary-500 cursor-pointer underline transition hover:text-primary-600"
           >
             Clique aqui!
