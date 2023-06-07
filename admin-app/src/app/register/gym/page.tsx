@@ -73,9 +73,10 @@ const RegisterGym = () => {
         onAdd={(plan) =>
           setPlans((prev) => [...prev, { ...plan, id: plans.length + 1 }])
         }
-        onEdit={(plan) =>
-          setPlans((prev) => prev.map((p) => (p.id !== plan.id ? p : plan)))
-        }
+        onEdit={(plan) => {
+          setPlans((prev) => prev.map((p) => (p.id !== plan.id ? p : plan)));
+          setEditData(null);
+        }}
         isOpen={modalOpened === "plan"}
       />
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
