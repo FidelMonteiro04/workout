@@ -55,7 +55,7 @@ const RegisterStore = () => {
       "upload_preset",
       process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME as string
     );
-    formData.append("folder", "workout/gyms");
+    formData.append("folder", "workout/stores");
 
     const response = await fetch(cloudinaryURL, {
       method: "POST",

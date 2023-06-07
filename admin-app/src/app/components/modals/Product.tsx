@@ -53,7 +53,7 @@ const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
       name: editData?.name || "",
       type: editData?.type || "",
       distributor: editData?.distributor || "",
-      price: formatPrice(editData?.price || ""),
+      price: editData?.price ? formatPrice(editData?.price) : "",
     },
   });
 
