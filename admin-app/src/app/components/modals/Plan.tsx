@@ -20,7 +20,7 @@ interface Props {
 }
 
 const AddPlanModal = ({ isOpen, onAdd, onEdit }: Props) => {
-  const { setModalOpened, editData } = useContext(RegisterContext);
+  const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
   const {
     register,
     handleSubmit,
@@ -45,6 +45,7 @@ const AddPlanModal = ({ isOpen, onAdd, onEdit }: Props) => {
   const handleClose = () => {
     reset();
     setModalOpened(null);
+    setEditData(null);
   };
 
   const handleAmountDaysInput = (event: ChangeEvent<HTMLInputElement>) => {
