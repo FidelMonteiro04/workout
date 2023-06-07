@@ -16,10 +16,11 @@ import { BsCheck } from "react-icons/bs";
 interface Props {
   isOpen: boolean;
   onAdd: (plan: any) => void;
+  onEdit: (plan: any) => void;
 }
 
-const AddPlanModal = ({ isOpen, onAdd }: Props) => {
-  const { setModalOpened } = useContext(RegisterContext);
+const AddPlanModal = ({ isOpen, onAdd, onEdit }: Props) => {
+  const { setModalOpened, editData } = useContext(RegisterContext);
   const {
     register,
     handleSubmit,
@@ -32,6 +33,10 @@ const AddPlanModal = ({ isOpen, onAdd }: Props) => {
     defaultValues: {
       price: "",
       days: "1",
+    },
+    values: {
+      price: editData?.price || "",
+      days: editData?.days || "1",
     },
   });
 
@@ -66,8 +71,13 @@ const AddPlanModal = ({ isOpen, onAdd }: Props) => {
         message: "Os dias são obrigatórios",
         type: "value",
       });
-    console.log({ value: data.price, days: amountRef.current.value });
-    onAdd({ value: data.price, days: amountRef.current.value });
+    console.log({ price: data.price, days: amountRef.current.value });
+    const formattedData = { price: data.price, days: amountRef.current.value };
+    if (!editData) {
+      onAdd(formattedData);
+    } else {
+      onEdit({ ...formattedData, id: editData.id });
+    }
     handleClose();
   };
 
@@ -115,7 +125,7 @@ const AddPlanModal = ({ isOpen, onAdd }: Props) => {
               ref={amountRef}
               className="max-w-[36px] text-secondary-500 text-center placeholder:text-secondary-500"
               placeholder="0"
-              defaultValue={1}
+              defaultValue={editData?.days || 1}
               onChange={handleAmountDaysInput}
             />
             <button
@@ -150,7 +160,11 @@ const AddPlanModal = ({ isOpen, onAdd }: Props) => {
   if (!isOpen) return <></>;
 
   return (
-    <Modal title="Adicionar Plano" body={body} handleClose={handleClose} />
+    <Modal
+      title={editData ? "Editar Plano" : "Adicionar Plano"}
+      body={body}
+      handleClose={handleClose}
+    />
   );
 };
 

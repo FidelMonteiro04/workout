@@ -25,7 +25,7 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterGym = () => {
-  const { image, setImage, modalOpened, setModalOpened } =
+  const { image, setImage, modalOpened, setModalOpened, setEditData } =
     useContext(RegisterContext);
 
   const {
@@ -60,11 +60,22 @@ const RegisterGym = () => {
 
     console.log(url);
   };
+
+  const handleEditPlan = (data: any) => {
+    setEditData(data);
+    setModalOpened("plan");
+  };
+
   return (
     <>
       <LocationModal isOpen={modalOpened === "location"} />
       <AddPlanModal
-        onAdd={(plan) => setPlans((prev) => [...prev, plan])}
+        onAdd={(plan) =>
+          setPlans((prev) => [...prev, { ...plan, id: plans.length + 1 }])
+        }
+        onEdit={(plan) =>
+          setPlans((prev) => prev.map((p) => (p.id !== plan.id ? p : plan)))
+        }
         isOpen={modalOpened === "plan"}
       />
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
@@ -141,7 +152,11 @@ const RegisterGym = () => {
                   <AddButton onClick={() => setModalOpened("plan")} />
                 </div>
                 {plans.map((plan, index) => (
-                  <Plan key={index} {...plan} />
+                  <Plan
+                    key={index}
+                    {...plan}
+                    onClick={() => handleEditPlan({ ...plan })}
+                  />
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-3 mb-6">

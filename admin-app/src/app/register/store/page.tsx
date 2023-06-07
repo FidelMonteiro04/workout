@@ -132,11 +132,13 @@ const RegisterStore = () => {
                 icon={ContactIcon}
                 type="tel"
               />
-              <Button
-                text="Localização"
-                icon={LocationIcon}
-                onClick={() => setModalOpened("location")}
-              />
+              <div className="mt-auto">
+                <Button
+                  text="Localização"
+                  icon={LocationIcon}
+                  onClick={() => setModalOpened("location")}
+                />
+              </div>
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
               <div>
