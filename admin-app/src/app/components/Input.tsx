@@ -15,6 +15,7 @@ interface Props {
   error?: string;
   forget?: boolean;
   customStyles?: string;
+  containerStyles?: string;
 }
 
 const Input = ({
@@ -25,12 +26,13 @@ const Input = ({
   forget,
   icon: Icon,
   customStyles,
+  containerStyles,
   ...rest
 }: Props & InputHTMLAttributes<HTMLInputElement>) => {
   const [focus, setFocus] = useState(false);
   const [visible, setVisible] = useState(false);
   return (
-    <div className="w-full max-w-[280px] flex flex-col">
+    <div className={`w-full max-w-[280px] flex flex-col ${containerStyles}`}>
       <div
         className={`flex transition items-center px-3 py-2 border-[1px]  rounded-sm shadow-md ${
           focus ? "border-primary-500 shadow-lg" : "border-gray-500"

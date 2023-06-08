@@ -11,6 +11,10 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import Plan from "@/app/components/Plan";
 import AddButton from "@/app/components/AddButton";
+import AddPlanModal from "@/app/components/modals/Plan";
+import LocationModal from "@/app/components/modals/Location";
+
+import { IPlan } from "@/interfaces/Plan";
 
 import { BsBuildings } from "react-icons/bs";
 import { HiOutlineUserGroup as PersonalIcon } from "react-icons/hi";
@@ -19,10 +23,9 @@ import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
-import AddPlanModal from "@/app/components/modals/AddPlan";
 
 const RegisterGym = () => {
-  const { image, setImage, modalIsOpened, setModalIsOpened } =
+  const { image, setImage, modalOpened, setModalOpened, setEditData } =
     useContext(RegisterContext);
 
   const {
@@ -32,10 +35,11 @@ const RegisterGym = () => {
     clearErrors,
   } = useForm();
 
+  const [plans, setPlans] = useState<IPlan[]>([]);
+
   const imageRef = useRef({} as HTMLImageElement);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     const formData = new FormData();
     // const newFileName = generateFileName(image);
 
@@ -52,12 +56,27 @@ const RegisterGym = () => {
     });
 
     const { url } = await response.json();
-
-    console.log(url);
   };
+
+  const handleEditPlan = (data: any) => {
+    setEditData(data);
+    setModalOpened("plan");
+  };
+
   return (
     <>
-      <AddPlanModal isOpen={modalIsOpened} />
+      <LocationModal isOpen={modalOpened === "location"} />
+      <AddPlanModal
+        onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
+        onAdd={(plan) =>
+          setPlans((prev) => [...prev, { ...plan, id: plans.length + 1 }])
+        }
+        onEdit={(plan) => {
+          setPlans((prev) => prev.map((p) => (p.id !== plan.id ? p : plan)));
+          setEditData(null);
+        }}
+        isOpen={modalOpened === "plan"}
+      />
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Academia
       </h2>
@@ -122,20 +141,22 @@ const RegisterGym = () => {
               <Button
                 text="Localização"
                 icon={LocationIcon}
-                onClick={() => null}
+                onClick={() => setModalOpened("location")}
               />
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
               <h3 className="font-bold text-xl mb-2 ">Planos</h3>
               <div className="grid gap-2 mb-6 grid-flow-col max-w-[250px] overflow-x-auto grid-rows-2 pb-2">
                 <div className="w-full flex items-center justify-center">
-                  <AddButton onClick={() => setModalIsOpened(true)} />
+                  <AddButton onClick={() => setModalOpened("plan")} />
                 </div>
-                <Plan days="3" value="60,00" />
-                <Plan days="5" value="70,00" />
-                <Plan days="7" value="90,00" />
-                <Plan days="5" value="70,00" />
-                <Plan days="7" value="90,00" />
+                {plans.map((plan, index) => (
+                  <Plan
+                    key={index}
+                    {...plan}
+                    onClick={() => handleEditPlan({ ...plan })}
+                  />
+                ))}
               </div>
               <div className="grid grid-cols-2 gap-3 mb-6">
                 <div className="flex flex-col gap-2">

@@ -49,7 +49,7 @@ const AddImage = ({
       }`}
     >
       <img
-        src=""
+        src={image}
         ref={imageRef}
         className="transition group-hover:brightness-50 w-full h-auto"
         hidden={!image}

@@ -13,7 +13,8 @@ import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
 import AddButton from "@/app/components/AddButton";
 import Product from "@/app/components/Product";
-import AddProductModal from "@/app/components/modals/AddProduct";
+import ProductModal from "@/app/components/modals/Product";
+import LocationModal from "@/app/components/modals/Location";
 
 import { BsBuildings } from "react-icons/bs";
 import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
@@ -23,7 +24,7 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterStore = () => {
-  const { image, setImage, modalIsOpened, setModalIsOpened } =
+  const { image, setImage, modalOpened, setModalOpened, setEditData } =
     useContext(RegisterContext);
 
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -38,11 +39,13 @@ const RegisterStore = () => {
   const imageRef = useRef({} as HTMLImageElement);
 
   const handleAddProduct = (product: IProduct) => {
-    setProducts((prev) => [product, ...prev]);
+    setProducts((prev) => [
+      { ...product, id: product.id || prev.length + 1 },
+      ...prev,
+    ]);
   };
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     const formData = new FormData();
     // const newFileName = generateFileName(image);
 
@@ -51,7 +54,7 @@ const RegisterStore = () => {
       "upload_preset",
       process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME as string
     );
-    formData.append("folder", "workout/gyms");
+    formData.append("folder", "workout/stores");
 
     const response = await fetch(cloudinaryURL, {
       method: "POST",
@@ -59,12 +62,28 @@ const RegisterStore = () => {
     });
 
     const { url } = await response.json();
-
-    console.log(url);
   };
+
+  const handleProductEdit = (product: IProduct) => {
+    setEditData(product);
+    setModalOpened("product");
+  };
+
+  const editProduct = (product: IProduct) => {
+    setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
+  };
+
   return (
     <>
-      <AddProductModal onAdd={handleAddProduct} isOpen={modalIsOpened} />
+      <LocationModal isOpen={modalOpened === "location"} />
+      <ProductModal
+        onDelete={(id) =>
+          setProducts((prev) => prev.filter((p) => p.id !== id))
+        }
+        onAdd={handleAddProduct}
+        onEdit={editProduct}
+        isOpen={modalOpened === "product"}
+      />
 
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Loja
@@ -113,18 +132,20 @@ const RegisterStore = () => {
                 icon={ContactIcon}
                 type="tel"
               />
-              <Button
-                text="Localização"
-                icon={LocationIcon}
-                onClick={() => null}
-              />
+              <div className="mt-auto">
+                <Button
+                  text="Localização"
+                  icon={LocationIcon}
+                  onClick={() => setModalOpened("location")}
+                />
+              </div>
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
               <div>
                 <h3 className="font-bold text-xl mb-2 ">Produtos</h3>
                 <div className="flex gap-3 overflow-x-auto pt-2 pb-3 px-1 max-w-[250px] mb-4">
                   <div className="flex items-center justify-center">
-                    <AddButton onClick={() => setModalIsOpened(true)} />
+                    <AddButton onClick={() => setModalOpened("product")} />
                   </div>
                   {products.map((product, index) => (
                     <Product
@@ -132,23 +153,14 @@ const RegisterStore = () => {
                       {...product}
                       id={`${product.id}`}
                       img={product.image}
-                      onClick={() => null}
+                      onClick={() =>
+                        handleProductEdit({
+                          ...product,
+                          price: "R$ " + product.price,
+                        })
+                      }
                     />
                   ))}
-                  <Product
-                    img="https://cdn.shopify.com/s/files/1/0273/2323/6455/products/WPCMORANGONOVO.png?v=1679949271"
-                    name="Whey Protein"
-                    price="240"
-                    onClick={() => null}
-                    distributor="Iridium"
-                  />
-                  <Product
-                    img="https://www.corpoevidasuplementos.com.br/images/products/full/10473-bcaa-2-1-1-2044-mg-90-capsulas-integralmedica.1626808819.png"
-                    name="BCAA"
-                    price="240"
-                    onClick={() => null}
-                    distributor="IntegralMedica"
-                  />
                 </div>
               </div>
               <Button
