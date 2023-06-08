@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 from extensions.db import get_db
+from extensions.authentication import login_required
 from schemas.gym import gymSchema
 import jsonschema
 
@@ -7,6 +8,7 @@ gym = Blueprint('gym', __name__)
 
 
 @gym.route('/gyms', methods=['POST'])
+@login_required  # Aplicando o middleware login_required
 def create_gym():
     gym_data = request.get_json()
 
@@ -23,6 +25,9 @@ def create_gym():
             jsonschema.validate(gym_data, gymSchema)
         except jsonschema.exceptions.ValidationError as err:
             return jsonify({'message': 'Dados de academia inválidos', 'erro': str(err)}), 400
+
+        # Adicionar o ID do proprietário logado aos dados da academia
+        gym_data['owner_id'] = str(g.current_owner['_id'])
 
         result = gym_collection.insert_one(gym_data)
 
