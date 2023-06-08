@@ -27,7 +27,6 @@ const RegisterStore = () => {
   const { image, setImage, modalOpened, setModalOpened, setEditData } =
     useContext(RegisterContext);
 
-  const [products, setProducts] = useState<IProduct[]>([]);
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
     lat: 0,
     lng: 0,
@@ -43,12 +42,12 @@ const RegisterStore = () => {
 
   const imageRef = useRef({} as HTMLImageElement);
 
-  const handleAddProduct = (product: IProduct) => {
-    setProducts((prev) => [
-      { ...product, id: product.id || prev.length + 1 },
-      ...prev,
-    ]);
-  };
+  // const handleAddProduct = (product: IProduct) => {
+  //   setProducts((prev) => [
+  //     { ...product, id: product.id || prev.length + 1 },
+  //     ...prev,
+  //   ]);
+  // };
 
   const onSubmit = async (data: any) => {
     const formData = new FormData();
@@ -69,14 +68,14 @@ const RegisterStore = () => {
     const { url } = await response.json();
   };
 
-  const handleProductEdit = (product: IProduct) => {
-    setEditData(product);
-    setModalOpened("product");
-  };
+  // const handleProductEdit = (product: IProduct) => {
+  //   setEditData(product);
+  //   setModalOpened("product");
+  // };
 
-  const editProduct = (product: IProduct) => {
-    setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
-  };
+  // const editProduct = (product: IProduct) => {
+  //   setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
+  // };
 
   const handleAddAddress = (
     address: string,
@@ -92,14 +91,14 @@ const RegisterStore = () => {
         onFinish={handleAddAddress}
         isOpen={modalOpened === "location"}
       />
-      <ProductModal
+      {/* {<ProductModal
         onDelete={(id) =>
           setProducts((prev) => prev.filter((p) => p.id !== id))
         }
         onAdd={handleAddProduct}
         onEdit={editProduct}
         isOpen={modalOpened === "product"}
-      />
+      />} */}
 
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Loja

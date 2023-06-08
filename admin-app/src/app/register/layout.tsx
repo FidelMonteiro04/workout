@@ -2,7 +2,7 @@
 import Header from "../components/Header";
 import { createContext, useState } from "react";
 
-type Modals = "location" | "product" | "plan" | null;
+type Modals = "location" | "plan" | null;
 interface IRegisterContext {
   image?: any | null;
   setImage: (image: any) => void;
