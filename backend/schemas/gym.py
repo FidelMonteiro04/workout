@@ -2,7 +2,7 @@ from schemas.owner import ownerSchema
 
 gymSchema = {
     'type': 'object',
-    'required': ['cnpj', 'name', 'owner', 'airconditioner', 'personal', 'minorPlan', 'biggerPlan','acessilibility'],
+    'required': ['cnpj', 'name', 'airconditioner', 'personal', 'minorPlan', 'biggerPlan','acessilibility'],
     'properties': {
         'cnpj': {
             'type': 'string',
@@ -11,9 +11,6 @@ gymSchema = {
             },
         'name': {
             'type': 'string'
-        },
-        'owner': {
-            '$ref': 'ownerSchema'
         },
         'airconditioner': {
             'type': 'boolean'
@@ -30,8 +27,5 @@ gymSchema = {
         'acessilibility': {
             'type': 'boolean'
         },
-    },
-    'definitions': {
-        'ownerSchema': ownerSchema
-        }
+    }
 }
