@@ -28,11 +28,16 @@ const RegisterStore = () => {
     useContext(RegisterContext);
 
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
+    lat: 0,
+    lng: 0,
+  });
 
   const {
     handleSubmit,
     register,
     formState: { errors, isLoading },
+    setValue,
     clearErrors,
   } = useForm();
 
@@ -73,9 +78,20 @@ const RegisterStore = () => {
     setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
   };
 
+  const handleAddAddress = (
+    address: string,
+    coordinates: { lat: number; lng: number }
+  ) => {
+    setCoordinates(coordinates);
+    setValue("address", address);
+  };
+
   return (
     <>
-      <LocationModal isOpen={modalOpened === "location"} />
+      <LocationModal
+        onFinish={handleAddAddress}
+        isOpen={modalOpened === "location"}
+      />
       <ProductModal
         onDelete={(id) =>
           setProducts((prev) => prev.filter((p) => p.id !== id))
@@ -108,9 +124,12 @@ const RegisterStore = () => {
               />
 
               <Input
-                registerField={{ ...register("address", { required: true }) }}
+                registerField={{
+                  ...register("address", { required: true }),
+                }}
                 error={errors.address && "O endereço é obrigatório!"}
                 placeholder="Endereço"
+                readOnly
                 icon={AddressIcon}
               />
               <Input

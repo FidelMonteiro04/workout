@@ -31,11 +31,16 @@ const RegisterGym = () => {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors, isLoading },
     clearErrors,
   } = useForm();
 
   const [plans, setPlans] = useState<IPlan[]>([]);
+  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
+    lat: 0,
+    lng: 0,
+  });
 
   const imageRef = useRef({} as HTMLImageElement);
 
@@ -63,9 +68,20 @@ const RegisterGym = () => {
     setModalOpened("plan");
   };
 
+  const handleAddAddress = (
+    address: string,
+    coordinates: { lat: number; lng: number }
+  ) => {
+    setCoordinates(coordinates);
+    setValue("address", address);
+  };
+
   return (
     <>
-      <LocationModal isOpen={modalOpened === "location"} />
+      <LocationModal
+        onFinish={handleAddAddress}
+        isOpen={modalOpened === "location"}
+      />
       <AddPlanModal
         onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
         onAdd={(plan) =>
@@ -117,6 +133,7 @@ const RegisterGym = () => {
                 registerField={{ ...register("address", { required: true }) }}
                 error={errors.address && "O endereço é obrigatório!"}
                 placeholder="Endereço"
+                readOnly
                 icon={AddressIcon}
               />
               <Input

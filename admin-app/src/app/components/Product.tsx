@@ -1,5 +1,5 @@
 "use client";
-import "../../styles/noScroll.css";
+import "../../styles/scroll.css";
 
 import { MdAttachMoney } from "react-icons/md";
 

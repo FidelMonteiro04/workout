@@ -16,6 +16,7 @@ interface Props {
   forget?: boolean;
   customStyles?: string;
   containerStyles?: string;
+  ref?: any;
 }
 
 const Input = ({

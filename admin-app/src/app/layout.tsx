@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Montserrat } from "next/font/google";
+import Script from "next/script";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -17,6 +18,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${montserrat.className} min-h-full`}>{children}</body>
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+      />
     </html>
   );
 }
