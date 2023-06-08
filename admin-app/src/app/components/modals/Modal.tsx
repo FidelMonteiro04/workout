@@ -1,4 +1,4 @@
-import "./animations.css";
+import "../../../styles/animations.css";
 import { useRef } from "react";
 
 import { MdClose } from "react-icons/md";
