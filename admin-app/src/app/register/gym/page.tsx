@@ -129,13 +129,15 @@ const RegisterGym = () => {
                 placeholder="Número de personais"
                 icon={PersonalIcon}
               />
-              <Input
-                registerField={{ ...register("address", { required: true }) }}
-                error={errors.address && "O endereço é obrigatório!"}
-                placeholder="Endereço"
-                readOnly
-                icon={AddressIcon}
-              />
+              {!!coordinates.lat && (
+                <Input
+                  registerField={{ ...register("address", { required: true }) }}
+                  error={errors.address && "O endereço é obrigatório!"}
+                  placeholder="Endereço"
+                  readOnly
+                  icon={AddressIcon}
+                />
+              )}
               <Input
                 registerField={{
                   ...register("instagram", {

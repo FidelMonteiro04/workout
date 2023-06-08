@@ -115,17 +115,18 @@ const LocationModal = ({ isOpen, onFinish }: Props) => {
               />
               <div
                 hidden={!address || !suggestions.length}
-                className="autocomplete-dropdown-container max-w-[300px] max-h-[140px] overflow-y-scroll shadow-md p-2 little-scroll"
+                className="autocomplete-dropdown-container max-w-[300px] max-h-[140px] overflow-y-auto shadow-md p-2 little-scroll rounded-sm text-secondary-500"
               >
                 {loading && <div className="">Loading...</div>}
                 {sortedSuggestions.map((suggestion: any, index: number) => {
                   const className =
                     (suggestion.active
                       ? "suggestion-item--active"
-                      : "suggestion-item") + " p-1 mb-2 border-b-[1px]";
+                      : "suggestion-item") +
+                    " p-1 pt-2 border-b-[1px] transition rounded-sm";
                   // inline style for demonstration purpose
                   const style = suggestion.active
-                    ? { backgroundColor: "#fafafa", cursor: "pointer" }
+                    ? { backgroundColor: "#e9e9e9", cursor: "pointer" }
                     : { backgroundColor: "#ffffff", cursor: "pointer" };
                   return (
                     <div
