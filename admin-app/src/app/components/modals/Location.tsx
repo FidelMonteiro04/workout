@@ -147,7 +147,7 @@ const LocationModal = ({ isOpen, onFinish }: Props) => {
       </PlacesAutocomplete>
       <Button
         outline
-        text="Finalizar"
+        text="Salvar endereço"
         icon={BsCheck}
         onClick={() => {
           onFinish(address, coordinates);

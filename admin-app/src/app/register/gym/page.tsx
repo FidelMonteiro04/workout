@@ -129,15 +129,16 @@ const RegisterGym = () => {
                 placeholder="Número de personais"
                 icon={PersonalIcon}
               />
-              {!!coordinates.lat && (
-                <Input
-                  registerField={{ ...register("address", { required: true }) }}
-                  error={errors.address && "O endereço é obrigatório!"}
-                  placeholder="Endereço"
-                  readOnly
-                  icon={AddressIcon}
-                />
-              )}
+
+              <Input
+                registerField={{ ...register("address", { required: true }) }}
+                error={errors.address && "O endereço é obrigatório!"}
+                placeholder="Endereço"
+                readOnly
+                icon={AddressIcon}
+                onClick={() => setModalOpened("location")}
+              />
+
               <Input
                 registerField={{
                   ...register("instagram", {
@@ -157,11 +158,11 @@ const RegisterGym = () => {
                 icon={ContactIcon}
                 type="tel"
               />
-              <Button
+              {/* {<Button
                 text="Localização"
                 icon={LocationIcon}
                 onClick={() => setModalOpened("location")}
-              />
+              />} */}
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
               <h3 className="font-bold text-xl mb-2 ">Planos</h3>
@@ -233,7 +234,6 @@ const RegisterGym = () => {
               </div>
 
               <Button
-                outline
                 onClick={handleSubmit(onSubmit, () =>
                   setTimeout(clearErrors, 5000)
                 )}

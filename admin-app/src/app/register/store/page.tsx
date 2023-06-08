@@ -114,7 +114,7 @@ const RegisterStore = () => {
             error={errors.image && "É necessário ter uma imagem!"}
             alt="Imagem da academia"
           />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <div className="flex flex-col gap-3 pt-4">
               <Input
                 registerField={{ ...register("placeName", { required: true }) }}
@@ -123,17 +123,17 @@ const RegisterStore = () => {
                 icon={BsBuildings}
               />
 
-              {!!coordinates.lat && (
-                <Input
-                  registerField={{
-                    ...register("address", { required: true }),
-                  }}
-                  error={errors.address && "O endereço é obrigatório!"}
-                  placeholder="Endereço"
-                  readOnly
-                  icon={AddressIcon}
-                />
-              )}
+              <Input
+                registerField={{
+                  ...register("address", { required: true }),
+                }}
+                error={errors.address && "O endereço é obrigatório!"}
+                placeholder="Endereço"
+                readOnly
+                icon={AddressIcon}
+                onClick={() => setModalOpened("location")}
+              />
+
               <Input
                 registerField={{
                   ...register("instagram", {
@@ -153,39 +153,14 @@ const RegisterStore = () => {
                 icon={ContactIcon}
                 type="tel"
               />
-              <div className="mt-auto">
+              {/* {<div className="mt-auto">
                 <Button
                   text="Localização"
                   icon={LocationIcon}
                   onClick={() => setModalOpened("location")}
                 />
-              </div>
-            </div>
-            <div className="flex flex-col pt-4 h-full justify-between">
-              <div>
-                <h3 className="font-bold text-xl mb-2 ">Produtos</h3>
-                <div className="flex gap-3 overflow-x-auto pt-2 pb-3 px-1 max-w-[250px] mb-4">
-                  <div className="flex items-center justify-center">
-                    <AddButton onClick={() => setModalOpened("product")} />
-                  </div>
-                  {products.map((product, index) => (
-                    <Product
-                      key={`${index}`}
-                      {...product}
-                      id={`${product.id}`}
-                      img={product.image}
-                      onClick={() =>
-                        handleProductEdit({
-                          ...product,
-                          price: "R$ " + product.price,
-                        })
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
+              </div>} */}
               <Button
-                outline
                 onClick={handleSubmit(onSubmit, () =>
                   setTimeout(clearErrors, 5000)
                 )}
