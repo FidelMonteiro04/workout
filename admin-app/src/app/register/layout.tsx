@@ -42,7 +42,7 @@ export default function RegisterLayout({
 }) {
   return (
     <>
-      <Header />
+      <Header withMenu={false} />
       <RegisterCtxProvider>
         <section className="flex w-full min-h-full flex-col px-6">
           {children}

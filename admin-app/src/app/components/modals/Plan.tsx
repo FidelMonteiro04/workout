@@ -16,13 +16,21 @@ import { BsFillTrashFill } from "react-icons/bs";
 
 interface Props {
   isOpen: boolean;
+  editData?: any;
   onAdd: (plan: any) => void;
   onEdit: (plan: any) => void;
   onDelete: (plan: any) => void;
+  onClose: () => void;
 }
 
-const AddPlanModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
-  const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
+const AddPlanModal = ({
+  isOpen,
+  onAdd,
+  onEdit,
+  onDelete,
+  onClose,
+  editData,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -46,8 +54,7 @@ const AddPlanModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
 
   const handleClose = () => {
     reset();
-    setModalOpened(null);
-    setEditData(null);
+    onClose();
   };
 
   const handleAmountDaysInput = (event: ChangeEvent<HTMLInputElement>) => {
