@@ -2,7 +2,6 @@
 import "../../../styles/scroll.css";
 
 import { useContext, useState } from "react";
-import { RegisterContext } from "@/app/register/layout";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -117,13 +116,12 @@ const LocationModal = ({ isOpen, onFinish, onClose }: Props) => {
                 hidden={!address || !suggestions.length}
                 className="autocomplete-dropdown-container max-w-[300px] max-h-[140px] overflow-y-auto shadow-md p-2 little-scroll rounded-sm text-secondary-500"
               >
-                {loading && <div className="">Loading...</div>}
                 {sortedSuggestions.map((suggestion: any, index: number) => {
                   const className =
                     (suggestion.active
                       ? "suggestion-item--active"
                       : "suggestion-item") +
-                    " p-1 pt-2 border-b-[1px] transition rounded-sm";
+                    " p-1 pt-2 border-b-[1px] transition rounded-sm hover:bg-zinc-100 cursor-pointer";
                   // inline style for demonstration purpose
                   const style = suggestion.active
                     ? { backgroundColor: "#e9e9e9", cursor: "pointer" }
@@ -132,7 +130,6 @@ const LocationModal = ({ isOpen, onFinish, onClose }: Props) => {
                     <div
                       {...getSuggestionItemProps(suggestion, {
                         className,
-                        style,
                       })}
                       key={`${index}`}
                     >

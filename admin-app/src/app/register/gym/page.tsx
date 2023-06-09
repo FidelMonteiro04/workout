@@ -115,7 +115,7 @@ const RegisterGym = () => {
             alt="Imagem da academia"
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-3 pt-4">
+            <div className="flex flex-col justify-between gap-3 pt-4">
               <Input
                 registerField={{ ...register("placeName", { required: true }) }}
                 error={errors.placeName && "O nome do local é obrigatório!"}
