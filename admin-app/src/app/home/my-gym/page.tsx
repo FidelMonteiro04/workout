@@ -4,12 +4,12 @@ import { useContext, useState } from "react";
 import { ModalContext } from "@/contexts/Modal";
 import { IPlan } from "@/interfaces/Plan";
 
-import Button from "../components/Button";
-import Header from "../components/Header";
-import AddButton from "../components/AddButton";
-import Plan from "../components/Plan";
-import StatisticRow from "../components/StatisticRow";
-import AddPlanModal from "../components/modals/Plan";
+import Button from "../../components/Button";
+import Header from "../../components/Header";
+import AddButton from "../../components/AddButton";
+import Plan from "../../components/Plan";
+import StatisticRow from "../../components/StatisticRow";
+import AddPlanModal from "../../components/modals/Plan";
 
 import { AiFillEdit } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -47,7 +47,7 @@ const GymHome = () => {
             menuOptions={[
               {
                 text: "Minha academia",
-                path: "/home",
+                path: "/home/my-gym",
                 icon: GiWeightLiftingUp,
               },
             ]}
@@ -87,6 +87,11 @@ const GymHome = () => {
           <div className="my-auto">
             <AddButton onClick={() => setModalOpened("plan")} />
           </div>
+          {!plans.length && (
+            <h3 className="self-center text-sm lg:text-base">
+              Parece que não há nenhum plano ainda...
+            </h3>
+          )}
           {plans.map((plan) => (
             <Plan
               key={plan.id}

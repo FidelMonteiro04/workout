@@ -74,6 +74,22 @@ const ProductModal = ({
     handleClose();
   };
 
+  const onSubmit = (data: any) => {
+    if (!editData) {
+      onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
+    } else {
+      onEdit({
+        ...data,
+        price: data.price.replace("R$ ", ""),
+        image,
+        id: editData.id,
+      });
+    }
+    reset();
+    setImage(null);
+    handleClose();
+  };
+
   const body = (
     <div className="flex flex-col gap-2 mx-6 items-center justify-center">
       <div className="mb-2 max-w-[120px] max-h-[120]">
@@ -136,24 +152,7 @@ const ProductModal = ({
           outline
           text="Salvar"
           icon={BsCheck}
-          onClick={handleSubmit(
-            (data: any) => {
-              if (!editData) {
-                onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
-              } else {
-                onEdit({
-                  ...data,
-                  price: data.price.replace("R$ ", ""),
-                  image,
-                  id: editData.id,
-                });
-              }
-              reset();
-              setImage(null);
-              handleClose();
-            },
-            () => setTimeout(clearErrors, 5000)
-          )}
+          onClick={handleSubmit(onSubmit, () => setTimeout(clearErrors, 5000))}
         />
       </div>
     </div>

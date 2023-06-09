@@ -28,12 +28,14 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
       <Image src="../logo.svg" width={140} height={140} alt="Workout logo" />
       {withMenu && (
         <>
-          <nav className="hidden lg:flex gap-2 items-center">
+          <nav className="hidden lg:flex gap-4 items-center">
             {menuOptions?.map((option, index) => (
               <Link
                 key={index}
                 href={option.path}
-                className={`${pathName === option.path && "text-primary-500"}`}
+                className={`${
+                  pathName === option.path && "text-primary-500"
+                } transition hover:text-primary-400`}
               >
                 {option.text}
               </Link>
