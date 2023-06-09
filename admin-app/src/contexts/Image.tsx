@@ -1,8 +1,8 @@
 import { createContext, useState } from "react";
 
 interface IImageContext {
-  image: string | null;
-  setImage: (image: string | null) => void;
+  image: string;
+  setImage: (image: string) => void;
 }
 
 export const ImageContext = createContext({} as IImageContext);
@@ -12,7 +12,7 @@ export const ImageContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string>("");
 
   return (
     <ImageContext.Provider value={{ image, setImage }}>

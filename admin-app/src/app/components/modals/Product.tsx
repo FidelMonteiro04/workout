@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useState, useRef, ChangeEvent, useEffect } from "react";
-import { RegisterContext } from "@/app/register/layout";
 import { useForm, Controller } from "react-hook-form";
 
 import { formatPrice } from "@/utils/formatPrice";
@@ -21,13 +20,21 @@ import { BiCategoryAlt } from "react-icons/bi";
 
 interface Props {
   isOpen: boolean;
+  editData?: any;
   onAdd: (data: any) => void;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
+  onClose: () => void;
 }
 
-const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
-  const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
+const ProductModal = ({
+  isOpen,
+  onAdd,
+  onEdit,
+  onDelete,
+  onClose,
+  editData,
+}: Props) => {
   const [image, setImage] = useState<any>(editData?.image || null);
   const imageRef = useRef({} as HTMLImageElement);
 
@@ -59,8 +66,7 @@ const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
 
   const handleClose = () => {
     reset();
-    setModalOpened(null);
-    setEditData(null);
+    onClose();
   };
 
   const handleDelete = () => {

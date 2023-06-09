@@ -1,7 +1,6 @@
 "use client";
 import { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { RegisterContext } from "../layout";
 
 import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
@@ -23,10 +22,13 @@ import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
+import { ImageContext } from "@/contexts/Image";
+import { ModalContext } from "@/contexts/Modal";
 
 const RegisterGym = () => {
-  const { image, setImage, modalOpened, setModalOpened, setEditData } =
-    useContext(RegisterContext);
+  const { image, setImage } = useContext(ImageContext);
+  const { modalOpened, setModalOpened, editData, setEditData } =
+    useContext(ModalContext);
 
   const {
     handleSubmit,
@@ -80,9 +82,15 @@ const RegisterGym = () => {
     <>
       <LocationModal
         onFinish={handleAddAddress}
+        onClose={() => setModalOpened(null)}
         isOpen={modalOpened === "location"}
       />
       <AddPlanModal
+        editData={editData}
+        onClose={() => {
+          setEditData(null);
+          setModalOpened(null);
+        }}
         onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
         onAdd={(plan) =>
           setPlans((prev) => [...prev, { ...plan, id: plans.length + 1 }])

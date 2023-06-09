@@ -21,10 +21,10 @@ interface Props {
     address: string,
     coordinates: { lat: number; lng: number }
   ) => void;
+  onClose: () => void;
 }
 
-const LocationModal = ({ isOpen, onFinish }: Props) => {
-  const { setModalOpened } = useContext(RegisterContext);
+const LocationModal = ({ isOpen, onFinish, onClose }: Props) => {
   const [address, setAddress] = useState("");
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
     lat: 0,
@@ -33,7 +33,7 @@ const LocationModal = ({ isOpen, onFinish }: Props) => {
 
   const handleClose = () => {
     setAddress("");
-    setModalOpened(null);
+    onClose();
   };
 
   const handleChange = (address: string) => {
