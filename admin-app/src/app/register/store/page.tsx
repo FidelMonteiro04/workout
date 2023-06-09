@@ -1,12 +1,13 @@
 "use client";
 import { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { RegisterContext } from "../layout";
 
 import { IProduct } from "@/interfaces/Product";
 
 import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
+import { ImageContext } from "@/contexts/Image";
+import { ModalContext } from "@/contexts/Modal";
 
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
@@ -24,8 +25,8 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterStore = () => {
-  const { image, setImage, modalOpened, setModalOpened, setEditData } =
-    useContext(RegisterContext);
+  const { image, setImage } = useContext(ImageContext);
+  const { modalOpened, setModalOpened } = useContext(ModalContext);
 
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
     lat: 0,
@@ -88,6 +89,7 @@ const RegisterStore = () => {
   return (
     <>
       <LocationModal
+        onClose={() => setModalOpened(null)}
         onFinish={handleAddAddress}
         isOpen={modalOpened === "location"}
       />
