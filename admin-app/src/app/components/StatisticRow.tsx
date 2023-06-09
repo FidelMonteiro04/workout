@@ -14,7 +14,9 @@ const StatisticRow = ({ icon: Icon, statistics }: Props) => {
           key={index}
           className="flex flex-col items-center justify-center text-sm mr-4"
         >
-          <span className="font-semibold text-zinc-500">{title}</span>
+          <span className="font-semibold text-zinc-500 text-center">
+            {title}
+          </span>
           <span className="font-semibold text-primary-500">{value}</span>
         </div>
       ))}

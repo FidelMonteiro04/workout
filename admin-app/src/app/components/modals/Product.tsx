@@ -15,8 +15,10 @@ import { MdAttachMoney } from "react-icons/md";
 import { BsTruck } from "react-icons/bs";
 import { BsCheck } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
+import { BsChatLeftText } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
+import TextArea from "../TextArea";
 
 interface Props {
   isOpen: boolean;
@@ -55,12 +57,14 @@ const ProductModal = ({
       type: "",
       distributor: "",
       price: "",
+      description: "",
     },
     values: {
       name: editData?.name || "",
       type: editData?.type || "",
       distributor: editData?.distributor || "",
       price: editData?.price ? formatPrice(editData?.price) : "",
+      description: editData?.description || "",
     },
   });
 
@@ -128,6 +132,10 @@ const ProductModal = ({
             }}
           />
         )}
+      />
+      <TextArea
+        registerField={{ ...register("description", { required: true }) }}
+        error={errors.description && "A descrição é obrigatória!"}
       />
       <Input
         registerField={{ ...register("type", { required: true }) }}

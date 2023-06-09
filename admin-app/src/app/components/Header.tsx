@@ -49,7 +49,7 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
           </nav>
           <nav
             hidden={!withMenu}
-            className="absolute lg:hidden bottom-0 right-0 left-0 py-2 px-4 drop-shadow-lg bg-white flex justify-evenly items-center"
+            className="absolute border-t-[1px] border-zinc-400 lg:hidden bottom-0 right-0 left-0 py-2 px-8 drop-shadow-lg bg-white flex justify-between items-center"
           >
             {menuOptions?.map(({ text, path, icon: Icon }, index) => (
               <Link

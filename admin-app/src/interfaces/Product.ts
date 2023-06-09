@@ -5,4 +5,5 @@ export interface IProduct {
   image: string;
   type: string;
   distributor?: string;
+  description: string;
 }

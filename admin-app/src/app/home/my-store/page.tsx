@@ -17,7 +17,7 @@ import { AiOutlineUnorderedList as ListProductIcon } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
 import { GiWeightLiftingUp } from "react-icons/gi";
-import { BsBoxes } from "react-icons/bs";
+import { BsBoxSeam } from "react-icons/bs";
 import { MdStoreMallDirectory as StoreIcon } from "react-icons/md";
 import Product from "@/app/components/Product";
 
@@ -67,7 +67,7 @@ const GymHome = () => {
               {
                 text: "Produtos",
                 path: "/home/my-store/products",
-                icon: BsBoxes,
+                icon: BsBoxSeam,
               },
             ]}
           />
@@ -102,10 +102,12 @@ const GymHome = () => {
         </div>
         <div className="flex w-full justify-between items-center">
           <h3 className="text-lg font-semibold mb-2">Produtos</h3>
-          <button className="flex transition text-primary-500 hover:text-primary-600 justify-center items-center text-xs font-semibold gap-1">
-            <ListProductIcon />
-            Ver em lista
-          </button>
+          {!!products.length && (
+            <button className="flex transition text-primary-500 hover:text-primary-600 justify-center items-center text-xs font-semibold gap-1">
+              <ListProductIcon />
+              Ver em lista
+            </button>
+          )}
         </div>
         <div className="p-2 flex gap-4 mb-2 w-full overflow-x-auto">
           <div className="my-auto">
@@ -132,7 +134,7 @@ const GymHome = () => {
           ))}
         </div>
         <h3 className="text-lg font-semibold mb-2 lg:mb-4">Estatísticas</h3>
-        <div className="flex w-full justify-center flex-col lg:flex-row lg:gap-2 items-center mb-2">
+        <div className="flex w-full justify-center flex-col lg:flex-row lg:gap-2 items-center md:mb-2">
           <StatisticRow
             icon={HiOutlineUserGroup}
             statistics={[
@@ -150,7 +152,7 @@ const GymHome = () => {
             ]}
           />
         </div>
-        <div className="flex w-full justify-center flex-col lg:flex-row lg:gap-2 items-center mb-2 pt-4">
+        <div className="flex w-full justify-center flex-col lg:flex-row lg:gap-2 items-center mb-2 md:pt-4">
           <StatisticRow
             icon={AiFillTag}
             statistics={[

@@ -28,7 +28,7 @@ const Modal = ({ title, body, handleClose, header }: Props) => {
     >
       <div
         onClick={(event) => event.stopPropagation()}
-        className="bg-white p-4 rounded-md flex flex-col gap-2"
+        className="bg-white p-4 rounded-md flex flex-col gap-2 max-h-[calc(100vh-24px)] overflow-y-auto"
       >
         <div className="flex justify-between items-center mb-3">
           <h3 className="font-semibold text-2xl">{title}</h3>
