@@ -1,7 +1,8 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ModalContext } from "@/contexts/Modal";
+import { IPlan } from "@/interfaces/Plan";
 
 import Button from "../components/Button";
 import Header from "../components/Header";
@@ -18,13 +19,25 @@ import { GiWeightLiftingUp } from "react-icons/gi";
 const GymHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
     useContext(ModalContext);
+  const [plans, setPlans] = useState<IPlan[]>([]);
+
+  const handleEditPlan = (data: any) => {
+    setEditData(data);
+    setModalOpened("plan");
+  };
+
   return (
     <>
       <AddPlanModal
         isOpen={modalOpened === "plan"}
-        onAdd={() => null}
-        onDelete={() => null}
-        onEdit={() => null}
+        onAdd={(plan) =>
+          setPlans((prev) => [{ ...plan, id: plans.length + 1 }, ...prev])
+        }
+        onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
+        onEdit={(plan) => {
+          setPlans((prev) => prev.map((p) => (p.id === plan.id ? plan : p)));
+          setEditData(null);
+        }}
         onClose={() => setModalOpened(null)}
         editData={editData}
       />
@@ -74,9 +87,16 @@ const GymHome = () => {
           <div className="my-auto">
             <AddButton onClick={() => setModalOpened("plan")} />
           </div>
+          {plans.map((plan) => (
+            <Plan
+              key={plan.id}
+              onClick={() => handleEditPlan({ ...plan })}
+              {...plan}
+            />
+          ))}
+          {/* <Plan days="3" price="89,90" onClick={() => null} />
           <Plan days="3" price="89,90" onClick={() => null} />
-          <Plan days="3" price="89,90" onClick={() => null} />
-          <Plan days="3" price="89,90" onClick={() => null} />
+          <Plan days="3" price="89,90" onClick={() => null} /> */}
         </div>
         <h3 className="text-lg font-semibold mb-2 lg:mb-4">Estatísticas</h3>
         <div className="flex w-full justify-center flex-col lg:flex-row lg:gap-2 items-center mb-2">
