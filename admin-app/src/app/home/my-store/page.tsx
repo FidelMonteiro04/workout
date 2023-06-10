@@ -18,6 +18,7 @@ import { AiOutlineUnorderedList as ListProductIcon } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
 import { GiWeightLiftingUp } from "react-icons/gi";
+import Link from "next/link";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -85,10 +86,13 @@ const StoreHome = () => {
       <div className="flex w-full justify-between items-center">
         <h3 className="text-lg font-semibold mb-2">Produtos</h3>
         {!!products.length && (
-          <button className="flex transition text-primary-500 hover:text-primary-600 justify-center items-center text-xs font-semibold gap-1">
+          <Link
+            href="/home/my-store/products"
+            className="flex transition text-primary-500 hover:text-primary-600 justify-center items-center text-xs font-semibold gap-1"
+          >
             <ListProductIcon />
             Ver em lista
-          </button>
+          </Link>
         )}
       </div>
       <div className="p-2 flex gap-4 mb-2 w-full overflow-x-auto">
