@@ -1,6 +1,7 @@
 "use client";
 import { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 
 import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
@@ -165,6 +166,11 @@ const RegisterGym = () => {
                 placeholder="Contato"
                 icon={ContactIcon}
                 type="tel"
+                onChange={(e) =>
+                  formatPhoneNumber(e.target.value, (field, value) =>
+                    setValue(field, value)
+                  )
+                }
               />
               {/* {<Button
                 text="Localização"
