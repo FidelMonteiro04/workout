@@ -1,5 +1,6 @@
 "use client";
 import { useContext, useState, useRef } from "react";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 import { useForm } from "react-hook-form";
 
 import { IProduct } from "@/interfaces/Product";
@@ -151,6 +152,11 @@ const RegisterStore = () => {
                 registerField={{ ...register("contact", { required: true }) }}
                 error={errors.placeName && "O número de contato é obrigatório!"}
                 placeholder="Contato"
+                onChange={(e) =>
+                  formatPhoneNumber(e.target.value, (field, value) =>
+                    setValue(field, value)
+                  )
+                }
                 icon={ContactIcon}
                 type="tel"
               />
