@@ -37,5 +37,9 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
+.grid-cols-fill {
+  grid-template-columns: repeat(auto-fill, 120px);
+}
+
 @tailwind components;
 @tailwind utilities;

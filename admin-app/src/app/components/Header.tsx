@@ -28,7 +28,7 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
       <Image src="../logo.svg" width={140} height={140} alt="Workout logo" />
       {withMenu && (
         <>
-          <nav className="hidden lg:flex gap-4 items-center">
+          <nav className="hidden md:flex gap-4 items-center">
             {menuOptions?.map((option, index) => (
               <Link
                 key={index}
@@ -49,7 +49,7 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
           </nav>
           <nav
             hidden={!withMenu}
-            className="absolute border-t-[1px] border-zinc-400 lg:hidden bottom-0 right-0 left-0 py-2 px-8 drop-shadow-lg bg-white flex justify-between items-center"
+            className="absolute z-20 border-t-[1px] border-zinc-400 md:hidden bottom-0 right-0 left-0 py-2 px-8 drop-shadow-lg bg-white flex justify-between items-center"
           >
             {menuOptions?.map(({ text, path, icon: Icon }, index) => (
               <Link

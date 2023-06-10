@@ -37,7 +37,7 @@ export default function HomeLayout({
   const currentPath = pathName.split("/");
   return (
     <ModalContextProvider>
-      <main className="max-w-[800px] h-full rounded-md shadow-lg mx-auto p-4 overflow-y-auto pb-10 md:pb-4 max-h-screen lg:max-h-full md:border-[1px] md:border-zinc-200 md:my-2">
+      <main className="max-w-[800px] h-full min-h-screen rounded-md shadow-lg mx-auto p-4 overflow-y-auto pb-10 md:pb-4 max-h-screen lg:max-h-full md:border-[1px] md:border-zinc-200 md:my-2">
         <div className="-mx-4 -mt-4 mb-6 md:mb-8 transition duration-400 hover:drop-shadow-md border-b-[1px] border-zinc-300 bg-white">
           <Header
             menuOptions={
