@@ -41,8 +41,12 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
               </Link>
             ))}
             <Link
-              href="#"
-              className="p-2 rounded-full transition hover:shadow-md hover:text-primary-500"
+              href="/home/perfil"
+              className={`p-2 rounded-full transition ${
+                pathName === "/home/perfil"
+                  ? "shadow-md text-primary-500"
+                  : "hover:shadow-md hover:text-primary-500"
+              }`}
             >
               <AiOutlineUser size={20} />
             </Link>
@@ -72,7 +76,7 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
             ))}
 
             <Link
-              href="#"
+              href="/home/perfil"
               className="flex flex-col gap-1 text-zinc-500 items-center justify-center"
             >
               <AiOutlineUser size={16} />
