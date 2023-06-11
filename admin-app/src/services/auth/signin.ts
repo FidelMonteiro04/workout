@@ -15,9 +15,9 @@ export const signin = async (data: DataRequest) => {
       body: JSON.stringify(data),
     });
 
-    const { token } = await response.json();
+    const { token, ownType } = await response.json();
 
-    return token;
+    return { token, ownType };
   } catch (error) {
     return { error };
   }

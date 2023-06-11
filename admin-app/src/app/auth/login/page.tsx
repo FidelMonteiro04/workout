@@ -20,7 +20,9 @@ export default function Login() {
   } = useForm();
 
   const onLogin = async (data: any) => {
-    const response = await signin(data);
+    const { token, ownType } = await signin(data);
+    console.log("Token de login: ", token);
+    console.log("Owntype: ", ownType);
   };
 
   return (

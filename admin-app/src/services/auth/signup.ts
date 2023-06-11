@@ -19,7 +19,7 @@ export const signup = async (data: DataRequest) => {
 
     const { token } = await response.json();
 
-    return token;
+    return { token };
   } catch (error) {
     return { error };
   }
