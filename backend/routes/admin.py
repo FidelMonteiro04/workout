@@ -58,4 +58,4 @@ def login():
 
     token = jwt.encode ({'id': str(existing_owner["_id"]), 'email': existing_owner['email'] }, app.config['SECRET_KEY'], algorithm="HS256")
 
-    return jsonify({"message": "Login realizado com sucesso", "token": token}), 200
+    return jsonify({"message": "Login realizado com sucesso", "token": token, "ownType": existing_owner["ownType"]}), 200
