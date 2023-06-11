@@ -2,13 +2,8 @@ from schemas.owner import ownerSchema
 
 gymSchema = {
     'type': 'object',
-    'required': ['cnpj', 'name', 'airconditioner', 'personal', 'minorPlan', 'biggerPlan','acessilibility'],
+    'required': ['name', 'airconditioner', 'personal', 'minorPlan', 'biggerPlan','accessibility', 'lat', 'lng', 'address', 'contact'],
     'properties': {
-        'cnpj': {
-            'type': 'string',
-            'length': 14,
-            'unique': True
-            },
         'name': {
             'type': 'string'
         },
@@ -24,8 +19,21 @@ gymSchema = {
         'biggerPlan': {
             'type': 'number'
         },
-        'acessilibility': {
+        'accessibility': {
             'type': 'boolean'
         },
+        "lat":{
+            "type": 'string',
+        },
+        'lng': {
+            'type': 'string',
+        },
+        'address': {
+            'type': 'string',
+        },
+        'contact': {
+            'type': 'string',
+        },
+
     }
 }
