@@ -1,6 +1,6 @@
 ownerSchema = {
     'type': 'object',
-    'required': ['name', 'email', 'cnpj', "password"],
+    'required': ['name', 'email', 'cnpj', "password", "ownType"],
     'properties': {
         'name': {
             'type': 'string'
@@ -22,5 +22,9 @@ ownerSchema = {
             #"pattern": "^(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>|\[\]\\\/]).*$"
 
         },
+        "ownType": {
+            "type": "string",
+            "enum": ["gym", "store"]
+        }
     }
 }
