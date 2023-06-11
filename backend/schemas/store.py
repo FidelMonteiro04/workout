@@ -18,7 +18,15 @@ store_Schema = {
             "type": "string"
         },
         "contact": {
-            "type": "string"
+            "type": "string",
+            "min": 11,
+        },
+        "rating": {
+            "type": 'number',
+        },
+        "instagram": {
+            "type": 'string',
+            "unique": True,
         },
         }
 }

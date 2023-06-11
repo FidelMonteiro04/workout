@@ -1,6 +1,6 @@
 ownerSchema = {
     'type': 'object',
-    'required': ['name', 'email', 'cnpj', "cellphone" , "password"],
+    'required': ['name', 'email', 'cnpj', "password"],
     'properties': {
         'name': {
             'type': 'string'
@@ -21,17 +21,6 @@ ownerSchema = {
             "min": 8,
             "pattern": "^(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>|\[\]\\\/]).*$"
 
-        },
-        "cellphone": {
-            "type": 'string',
-            "min": 11,
-        },
-        "rating": {
-            "type": 'number',
-        },
-        "instagram": {
-            "type": 'string',
-            "unique": True,
         },
     }
 }

@@ -2,7 +2,7 @@ from schemas.owner import ownerSchema
 
 gymSchema = {
     'type': 'object',
-    'required': ['name', 'airconditioner', 'personal', 'minorPlan', 'biggerPlan','accessibility', 'lat', 'lng', 'address', 'contact'],
+    'required': ['name', 'airconditioner', 'personal','accessibility', "contact", 'lat', 'lng', 'address'],
     'properties': {
         'name': {
             'type': 'string'
@@ -33,6 +33,14 @@ gymSchema = {
         },
         'contact': {
             'type': 'string',
+            'unique': True
+        },
+        "rating": {
+            "type": 'number',
+        },
+        "instagram": {
+            "type": 'string',
+            "unique": True,
         },
 
     }
