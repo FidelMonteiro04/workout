@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from routes.admin import admin
 from routes.gym import gym
 from routes.plan import plan
@@ -15,6 +16,7 @@ def create_app():
     app.register_blueprint(gym)
     app.register_blueprint(store)
     app.register_blueprint(product)
+    CORS(app, origins="*")
     return app
 
 if __name__ == '__main__':

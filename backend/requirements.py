@@ -7,6 +7,7 @@ packages = [
     'jsonschema',
     'PyJWT',
     'Werkzeug',
+    "flask-cors"
 ]
 
 for package in packages:
