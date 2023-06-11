@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,22 +7,29 @@ import Link from "next/link";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 
+import { UserContext } from "@/contexts/User";
+import { signin } from "@/services/auth/signin";
+
 import { MdAlternateEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
-import { signin } from "@/services/auth/signin";
 
 export default function Login() {
   const {
     register,
     handleSubmit,
     clearErrors,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm();
 
+  const { setUser } = useContext(UserContext);
+
   const onLogin = async (data: any) => {
-    const { token, ownType } = await signin(data);
-    console.log("Token de login: ", token);
-    console.log("Owntype: ", ownType);
+    try {
+      const { token, ownType } = await signin(data);
+      setUser({ ownType, token });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -55,7 +62,7 @@ export default function Login() {
           placeholder="Senha"
         />
 
-        <Button isLoading={isLoading} text="Entrar" onClick={() => null} />
+        <Button isLoading={isSubmitting} text="Entrar" onClick={() => null} />
         <span className="font-light text-secondary-500 text-center">
           Ainda não é nosso parceiro?{" "}
           <Link

@@ -5,6 +5,7 @@ interface DataRequest {
   email: string;
   password: string;
   cnpj: string;
+  ownType: "gym" | "store";
 }
 
 export const signup = async (data: DataRequest) => {
@@ -18,6 +19,11 @@ export const signup = async (data: DataRequest) => {
     });
 
     const { token } = await response.json();
+
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({ token, ownType: data.ownType })
+    );
 
     return { token };
   } catch (error) {

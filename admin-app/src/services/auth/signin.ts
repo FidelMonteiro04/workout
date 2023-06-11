@@ -17,6 +17,8 @@ export const signin = async (data: DataRequest) => {
 
     const { token, ownType } = await response.json();
 
+    sessionStorage.setItem("user", JSON.stringify({ token, ownType }));
+
     return { token, ownType };
   } catch (error) {
     return { error };

@@ -1,13 +1,15 @@
 "use client";
 import { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { formatCnpj } from "@/utils/formatCnpj";
 import Image from "next/image";
 import Link from "next/link";
 
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import PropertySelector from "../../components/PropertySelector";
+
+import { formatCnpj } from "@/utils/formatCnpj";
 
 import { BiRename } from "react-icons/bi";
 import { MdAlternateEmail } from "react-icons/md";
@@ -22,6 +24,7 @@ import { UserContext } from "@/contexts/User";
 export default function Register() {
   const [propertyType, setPropertyType] = useState<"gym" | "store">("gym");
   const { setUser } = useContext(UserContext);
+  const router = useRouter();
 
   const {
     register,
@@ -30,7 +33,7 @@ export default function Register() {
     setValue,
     watch,
     trigger,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
   } = useForm();
 
   const onRegister = async (data: any) => {
@@ -42,10 +45,9 @@ export default function Register() {
     };
 
     try {
-      const token = await signup(formattedData);
-      console.log("token:  ", token);
-
+      const { token } = await signup(formattedData);
       setUser({ ownType: propertyType, token });
+      router.push(`/register/${propertyType}`);
     } catch (error) {
       console.error(error);
     }
@@ -136,7 +138,11 @@ export default function Register() {
           />
         </div>
 
-        <Button text="Criar conta" onClick={() => null} isLoading={isLoading} />
+        <Button
+          text="Criar conta"
+          onClick={() => null}
+          isLoading={isSubmitting}
+        />
         <span className="font-light text-secondary-500 text-center">
           Já é parceiro?{" "}
           <Link
