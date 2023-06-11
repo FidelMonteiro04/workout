@@ -8,6 +8,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 admin = Blueprint('admin', __name__)
 
+def owner_exists(collection, key, value):
+    existing_owner = collection.find_one({key: value})
+    return existing_owner is not None
+
 @admin.route('/register', methods=['POST'])
 def register():
     owner_data = request.get_json()
@@ -18,34 +22,26 @@ def register():
         return jsonify({'message': 'Dados de proprietário inválidos', 'erro': str(err)}), 400
 
     db = get_db()
-    
-
-
     owner_collection = db.get_collection("owner")
 
-    existing_owner = owner_collection.find_one({"email": owner_data["email"]})
+    if owner_exists(owner_collection, "email", owner_data["email"]):
+        return jsonify({"error": "Já existe um proprietário com esse email"}), 400
 
-    if existing_owner is not None:
-            return jsonify({"error": "Já existe um proprietário com esse email"}), 400
+    if owner_exists(owner_collection, "cnpj", owner_data["cnpj"]):
+        return jsonify({"error": "Já existe um proprietário com esse CNPJ"}), 400
+    
+    hashed_password = generate_password_hash(owner_data["password"], method='pbkdf2', salt_length=12)
+    owner_data["password"] = hashed_password
+
+    result = owner_collection.insert_one(owner_data)
+
+    if result.acknowledged:
+        inserted_id = str(result.inserted_id)
+        token = jwt.encode({'id': inserted_id, 'email': owner_data['email']}, app.config['SECRET_KEY'], algorithm="HS256")
+
+        return jsonify({"message": f"Proprietário cadastrado com sucesso", "token": token}), 201
     else:
-            hashed_password = generate_password_hash(owner_data["password"], method='pbkdf2', salt_length=12)
-            owner_data["password"] = hashed_password
-            
-            result = owner_collection.insert_one(owner_data)
-
-            if result.acknowledged:
-                inserted_id = str(result.inserted_id)
-                token = jwt.encode ({'id': inserted_id, 'email': owner_data['email'] }, app.config['SECRET_KEY'], algorithm="HS256")
-
-
-
-                return jsonify({"message": f"Proprietário cadastrado com sucesso", "token": token}), 201
-            else:  
-                return jsonify({"error": "Erro ao cadastrar proprietário"}), 500
-
-
-#verificar se o email existe
-#verificar se a senha está correta
+        return jsonify({"error": "Erro ao cadastrar proprietário"}), 500
 
 
 @admin.route('/login', methods=['POST'])

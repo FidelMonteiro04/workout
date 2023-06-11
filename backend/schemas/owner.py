@@ -1,6 +1,6 @@
 ownerSchema = {
     'type': 'object',
-    'required': ['name', 'email', "cellphone" , "coordinates", "password"],
+    'required': ['name', 'email', 'cnpj', "cellphone" , "password"],
     'properties': {
         'name': {
             'type': 'string'
@@ -8,6 +8,12 @@ ownerSchema = {
         'email': {
             'type': 'string',
             'pattern': '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
+            "unique": True
+        },
+        'cnpj': {
+            'type': 'string',
+            'min': 14,
+            'max': 14,
             "unique": True
         },
         "password": {
@@ -27,9 +33,5 @@ ownerSchema = {
             "type": 'string',
             "unique": True,
         },
-        "coordinates": {
-            "type": 'string'
-            
-        }
     }
 }
