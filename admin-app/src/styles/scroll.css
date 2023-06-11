@@ -3,6 +3,6 @@
 }
 
 .little-scroll::-webkit-scrollbar {
-  width: 2px;
+  width: 4px;
   height: 4px;
 }

@@ -1,12 +1,14 @@
 "use client";
 import { useContext, useState, useRef } from "react";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 import { useForm } from "react-hook-form";
-import { RegisterContext } from "../layout";
 
 import { IProduct } from "@/interfaces/Product";
 
 import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
+import { ImageContext } from "@/contexts/Image";
+import { ModalContext } from "@/contexts/Modal";
 
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
@@ -24,26 +26,30 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 
 const RegisterStore = () => {
-  const { image, setImage, modalOpened, setModalOpened, setEditData } =
-    useContext(RegisterContext);
+  const { image, setImage } = useContext(ImageContext);
+  const { modalOpened, setModalOpened } = useContext(ModalContext);
 
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
+    lat: 0,
+    lng: 0,
+  });
 
   const {
     handleSubmit,
     register,
     formState: { errors, isLoading },
+    setValue,
     clearErrors,
   } = useForm();
 
   const imageRef = useRef({} as HTMLImageElement);
 
-  const handleAddProduct = (product: IProduct) => {
-    setProducts((prev) => [
-      { ...product, id: product.id || prev.length + 1 },
-      ...prev,
-    ]);
-  };
+  // const handleAddProduct = (product: IProduct) => {
+  //   setProducts((prev) => [
+  //     { ...product, id: product.id || prev.length + 1 },
+  //     ...prev,
+  //   ]);
+  // };
 
   const onSubmit = async (data: any) => {
     const formData = new FormData();
@@ -64,26 +70,38 @@ const RegisterStore = () => {
     const { url } = await response.json();
   };
 
-  const handleProductEdit = (product: IProduct) => {
-    setEditData(product);
-    setModalOpened("product");
-  };
+  // const handleProductEdit = (product: IProduct) => {
+  //   setEditData(product);
+  //   setModalOpened("product");
+  // };
 
-  const editProduct = (product: IProduct) => {
-    setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
+  // const editProduct = (product: IProduct) => {
+  //   setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
+  // };
+
+  const handleAddAddress = (
+    address: string,
+    coordinates: { lat: number; lng: number }
+  ) => {
+    setCoordinates(coordinates);
+    setValue("address", address);
   };
 
   return (
     <>
-      <LocationModal isOpen={modalOpened === "location"} />
-      <ProductModal
+      <LocationModal
+        onClose={() => setModalOpened(null)}
+        onFinish={handleAddAddress}
+        isOpen={modalOpened === "location"}
+      />
+      {/* {<ProductModal
         onDelete={(id) =>
           setProducts((prev) => prev.filter((p) => p.id !== id))
         }
         onAdd={handleAddProduct}
         onEdit={editProduct}
         isOpen={modalOpened === "product"}
-      />
+      />} */}
 
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Loja
@@ -98,7 +116,7 @@ const RegisterStore = () => {
             error={errors.image && "É necessário ter uma imagem!"}
             alt="Imagem da academia"
           />
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <div className="flex flex-col gap-3 pt-4">
               <Input
                 registerField={{ ...register("placeName", { required: true }) }}
@@ -108,11 +126,16 @@ const RegisterStore = () => {
               />
 
               <Input
-                registerField={{ ...register("address", { required: true }) }}
+                registerField={{
+                  ...register("address", { required: true }),
+                }}
                 error={errors.address && "O endereço é obrigatório!"}
                 placeholder="Endereço"
+                readOnly
                 icon={AddressIcon}
+                onClick={() => setModalOpened("location")}
               />
+
               <Input
                 registerField={{
                   ...register("instagram", {
@@ -129,42 +152,22 @@ const RegisterStore = () => {
                 registerField={{ ...register("contact", { required: true }) }}
                 error={errors.placeName && "O número de contato é obrigatório!"}
                 placeholder="Contato"
+                onChange={(e) =>
+                  formatPhoneNumber(e.target.value, (field, value) =>
+                    setValue(field, value)
+                  )
+                }
                 icon={ContactIcon}
                 type="tel"
               />
-              <div className="mt-auto">
+              {/* {<div className="mt-auto">
                 <Button
                   text="Localização"
                   icon={LocationIcon}
                   onClick={() => setModalOpened("location")}
                 />
-              </div>
-            </div>
-            <div className="flex flex-col pt-4 h-full justify-between">
-              <div>
-                <h3 className="font-bold text-xl mb-2 ">Produtos</h3>
-                <div className="flex gap-3 overflow-x-auto pt-2 pb-3 px-1 max-w-[250px] mb-4">
-                  <div className="flex items-center justify-center">
-                    <AddButton onClick={() => setModalOpened("product")} />
-                  </div>
-                  {products.map((product, index) => (
-                    <Product
-                      key={`${index}`}
-                      {...product}
-                      id={`${product.id}`}
-                      img={product.image}
-                      onClick={() =>
-                        handleProductEdit({
-                          ...product,
-                          price: "R$ " + product.price,
-                        })
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
+              </div>} */}
               <Button
-                outline
                 onClick={handleSubmit(onSubmit, () =>
                   setTimeout(clearErrors, 5000)
                 )}

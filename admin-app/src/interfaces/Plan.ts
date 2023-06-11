@@ -1,5 +1,5 @@
 export interface IPlan {
   id?: string;
-  value: string;
+  price: string;
   days: string;
 }

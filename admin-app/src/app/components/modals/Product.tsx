@@ -1,7 +1,6 @@
 "use client";
 
 import { useContext, useState, useRef, ChangeEvent, useEffect } from "react";
-import { RegisterContext } from "@/app/register/layout";
 import { useForm, Controller } from "react-hook-form";
 
 import { formatPrice } from "@/utils/formatPrice";
@@ -16,18 +15,28 @@ import { MdAttachMoney } from "react-icons/md";
 import { BsTruck } from "react-icons/bs";
 import { BsCheck } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
+import { BsChatLeftText } from "react-icons/bs";
 import { MdClose } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
+import TextArea from "../TextArea";
 
 interface Props {
   isOpen: boolean;
+  editData?: any;
   onAdd: (data: any) => void;
   onEdit: (data: any) => void;
   onDelete: (data: any) => void;
+  onClose: () => void;
 }
 
-const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
-  const { setModalOpened, editData, setEditData } = useContext(RegisterContext);
+const ProductModal = ({
+  isOpen,
+  onAdd,
+  onEdit,
+  onDelete,
+  onClose,
+  editData,
+}: Props) => {
   const [image, setImage] = useState<any>(editData?.image || null);
   const imageRef = useRef({} as HTMLImageElement);
 
@@ -48,23 +57,40 @@ const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
       type: "",
       distributor: "",
       price: "",
+      description: "",
     },
     values: {
       name: editData?.name || "",
       type: editData?.type || "",
       distributor: editData?.distributor || "",
       price: editData?.price ? formatPrice(editData?.price) : "",
+      description: editData?.description || "",
     },
   });
 
   const handleClose = () => {
     reset();
-    setModalOpened(null);
-    setEditData(null);
+    onClose();
   };
 
   const handleDelete = () => {
     onDelete(editData.id);
+    handleClose();
+  };
+
+  const onSubmit = (data: any) => {
+    if (!editData) {
+      onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
+    } else {
+      onEdit({
+        ...data,
+        price: data.price.replace("R$ ", ""),
+        image,
+        id: editData.id,
+      });
+    }
+    reset();
+    setImage(null);
     handleClose();
   };
 
@@ -107,6 +133,10 @@ const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
           />
         )}
       />
+      <TextArea
+        registerField={{ ...register("description", { required: true }) }}
+        error={errors.description && "A descrição é obrigatória!"}
+      />
       <Input
         registerField={{ ...register("type", { required: true }) }}
         error={errors.type && "O tipo do produto é obrigatório!"}
@@ -130,24 +160,7 @@ const ProductModal = ({ isOpen, onAdd, onEdit, onDelete }: Props) => {
           outline
           text="Salvar"
           icon={BsCheck}
-          onClick={handleSubmit(
-            (data: any) => {
-              if (!editData) {
-                onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
-              } else {
-                onEdit({
-                  ...data,
-                  price: data.price.replace("R$ ", ""),
-                  image,
-                  id: editData.id,
-                });
-              }
-              reset();
-              setImage(null);
-              handleClose();
-            },
-            () => setTimeout(clearErrors, 5000)
-          )}
+          onClick={handleSubmit(onSubmit, () => setTimeout(clearErrors, 5000))}
         />
       </div>
     </div>

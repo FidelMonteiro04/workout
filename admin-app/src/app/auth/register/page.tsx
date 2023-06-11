@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { formatCnpj } from "@/utils/formatCnpj";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,6 +24,7 @@ export default function Home() {
     register,
     handleSubmit,
     clearErrors,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -76,6 +78,9 @@ export default function Home() {
         <Input
           registerField={{ ...register("cnpj", { required: true }) }}
           error={errors.cnpj && "CNPJ é obrigatório!"}
+          onChange={(e) =>
+            formatCnpj(e.target.value, (field, value) => setValue(field, value))
+          }
           icon={HiOutlineDocumentText}
           placeholder="CNPJ"
         />

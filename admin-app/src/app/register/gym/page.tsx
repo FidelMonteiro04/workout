@@ -1,7 +1,7 @@
 "use client";
 import { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { RegisterContext } from "../layout";
+import { formatPhoneNumber } from "@/utils/formatPhone";
 
 import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
@@ -23,19 +23,27 @@ import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
+import { ImageContext } from "@/contexts/Image";
+import { ModalContext } from "@/contexts/Modal";
 
 const RegisterGym = () => {
-  const { image, setImage, modalOpened, setModalOpened, setEditData } =
-    useContext(RegisterContext);
+  const { image, setImage } = useContext(ImageContext);
+  const { modalOpened, setModalOpened, editData, setEditData } =
+    useContext(ModalContext);
 
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors, isLoading },
     clearErrors,
   } = useForm();
 
   const [plans, setPlans] = useState<IPlan[]>([]);
+  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
+    lat: 0,
+    lng: 0,
+  });
 
   const imageRef = useRef({} as HTMLImageElement);
 
@@ -63,10 +71,27 @@ const RegisterGym = () => {
     setModalOpened("plan");
   };
 
+  const handleAddAddress = (
+    address: string,
+    coordinates: { lat: number; lng: number }
+  ) => {
+    setCoordinates(coordinates);
+    setValue("address", address);
+  };
+
   return (
     <>
-      <LocationModal isOpen={modalOpened === "location"} />
+      <LocationModal
+        onFinish={handleAddAddress}
+        onClose={() => setModalOpened(null)}
+        isOpen={modalOpened === "location"}
+      />
       <AddPlanModal
+        editData={editData}
+        onClose={() => {
+          setEditData(null);
+          setModalOpened(null);
+        }}
         onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
         onAdd={(plan) =>
           setPlans((prev) => [...prev, { ...plan, id: plans.length + 1 }])
@@ -91,7 +116,7 @@ const RegisterGym = () => {
             alt="Imagem da academia"
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-3 pt-4">
+            <div className="flex flex-col justify-between gap-3 pt-4">
               <Input
                 registerField={{ ...register("placeName", { required: true }) }}
                 error={errors.placeName && "O nome do local é obrigatório!"}
@@ -113,12 +138,16 @@ const RegisterGym = () => {
                 placeholder="Número de personais"
                 icon={PersonalIcon}
               />
+
               <Input
                 registerField={{ ...register("address", { required: true }) }}
                 error={errors.address && "O endereço é obrigatório!"}
                 placeholder="Endereço"
+                readOnly
                 icon={AddressIcon}
+                onClick={() => setModalOpened("location")}
               />
+
               <Input
                 registerField={{
                   ...register("instagram", {
@@ -137,12 +166,17 @@ const RegisterGym = () => {
                 placeholder="Contato"
                 icon={ContactIcon}
                 type="tel"
+                onChange={(e) =>
+                  formatPhoneNumber(e.target.value, (field, value) =>
+                    setValue(field, value)
+                  )
+                }
               />
-              <Button
+              {/* {<Button
                 text="Localização"
                 icon={LocationIcon}
                 onClick={() => setModalOpened("location")}
-              />
+              />} */}
             </div>
             <div className="flex flex-col pt-4 h-full justify-between">
               <h3 className="font-bold text-xl mb-2 ">Planos</h3>
@@ -214,7 +248,6 @@ const RegisterGym = () => {
               </div>
 
               <Button
-                outline
                 onClick={handleSubmit(onSubmit, () =>
                   setTimeout(clearErrors, 5000)
                 )}
