@@ -1,3 +1,5 @@
+"use client";
+import { UserContextProvider } from "@/contexts/User";
 import Image from "next/image";
 
 export default function AuthLayout({
@@ -6,7 +8,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <UserContextProvider>
       <header className="w-full flex items-center justify-center py-8 md:hidden">
         <Image
           src="../../logo.svg"
@@ -37,6 +39,6 @@ export default function AuthLayout({
         </div>
         {children}
       </section>
-    </>
+    </UserContextProvider>
   );
 }

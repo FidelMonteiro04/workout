@@ -10,12 +10,12 @@ import Button from "../../components/Button";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 
-export default function Home() {
+export default function Login() {
   const {
     register,
     handleSubmit,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isLoading },
   } = useForm();
 
   const onLogin = (data: any) => console.log(data);
@@ -50,7 +50,7 @@ export default function Home() {
           placeholder="Senha"
         />
 
-        <Button text="Entrar" onClick={() => null} />
+        <Button isLoading={isLoading} text="Entrar" onClick={() => null} />
         <span className="font-light text-secondary-500 text-center">
           Ainda não é nosso parceiro?{" "}
           <Link

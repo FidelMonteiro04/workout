@@ -17,7 +17,7 @@ import { HiOutlineDocumentText } from "react-icons/hi";
 import { GiWeightLiftingUp as GymIcon } from "react-icons/gi";
 import { MdStoreMallDirectory as StoreIcon } from "react-icons/md";
 
-export default function Home() {
+export default function Register() {
   const [propertyType, setPropertyType] = useState("gym");
 
   const {
