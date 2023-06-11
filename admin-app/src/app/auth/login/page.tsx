@@ -9,6 +9,7 @@ import Button from "../../components/Button";
 
 import { MdAlternateEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
+import { signin } from "@/services/auth/signin";
 
 export default function Login() {
   const {
@@ -18,7 +19,9 @@ export default function Login() {
     formState: { errors, isLoading },
   } = useForm();
 
-  const onLogin = (data: any) => console.log(data);
+  const onLogin = async (data: any) => {
+    const response = await signin(data);
+  };
 
   return (
     <div className="md:flex md:flex-col md:items-center md:justify-center">

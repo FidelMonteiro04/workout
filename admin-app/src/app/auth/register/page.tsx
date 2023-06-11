@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { formatCnpj } from "@/utils/formatCnpj";
 import Image from "next/image";
@@ -16,19 +16,42 @@ import { MdPassword } from "react-icons/md";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { GiWeightLiftingUp as GymIcon } from "react-icons/gi";
 import { MdStoreMallDirectory as StoreIcon } from "react-icons/md";
+import { signup } from "@/services/auth/signup";
+import { UserContext } from "@/contexts/User";
 
 export default function Register() {
-  const [propertyType, setPropertyType] = useState("gym");
+  const [propertyType, setPropertyType] = useState<"gym" | "store">("gym");
+  const { setUser } = useContext(UserContext);
 
   const {
     register,
     handleSubmit,
     clearErrors,
     setValue,
-    formState: { errors },
+    watch,
+    trigger,
+    formState: { errors, isLoading },
   } = useForm();
 
-  const onRegister = (data: any) => console.log(data);
+  const onRegister = async (data: any) => {
+    delete data.confirmPassword;
+    const formattedData = {
+      ...data,
+      cnpj: data.cnpj.replace(/\D/g, ""),
+      ownType: propertyType,
+    };
+
+    try {
+      const token = await signup(formattedData);
+      console.log("token:  ", token);
+
+      setUser({ ownType: propertyType, token });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const passWatch = watch("password");
 
   return (
     <div className="md:flex md:flex-col md:items-center md:justify-center">
@@ -58,8 +81,16 @@ export default function Register() {
           type="email"
         />
         <Input
-          registerField={{ ...register("password", { required: true }) }}
-          error={errors.password && "Senha é obrigatória!"}
+          registerField={{
+            ...register("password", {
+              required: true,
+              minLength: {
+                message: "A senha deve ter pelo menos 8 dígitos",
+                value: 8,
+              },
+            }),
+          }}
+          error={errors.password && (errors.password.message as string)}
           icon={FaLock}
           password
           visibility
@@ -68,12 +99,18 @@ export default function Register() {
 
         <Input
           registerField={{
-            ...register("confirmPassword", { required: true }),
+            ...register("confirmPassword", {
+              required: "Este campo é obrigatório!",
+              validate: (value) =>
+                value === passWatch || "As senhas devem ser iguais!",
+            }),
           }}
-          error={errors.confirmPassword && "Este campo é obrigatório!"}
+          error={
+            errors.confirmPassword && (errors.confirmPassword.message as string)
+          }
           icon={MdPassword}
           password
-          placeholder="Confirmar senha"
+          placeholder="Confirme a senha"
         />
         <Input
           registerField={{ ...register("cnpj", { required: true }) }}
@@ -99,7 +136,7 @@ export default function Register() {
           />
         </div>
 
-        <Button text="Criar conta" onClick={() => null} />
+        <Button text="Criar conta" onClick={() => null} isLoading={isLoading} />
         <span className="font-light text-secondary-500 text-center">
           Já é parceiro?{" "}
           <Link

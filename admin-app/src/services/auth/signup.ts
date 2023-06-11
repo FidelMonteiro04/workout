@@ -1,19 +1,22 @@
 import { apiURL } from "@/config/api";
 
 interface DataRequest {
+  name: string;
   email: string;
   password: string;
+  cnpj: string;
 }
 
-export const login = async (data: DataRequest) => {
+export const signup = async (data: DataRequest) => {
   try {
-    const response = await fetch(apiURL, {
+    const response = await fetch(`${apiURL}/register`, {
       method: "POST",
-      body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify(data),
     });
+
     const { token } = await response.json();
 
     return token;
