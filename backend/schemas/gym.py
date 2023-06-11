@@ -2,15 +2,15 @@ from schemas.owner import ownerSchema
 
 gymSchema = {
     'type': 'object',
-    'required': ['name', 'airconditioner', 'personal','accessibility', "contact", 'lat', 'lng', 'address'],
+    'required': ['name', 'airConditioner', 'personals','accessibility', "contact", 'lat', 'lng', 'address'],
     'properties': {
         'name': {
             'type': 'string'
         },
-        'airconditioner': {
+        'airConditioner': {
             'type': 'boolean'
         },
-        'personal': {
+        'personals': {
             'type': 'number'
         },
         'minorPlan': {
