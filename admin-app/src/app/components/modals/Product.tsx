@@ -49,7 +49,7 @@ const ProductModal = ({
     handleSubmit,
     control,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     clearErrors,
   } = useForm({
     defaultValues: {
@@ -74,19 +74,19 @@ const ProductModal = ({
   };
 
   const handleDelete = () => {
-    onDelete(editData.id);
+    onDelete(editData._id);
     handleClose();
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     if (!editData) {
-      onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
+      await onAdd({ ...data, price: data.price.replace("R$ ", ""), image });
     } else {
-      onEdit({
+      await onEdit({
         ...data,
         price: data.price.replace("R$ ", ""),
         image,
-        id: editData.id,
+        _id: editData._id,
       });
     }
     reset();
@@ -152,15 +152,22 @@ const ProductModal = ({
         {editData && (
           <Button
             text="Excluir"
+            disabled={isSubmitting}
             icon={BsFillTrashFill}
-            onClick={handleDelete}
+            onClick={!isSubmitting ? handleSubmit(handleDelete) : () => null}
           />
         )}
         <Button
           outline
           text="Salvar"
           icon={BsCheck}
-          onClick={handleSubmit(onSubmit, () => setTimeout(clearErrors, 5000))}
+          disabled={isSubmitting}
+          isLoading={!editData ? isSubmitting : false}
+          onClick={
+            !isSubmitting
+              ? handleSubmit(onSubmit, () => setTimeout(clearErrors, 5000))
+              : () => null
+          }
         />
       </div>
     </div>

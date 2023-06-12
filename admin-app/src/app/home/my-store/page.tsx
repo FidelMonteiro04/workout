@@ -102,7 +102,7 @@ const StoreHome = () => {
 
     console.log("Product id: ", productId);
 
-    setProducts((prev) => [{ ...data, id: productId }, ...prev]);
+    setProducts((prev) => [{ ...data, _id: productId }, ...prev]);
   };
 
   if (!store) return <></>;

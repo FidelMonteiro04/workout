@@ -13,7 +13,7 @@ def get_products(store_id):
     db = get_db()
     product_collection = db.get_collection("product")
 
-    products_finder = product_collection.find({ "store_id": store_id })
+    products_finder = product_collection.find({ "store_id": ObjectId(store_id) })
     
     products = []
 
