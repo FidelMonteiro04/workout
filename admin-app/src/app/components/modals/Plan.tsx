@@ -90,7 +90,7 @@ const AddPlanModal = ({
   };
 
   const handleDelete = () => {
-    onDelete(editData.id);
+    onDelete(editData._id);
     handleClose();
   };
 

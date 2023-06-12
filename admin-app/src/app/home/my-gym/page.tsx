@@ -21,11 +21,11 @@ import AddPlanModal from "../../components/modals/Plan";
 import { AiFillEdit } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
-import { GiWeightLiftingUp } from "react-icons/gi";
 import { UserContext } from "@/contexts/User";
 import { getPlans } from "@/services/plan/getPlans";
 import { createPlan } from "@/services/plan/createPlan";
 import { updatePlan } from "@/services/plan/updatePlan";
+import { deletePlan } from "@/services/plan/deletePlan";
 
 const GymHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -85,6 +85,16 @@ const GymHome = () => {
     }
   };
 
+  const handleDeletePlan = async (id: string) => {
+    try {
+      await deletePlan(id, token, user?.ownId as string);
+
+      setPlans((prev) => prev.filter((p) => p._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleGetGym = async (token: string) => {
     try {
       const gym = await getGym(token);
@@ -110,7 +120,7 @@ const GymHome = () => {
       <AddPlanModal
         isOpen={modalOpened === "plan"}
         onAdd={(plan) => handleCreatePlan(plan)}
-        onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
+        onDelete={(id) => handleDeletePlan(id)}
         onEdit={(plan) => handleEditPlan(plan)}
         onClose={() => setModalOpened(null)}
         editData={editData}

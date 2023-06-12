@@ -24,9 +24,7 @@ export const updatePlan = async (
       }
     );
 
-    const { id: planId } = await response.json();
-
-    return { planId };
+    return response;
   } catch (error) {
     return { error };
   }
