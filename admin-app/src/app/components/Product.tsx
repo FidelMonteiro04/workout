@@ -15,7 +15,15 @@ interface Props {
   onClick: () => void;
 }
 
-const Product = ({ id, img, name, price, distributor, onClick }: Props) => {
+const Product = ({
+  id,
+  img,
+  name,
+  price,
+  category,
+  distributor,
+  onClick,
+}: Props) => {
   return (
     <div
       onClick={onClick}
@@ -46,8 +54,8 @@ const Product = ({ id, img, name, price, distributor, onClick }: Props) => {
             {distributor}
           </span>
         </div>
-        <div className="absolute w-1/2 flex items-center justify-center text-primary-500 right-0">
-          <MdAttachMoney size={16} />
+        <div className="absolute w-1/2 flex items-center justify-center text-primary-500 right-[3px]">
+          <MdAttachMoney size={16} className="shrink-0" />
           <span className="font-bold text-xs">{price}</span>
         </div>
       </div>

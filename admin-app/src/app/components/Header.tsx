@@ -34,8 +34,10 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
                 key={index}
                 href={option.path}
                 className={`${
-                  pathName === option.path && "text-primary-500"
-                } transition hover:text-primary-400`}
+                  pathName === option.path
+                    ? "text-primary-500 font-semibold"
+                    : "hover:text-primary-400"
+                } transition`}
               >
                 {option.text}
               </Link>

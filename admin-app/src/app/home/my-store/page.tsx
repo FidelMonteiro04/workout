@@ -27,6 +27,7 @@ import useKeepUser from "@/hooks/useKeepUser";
 import { Store } from "@/interfaces/Store";
 import { cloudinaryURL } from "@/config/cloudinary";
 import { createProduct } from "@/services/product/createProduct";
+import { getProducts } from "@/services/product/getProducts";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -66,6 +67,9 @@ const StoreHome = () => {
         "user",
         JSON.stringify({ ...user, token, ownId: store["_id"] })
       );
+
+      const { products } = await getProducts(token, store["_id"]);
+      setProducts(products);
     } catch (error) {
       console.log(error);
       router.push("/auth/login");
