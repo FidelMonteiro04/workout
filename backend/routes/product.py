@@ -71,7 +71,7 @@ def update_product(store_id, product_id):
 
     product_collection = db.get_collection("product")
 
-    existing_product = product_collection.find_one({"_id": ObjectId(product_id), "store_id": store_id})
+    existing_product = product_collection.find_one({"_id": ObjectId(product_id), "store_id": ObjectId(store_id)})
 
     if existing_product is None:
         return jsonify({"error": "Produto não encontrado"}), 404
@@ -80,6 +80,8 @@ def update_product(store_id, product_id):
         jsonschema.validate(product_data, product_Schema)
     except jsonschema.exceptions.ValidationError as err:
         return jsonify({'message': 'Dados do produto inválidos', 'error': str(err)}), 400
+        
+    del product_data["_id"]
 
     product_collection.update_one({"_id": ObjectId(product_id)}, {"$set": product_data})
 
@@ -99,7 +101,7 @@ def delete_product(store_id, product_id):
 
     product_collection = db.get_collection("product")
 
-    existing_product = product_collection.find_one({"_id": ObjectId(product_id), "store_id": store_id})
+    existing_product = product_collection.find_one({"_id": ObjectId(product_id), "store_id": ObjectId(store_id)})
 
     if existing_product is None:
         return jsonify({"error": "Produto não encontrado"}), 404
