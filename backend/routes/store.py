@@ -21,7 +21,7 @@ def get_stores():
     store["_id"] = str(store["_id"])
     store["owner_id"] = str(store["owner_id"])
 
-    return jsonify({"message": "Academia acessada com sucesso!", "store": store})
+    return jsonify({"message": "Loja acessada com sucesso!", "store": store})
 
 @store.route('/stores', methods=['POST'])
 @login_required

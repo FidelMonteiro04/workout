@@ -6,7 +6,7 @@ product_Schema = {
             "type": "string",
     },
         "price": {  
-            "type": "number",
+            "type": "string",
     },
         "description": {
             "type": "string",
