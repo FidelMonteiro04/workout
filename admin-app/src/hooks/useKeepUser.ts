@@ -4,7 +4,8 @@ import { User } from "@/interfaces/User";
 export default function useKeepUser(
   token: string | undefined,
   redirect: () => void,
-  callback: (user: User) => void
+  callback: (user: User) => void,
+  keepOnToken?: (token: string) => Promise<void> | void
 ) {
   useEffect(() => {
     console.log("Chamou o keep user!");
@@ -17,6 +18,8 @@ export default function useKeepUser(
       const user = JSON.parse(recoverData);
       console.log("Dados recuperados: ", user);
       callback(user);
+    } else if (keepOnToken) {
+      keepOnToken(token);
     }
   }, [token]);
 }

@@ -10,7 +10,7 @@ export const getStore = async (token: string) => {
       },
     });
 
-    const store = await response.json();
+    const { store } = await response.json();
 
     return store;
   } catch (error) {

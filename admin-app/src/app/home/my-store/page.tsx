@@ -1,9 +1,10 @@
 "use client";
 
 import { useContext, useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ModalContext } from "@/contexts/Modal";
 import { IProduct } from "@/interfaces/Product";
+import Image from "next/image";
 
 import Button from "../../components/Button";
 import Header from "../../components/Header";
@@ -23,6 +24,7 @@ import Link from "next/link";
 import { getStore } from "@/services/place/getStore";
 import { UserContext } from "@/contexts/User";
 import useKeepUser from "@/hooks/useKeepUser";
+import { Store } from "@/interfaces/Store";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -32,12 +34,18 @@ const StoreHome = () => {
     setUser,
   } = useContext(UserContext);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [store, setStore] = useState(null);
+  const [store, setStore] = useState<Store | null>(null);
+
+  const router = useRouter();
 
   useKeepUser(
     token,
-    () => redirect("/auth/login"),
-    () => handleGetStore()
+    () => router.push("/auth/login"),
+    (user) => {
+      handleGetStore(user.token);
+      setUser(user);
+    },
+    (token) => handleGetStore(token)
   );
 
   const handleEditProduct = (data: any) => {
@@ -45,20 +53,19 @@ const StoreHome = () => {
     setModalOpened("plan");
   };
 
-  const handleGetStore = async () => {
+  const handleGetStore = async (token: string) => {
+    console.log("Executou o getStore");
     try {
       const store = await getStore(token);
-      console.log(store);
+      if (!store) router.push("/register/store");
       setStore(store);
     } catch (error) {
       console.log(error);
-      redirect("/auth/login");
+      router.push("/auth/login");
     }
   };
 
-  useEffect(() => {
-    handleGetStore();
-  }, []);
+  if (!store) return <></>;
 
   return (
     <>
@@ -87,15 +94,17 @@ const StoreHome = () => {
 
       <div className="flex w-full bg-no-repeat items-center justify-center h-full min-h-[140px] md:min-h-[240px] rounded-md relative">
         <div className="hidden absolute opacity-80 inset-0 md:flex items-center justify-center overflow-hidden rounded-md shadow-md">
-          <img
+          <Image
             className="brightness-50 blur-sm"
-            src="https://i.pinimg.com/originals/c1/2c/0c/c12c0c3ef0a757ea81298bf6d12db4b9.jpg"
+            src={store.image}
+            width={1080}
+            height={720}
+            alt={`Imagem da ${store.name}`}
           />
         </div>
         <div
           style={{
-            backgroundImage:
-              "url(https://i.pinimg.com/originals/c1/2c/0c/c12c0c3ef0a757ea81298bf6d12db4b9.jpg)",
+            backgroundImage: `url(${store.image})`,
           }}
           className="bg-cover bg-no-repeat bg-center z-1 rounded-md transition-all duration-300 ease-in-out md:-translate-y-3 max-w-[600px] w-full min-h-[140px] md:min-h-[240px] hover:translate-y-0 hover:max-w-[800px]"
         >
@@ -107,7 +116,7 @@ const StoreHome = () => {
         </div>
       </div>
       <div className="flex justify-between items-center pt-4 mb-6">
-        <h3 className="font-bold text-2xl">MonsterBox</h3>
+        <h3 className="font-bold text-2xl">{store.name}</h3>
         <button className="flex gap-2 py-2 px-4 border-[1px] border-primary-500 font-semibold transition hover:shadow-md rounded-sm text-primary-500 text-xs font items-center">
           <AiFillEdit />
           Editar dados

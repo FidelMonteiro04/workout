@@ -10,7 +10,7 @@ export const getGym = async (token: string) => {
       },
     });
 
-    const gym = await response.json();
+    const { gym } = await response.json();
 
     return gym;
   } catch (error) {

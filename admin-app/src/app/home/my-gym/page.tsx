@@ -3,8 +3,13 @@
 import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "@/contexts/Modal";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import useKeepUser from "@/hooks/useKeepUser";
+
+import { getGym } from "@/services/place/getGym";
 
 import { IPlan } from "@/interfaces/Plan";
+import { Gym } from "@/interfaces/Gym";
 
 import Button from "../../components/Button";
 import Header from "../../components/Header";
@@ -18,8 +23,6 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { UserContext } from "@/contexts/User";
-import useKeepUser from "@/hooks/useKeepUser";
-import { getGym } from "@/services/place/getGym";
 
 const GymHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -28,31 +31,36 @@ const GymHome = () => {
     user: { token, ...user },
     setUser,
   } = useContext(UserContext);
-  const [gym, setGym] = useState({});
+  const [gym, setGym] = useState<Gym | null>(null);
   const [plans, setPlans] = useState<IPlan[]>([]);
 
   const router = useRouter();
 
-  useKeepUser(token, () => router.push("/auth/login"), setUser);
+  console.log("My gym montou!");
+
+  useKeepUser(
+    token,
+    () => router.push("/auth/login"),
+    (user) => {
+      setUser(user), handleGetGym(user.token);
+    },
+    (token) => handleGetGym(token)
+  );
 
   const handleEditPlan = (data: any) => {
     setEditData(data);
     setModalOpened("plan");
   };
 
-  const handleGetGym = async () => {
-    console.log("Token: ", token);
-    if (!token) {
-      //router.push("/auth/login");
-    }
+  const handleGetGym = async (token: string) => {
     const gym = await getGym(token);
-
-    console.log(gym);
+    console.log("Gym: ", gym);
+    setGym(gym);
   };
 
-  useEffect(() => {
-    handleGetGym();
-  }, []);
+  if (!gym) return <></>;
+
+  const urlImage = gym.image;
 
   return (
     <>
@@ -69,20 +77,19 @@ const GymHome = () => {
         onClose={() => setModalOpened(null)}
         editData={editData}
       />
-      <h1 onClick={() => console.log("Token agora: ", token)}>
-        Clica aqui pra mostrar o token
-      </h1>
       <div className="flex w-full bg-no-repeat items-center justify-center h-full min-h-[140px] md:min-h-[240px] rounded-md relative">
         <div className="hidden absolute opacity-80 inset-0 md:flex items-center justify-center overflow-hidden rounded-md shadow-md">
-          <img
+          <Image
+            width={1080}
+            height={720}
             className="brightness-50 blur-sm"
-            src="https://blog.sistemapacto.com.br/wp-content/uploads/2022/04/Blog-650x350-segunda-1280x720-1.webp"
+            src={gym.image}
+            alt={`Imagem da ${gym.name}`}
           />
         </div>
         <div
           style={{
-            backgroundImage:
-              "url(https://blog.sistemapacto.com.br/wp-content/uploads/2022/04/Blog-650x350-segunda-1280x720-1.webp)",
+            backgroundImage: `url(${gym.image})`,
           }}
           className="bg-cover bg-no-repeat bg-center z-1 rounded-md transition-all duration-300 ease-in-out md:-translate-y-3 max-w-[600px] w-full min-h-[140px] md:min-h-[240px] hover:translate-y-0 hover:max-w-[800px]"
         >
@@ -94,7 +101,7 @@ const GymHome = () => {
         </div>
       </div>
       <div className="flex justify-between items-center pt-4 mb-6">
-        <h3 className="font-bold text-2xl">SmartFit</h3>
+        <h3 className="font-bold text-2xl">{gym.name}</h3>
 
         <button className="flex gap-2 py-2 px-4 border-[1px] border-primary-500 font-semibold transition hover:shadow-md rounded-sm text-primary-500 text-xs font items-center">
           <AiFillEdit />
