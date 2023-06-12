@@ -44,7 +44,7 @@ def create_product(store_id):
     except jsonschema.exceptions.ValidationError as err:
         return jsonify({'message': 'Dados do produto inválidos', 'error': str(err)}), 400
 
-    product_data['store_id'] = store_id
+    product_data['store_id'] = ObjectId(store_id)
 
     product_collection = db.get_collection("product")
     result = product_collection.insert_one(product_data)

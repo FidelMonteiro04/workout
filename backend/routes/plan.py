@@ -7,6 +7,25 @@ from schemas.plan import plan_Schema
 
 plan = Blueprint('plan', __name__)
 
+@plan.route('/gyms/<gym_id>/plans', methods=['GET'])
+@login_required
+def get_plans(gym_id):
+    db = get_db()
+    plan_collection = db.get_collection("plan")
+
+    plans_finder = plan_collection.find({ "gym_id": ObjectId(gym_id) })
+    
+    plans = []
+
+    for plan in plans_finder:
+        plan["_id"] = str(plan["_id"])
+        plan["gym_id"] = str(plan["gym_id"])
+        plans.append(plan)
+    
+    if plans is None: return jsonify({ "error": "Não existem produtos cadastrados!"})
+
+    return jsonify({ "message": "Sucesso na busca de produtos!","plans": plans })
+
 @plan.route('/gyms/<gym_id>/plans', methods=['POST'])
 @login_required
 def create_plan(gym_id):
@@ -24,14 +43,14 @@ def create_plan(gym_id):
     except jsonschema.exceptions.ValidationError as err:
         return jsonify({'message': 'Dados do plano inválidos', 'error': str(err)}), 400
 
-    plan_data['gym_id'] = gym_id
-
     plan_collection = db.get_collection("plan")
     if isinstance(plan_data, list):
+        for index in range(0, len(plan_data)):
+            plan_data[index]["gym_id"] = ObjectId(gym_id)
         result = plan_collection.insert_many(plan_data)
 
         if result.acknowledged:
-            inserteds_ids = str(result.inserted_ids)
+            inserted_ids = str(result.inserted_ids)
 
             return jsonify({"message": f"Plano cadastrado com sucesso", "id": inserted_ids}), 201
         else:
