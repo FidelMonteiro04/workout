@@ -25,6 +25,7 @@ import { GiWeightLiftingUp } from "react-icons/gi";
 import { UserContext } from "@/contexts/User";
 import { getPlans } from "@/services/plan/getPlans";
 import { createPlan } from "@/services/plan/createPlan";
+import { updatePlan } from "@/services/plan/updatePlan";
 
 const GymHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -61,9 +62,27 @@ const GymHome = () => {
     setPlans((prev) => [{ ...plan, id: planId }, ...prev]);
   };
 
-  const handleEditPlan = (data: any) => {
+  const handleInitEditPlan = (data: any) => {
+    console.log("Plano inicial: ", data);
     setEditData(data);
     setModalOpened("plan");
+  };
+
+  const handleEditPlan = async (plan: any) => {
+    console.log("Plan: ", plan);
+    try {
+      const formattedData = {
+        _id: plan._id,
+        price: plan?.price,
+        days: Number(plan?.days),
+      };
+      await updatePlan(formattedData, token, user?.ownId as string);
+
+      setPlans((prev) => prev.map((p) => (p._id === plan._id ? plan : p)));
+      setEditData(null);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleGetGym = async (token: string) => {
@@ -92,10 +111,7 @@ const GymHome = () => {
         isOpen={modalOpened === "plan"}
         onAdd={(plan) => handleCreatePlan(plan)}
         onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
-        onEdit={(plan) => {
-          setPlans((prev) => prev.map((p) => (p.id === plan.id ? plan : p)));
-          setEditData(null);
-        }}
+        onEdit={(plan) => handleEditPlan(plan)}
         onClose={() => setModalOpened(null)}
         editData={editData}
       />
@@ -143,7 +159,7 @@ const GymHome = () => {
         {plans.map((plan) => (
           <Plan
             key={plan.id}
-            onClick={() => handleEditPlan({ ...plan })}
+            onClick={() => handleInitEditPlan({ ...plan })}
             {...plan}
           />
         ))}

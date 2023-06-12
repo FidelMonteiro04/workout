@@ -84,7 +84,7 @@ const AddPlanModal = ({
     if (!editData) {
       onAdd(formattedData);
     } else {
-      onEdit({ ...formattedData, id: editData.id });
+      onEdit({ ...formattedData, _id: editData["_id"], id: editData.id });
     }
     handleClose();
   };
