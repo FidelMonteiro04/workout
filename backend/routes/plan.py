@@ -80,7 +80,7 @@ def update_plan(gym_id, plan_id):
 
     plan_collection = db.get_collection("plan")
 
-    existing_plan = plan_collection.find_one({"_id": ObjectId(plan_id), "gym_id": gym_id})
+    existing_plan = plan_collection.find_one({"_id": ObjectId(plan_id), "gym_id": ObjectId(gym_id)})
 
     if existing_plan is None:
         return jsonify({"error": "Plano não encontrado"}), 404
@@ -90,6 +90,7 @@ def update_plan(gym_id, plan_id):
     except jsonschema.exceptions.ValidationError as err:
         return jsonify({'message': 'Dados do plano inválidos', 'erro': str(err)}), 400
 
+    del plan_data["_id"]
     plan_collection.update_one({"_id": ObjectId(plan_id)}, {"$set": plan_data})
 
     return jsonify({"message": "Plano atualizado com sucesso"}), 200
