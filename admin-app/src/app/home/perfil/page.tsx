@@ -2,6 +2,7 @@
 import "@/styles/animations.css";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { BiRename } from "react-icons/bi";
@@ -9,6 +10,7 @@ import { MdAlternateEmail } from "react-icons/md";
 import { FaLock } from "react-icons/fa";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { AiFillEdit } from "react-icons/ai";
+import { BiExit } from "react-icons/bi";
 
 import Input from "@/app/components/Input";
 import Button from "@/app/components/Button";
@@ -21,6 +23,7 @@ const PerfilPage = () => {
     formState: { errors },
   } = useForm();
   const [edit, setEdit] = useState(false);
+  const router = useRouter();
   return (
     <div className="-mt-4">
       <div className="flex w-full justify-between items-center">
@@ -28,13 +31,22 @@ const PerfilPage = () => {
           Meu Perfil
         </h3>
         {!edit && (
-          <button
-            onClick={() => setEdit(true)}
-            className="flex gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
-          >
-            <AiFillEdit />
-            Editar dados
-          </button>
+          <div className="flex gap-3 md:gap-6">
+            <button
+              onClick={() => setEdit(true)}
+              className="flex gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
+            >
+              <AiFillEdit size={20} />
+              Editar dados
+            </button>
+            <button
+              onClick={() => router.push("/auth/login")}
+              className="flex gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
+            >
+              <BiExit size={20} />
+              Sair da conta
+            </button>
+          </div>
         )}
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 justify-center items-center gap-4 mb-4">
