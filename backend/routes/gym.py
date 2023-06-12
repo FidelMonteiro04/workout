@@ -6,6 +6,20 @@ from schemas.gym import gymSchema
 import jsonschema
 
 gym = Blueprint('gym', __name__)
+
+@gym.route("/gyms", methods=['GET'])
+@login_required
+def get_gyms():
+    db = get_db()
+
+    gym_collection = db.get_collection('gym')
+
+    gym = gym_collection.find_one({ "owner_id": g.current_owner["_id"] })
+
+    if gym is None: return jsonify({"error": "Esse usuário não possui nenhuma academia cadastrada!"})
+
+    return jsonify(gym)
+
 @gym.route('/gyms', methods=['POST'])
 @login_required  
 def create_gym():

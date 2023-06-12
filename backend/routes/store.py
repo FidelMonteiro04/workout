@@ -7,6 +7,19 @@ from schemas.store import store_Schema
 
 store = Blueprint('store', __name__)
 
+@store.route("/stores", methods=['GET'])
+@login_required
+def get_stores():
+    db = get_db()
+
+    store_collection = db.get_collection('store')
+
+    store = store_collection.find_one({ "owner_id": g.current_owner["_id"] })
+
+    if store is None: return jsonify({"error": "Esse usuário não possui nenhuma loja cadastrada!"})
+
+    return jsonify(store)
+
 @store.route('/stores', methods=['POST'])
 @login_required
 def create_store():
