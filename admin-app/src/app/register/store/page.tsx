@@ -1,7 +1,9 @@
 "use client";
 import { useContext, useState, useRef } from "react";
-import { formatPhoneNumber } from "@/utils/formatPhone";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+
+import { formatPhoneNumber } from "@/utils/formatPhone";
 
 import { IProduct } from "@/interfaces/Product";
 
@@ -24,10 +26,22 @@ import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
+import { registerStore } from "@/services/place/registerStore";
+import { UserContext } from "@/contexts/User";
+import useKeepUser from "@/hooks/useKeepUser";
 
 const RegisterStore = () => {
+  const { user, setUser } = useContext(UserContext);
   const { image, setImage } = useContext(ImageContext);
   const { modalOpened, setModalOpened } = useContext(ModalContext);
+
+  const router = useRouter();
+
+  useKeepUser(
+    user?.token as string,
+    () => router.push("/auth/register"),
+    setUser
+  );
 
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
     lat: 0,
@@ -37,7 +51,7 @@ const RegisterStore = () => {
   const {
     handleSubmit,
     register,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
     setValue,
     clearErrors,
   } = useForm();
@@ -68,6 +82,24 @@ const RegisterStore = () => {
     });
 
     const { url } = await response.json();
+
+    const formattedData = {
+      ...data,
+      lat: coordinates.lat.toString(),
+      lng: coordinates.lat.toString(),
+      contact: data.contact.replace(/\D/g, ""),
+      image: url,
+    };
+
+    const { storeId } = await registerStore(
+      formattedData,
+      user?.token as string
+    );
+
+    setUser({ ...user, ownId: storeId });
+    sessionStorage.setItem("user", JSON.stringify({ ...user, ownId: storeId }));
+
+    router.push("/home/my-store");
   };
 
   // const handleProductEdit = (product: IProduct) => {
@@ -119,8 +151,8 @@ const RegisterStore = () => {
           <div className="grid grid-cols-1 gap-4">
             <div className="flex flex-col gap-3 pt-4">
               <Input
-                registerField={{ ...register("placeName", { required: true }) }}
-                error={errors.placeName && "O nome do local é obrigatório!"}
+                registerField={{ ...register("name", { required: true }) }}
+                error={errors.name && "O nome do local é obrigatório!"}
                 placeholder="Nome"
                 icon={BsBuildings}
               />
@@ -150,7 +182,7 @@ const RegisterStore = () => {
               />
               <Input
                 registerField={{ ...register("contact", { required: true }) }}
-                error={errors.placeName && "O número de contato é obrigatório!"}
+                error={errors.contact && "O número de contato é obrigatório!"}
                 placeholder="Contato"
                 onChange={(e) =>
                   formatPhoneNumber(e.target.value, (field, value) =>
@@ -168,11 +200,16 @@ const RegisterStore = () => {
                 />
               </div>} */}
               <Button
-                onClick={handleSubmit(onSubmit, () =>
-                  setTimeout(clearErrors, 5000)
-                )}
+                onClick={
+                  !isSubmitting
+                    ? handleSubmit(onSubmit, () =>
+                        setTimeout(clearErrors, 5000)
+                      )
+                    : () => null
+                }
                 text="Finalizar"
                 icon={BsCheck}
+                isLoading={isSubmitting}
               />
             </div>
           </div>

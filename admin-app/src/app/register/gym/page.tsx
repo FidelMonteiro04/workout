@@ -92,7 +92,7 @@ const RegisterGym = () => {
     setUser({ ...user, ownId: gymId });
     sessionStorage.setItem("user", JSON.stringify({ ...user, ownId: gymId }));
 
-    router.push(`/home/my-${user?.ownType}`);
+    router.push(`/home/my-gym`);
   };
 
   const handleEditPlan = (data: any) => {
