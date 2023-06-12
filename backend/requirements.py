@@ -3,7 +3,6 @@ import subprocess
 packages = [
     'flask',
     'flask_pymongo',
-    'bson',
     'jsonschema',
     'PyJWT',
     'Werkzeug',
