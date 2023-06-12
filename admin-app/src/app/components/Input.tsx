@@ -46,7 +46,7 @@ const Input = ({
           type={
             rest.type ? rest.type : password && !visible ? "password" : "text"
           }
-          className="w-full bg-transparent text-zinc-500 placeholder:text-zinc-400 text-lg outline-transparent font-light"
+          className="w-full bg-transparent text-zinc-600 placeholder:text-zinc-400 text-lg outline-transparent font-light"
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
         />
