@@ -107,7 +107,7 @@ def delete_plan(gym_id, plan_id):
 
     plan_collection = db.get_collection("plan")
 
-    result = plan_collection.delete_one({"_id": ObjectId(plan_id), "gym_id": gym_id})
+    result = plan_collection.delete_one({"_id": ObjectId(plan_id), "gym_id": ObjectId(gym_id)})
 
     if result.deleted_count > 0:
         return jsonify({"message": "Plano removido com sucesso"}), 200
