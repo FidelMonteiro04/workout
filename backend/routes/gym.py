@@ -14,11 +14,15 @@ def get_gyms():
 
     gym_collection = db.get_collection('gym')
 
+
     gym = gym_collection.find_one({ "owner_id": g.current_owner["_id"] })
 
     if gym is None: return jsonify({"error": "Esse usuário não possui nenhuma academia cadastrada!"})
 
-    return jsonify(gym)
+    gym["_id"] = str(gym["_id"])
+    gym["owner_id"] = str(gym["owner_id"])
+
+    return jsonify({"message": "Academia acessada com sucesso!", "gym": gym})
 
 @gym.route('/gyms', methods=['POST'])
 @login_required  

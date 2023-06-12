@@ -16,9 +16,12 @@ def get_stores():
 
     store = store_collection.find_one({ "owner_id": g.current_owner["_id"] })
 
-    if store is None: return jsonify({"error": "Esse usuário não possui nenhuma loja cadastrada!"})
+    if store is None: return jsonify({"error": "Esse usuário não possui nenhuma academia cadastrada!"})
 
-    return jsonify(store)
+    store["_id"] = str(store["_id"])
+    store["owner_id"] = str(store["owner_id"])
+
+    return jsonify({"message": "Academia acessada com sucesso!", "store": store})
 
 @store.route('/stores', methods=['POST'])
 @login_required
