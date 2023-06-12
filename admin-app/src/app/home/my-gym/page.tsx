@@ -1,7 +1,9 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ModalContext } from "@/contexts/Modal";
+import { useRouter } from "next/navigation";
+
 import { IPlan } from "@/interfaces/Plan";
 
 import Button from "../../components/Button";
@@ -15,16 +17,42 @@ import { AiFillEdit } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
 import { GiWeightLiftingUp } from "react-icons/gi";
+import { UserContext } from "@/contexts/User";
+import useKeepUser from "@/hooks/useKeepUser";
+import { getGym } from "@/services/place/getGym";
 
 const GymHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
     useContext(ModalContext);
+  const {
+    user: { token, ...user },
+    setUser,
+  } = useContext(UserContext);
+  const [gym, setGym] = useState({});
   const [plans, setPlans] = useState<IPlan[]>([]);
+
+  const router = useRouter();
+
+  useKeepUser(token, () => router.push("/auth/login"), setUser);
 
   const handleEditPlan = (data: any) => {
     setEditData(data);
     setModalOpened("plan");
   };
+
+  const handleGetGym = async () => {
+    console.log("Token: ", token);
+    if (!token) {
+      //router.push("/auth/login");
+    }
+    const gym = await getGym(token);
+
+    console.log(gym);
+  };
+
+  useEffect(() => {
+    handleGetGym();
+  }, []);
 
   return (
     <>
@@ -41,7 +69,9 @@ const GymHome = () => {
         onClose={() => setModalOpened(null)}
         editData={editData}
       />
-
+      <h1 onClick={() => console.log("Token agora: ", token)}>
+        Clica aqui pra mostrar o token
+      </h1>
       <div className="flex w-full bg-no-repeat items-center justify-center h-full min-h-[140px] md:min-h-[240px] rounded-md relative">
         <div className="hidden absolute opacity-80 inset-0 md:flex items-center justify-center overflow-hidden rounded-md shadow-md">
           <img

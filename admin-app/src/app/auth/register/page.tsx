@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
@@ -54,6 +54,10 @@ export default function Register() {
   };
 
   const passWatch = watch("password");
+
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
 
   return (
     <div className="md:flex md:flex-col md:items-center md:justify-center">

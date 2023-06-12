@@ -1,5 +1,5 @@
 export interface User {
-  token?: string;
+  token: string;
   ownType?: "store" | "gym";
   ownId?: string;
 }

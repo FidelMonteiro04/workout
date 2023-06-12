@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import { User } from "@/interfaces/User";
 
 interface IUserContext {
-  user: User | null;
+  user: User;
   setUser: (user: User) => void;
 }
 
@@ -13,7 +13,11 @@ export const UserContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>({
+    token: "",
+    ownType: undefined,
+    ownId: "",
+  });
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

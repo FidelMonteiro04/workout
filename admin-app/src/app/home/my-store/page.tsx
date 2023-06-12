@@ -1,6 +1,7 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { redirect } from "next/navigation";
 import { ModalContext } from "@/contexts/Modal";
 import { IProduct } from "@/interfaces/Product";
 
@@ -19,16 +20,45 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import Link from "next/link";
+import { getStore } from "@/services/place/getStore";
+import { UserContext } from "@/contexts/User";
+import useKeepUser from "@/hooks/useKeepUser";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
     useContext(ModalContext);
+  const {
+    user: { token, ...user },
+    setUser,
+  } = useContext(UserContext);
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [store, setStore] = useState(null);
+
+  useKeepUser(
+    token,
+    () => redirect("/auth/login"),
+    () => handleGetStore()
+  );
 
   const handleEditProduct = (data: any) => {
     setEditData(data);
     setModalOpened("plan");
   };
+
+  const handleGetStore = async () => {
+    try {
+      const store = await getStore(token);
+      console.log(store);
+      setStore(store);
+    } catch (error) {
+      console.log(error);
+      redirect("/auth/login");
+    }
+  };
+
+  useEffect(() => {
+    handleGetStore();
+  }, []);
 
   return (
     <>

@@ -34,7 +34,10 @@ import { User } from "@/interfaces/User";
 
 const RegisterGym = () => {
   const router = useRouter();
-  const { user, setUser } = useContext(UserContext);
+  const {
+    user: { token, ...user },
+    setUser,
+  } = useContext(UserContext);
   const { image, setImage } = useContext(ImageContext);
   const { modalOpened, setModalOpened, editData, setEditData } =
     useContext(ModalContext);
@@ -47,7 +50,7 @@ const RegisterGym = () => {
     clearErrors,
   } = useForm();
 
-  useKeepUser(user?.token, () => router.push("/auth/register"), setUser);
+  useKeepUser(token, () => router.push("/auth/register"), setUser);
 
   const [plans, setPlans] = useState<IPlan[]>([]);
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
@@ -58,7 +61,7 @@ const RegisterGym = () => {
   const imageRef = useRef({} as HTMLImageElement);
 
   const onSubmit = async (data: any) => {
-    console.log("Token: ", user?.token);
+    console.log("Token: ", token);
     const formData = new FormData();
     // const newFileName = generateFileName(image);
 
@@ -87,10 +90,13 @@ const RegisterGym = () => {
       contact: data.contact.replace(/\D/g, ""),
     };
 
-    const { gymId } = await registerGym(formattedData, user?.token as string);
+    const { gymId } = await registerGym(formattedData, token);
 
-    setUser({ ...user, ownId: gymId });
-    sessionStorage.setItem("user", JSON.stringify({ ...user, ownId: gymId }));
+    setUser({ ...user, token, ownId: gymId });
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({ ...user, token, ownId: gymId })
+    );
 
     router.push(`/home/my-gym`);
   };

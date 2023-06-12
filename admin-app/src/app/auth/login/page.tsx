@@ -1,6 +1,7 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,10 +24,17 @@ export default function Login() {
 
   const { setUser } = useContext(UserContext);
 
+  const router = useRouter();
+
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
+
   const onLogin = async (data: any) => {
     try {
       const { token, ownType } = await signin(data);
       setUser({ ownType, token });
+      router.push(`/home/my-${ownType}`);
     } catch (error) {
       console.log(error);
     }

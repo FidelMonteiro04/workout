@@ -2,6 +2,7 @@
 import { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import useKeepUser from "@/hooks/useKeepUser";
 
 import { formatPhoneNumber } from "@/utils/formatPhone";
 
@@ -28,20 +29,18 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 import { registerStore } from "@/services/place/registerStore";
 import { UserContext } from "@/contexts/User";
-import useKeepUser from "@/hooks/useKeepUser";
 
 const RegisterStore = () => {
-  const { user, setUser } = useContext(UserContext);
+  const {
+    user: { token, ...user },
+    setUser,
+  } = useContext(UserContext);
   const { image, setImage } = useContext(ImageContext);
   const { modalOpened, setModalOpened } = useContext(ModalContext);
 
   const router = useRouter();
 
-  useKeepUser(
-    user?.token as string,
-    () => router.push("/auth/register"),
-    setUser
-  );
+  useKeepUser(token, () => router.push("/auth/register"), setUser);
 
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
     lat: 0,
@@ -91,13 +90,13 @@ const RegisterStore = () => {
       image: url,
     };
 
-    const { storeId } = await registerStore(
-      formattedData,
-      user?.token as string
-    );
+    const { storeId } = await registerStore(formattedData, token);
 
-    setUser({ ...user, ownId: storeId });
-    sessionStorage.setItem("user", JSON.stringify({ ...user, ownId: storeId }));
+    setUser({ ...user, token, ownId: storeId });
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({ ...user, token, ownId: storeId })
+    );
 
     router.push("/home/my-store");
   };

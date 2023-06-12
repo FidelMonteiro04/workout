@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { MdStoreMallDirectory as StoreIcon } from "react-icons/md";
 import { BsBoxSeam } from "react-icons/bs";
+import { UserContextProvider } from "@/contexts/User";
 
 const GymNavRoutes = [
   {
@@ -34,19 +35,24 @@ export default function HomeLayout({
   children: React.ReactNode;
 }) {
   const pathName = usePathname();
-  const currentPath = pathName.split("/");
+
+  const currentPlaceType = JSON.parse(sessionStorage.getItem("user") || "")[
+    "ownType"
+  ];
   return (
     <ModalContextProvider>
-      <main className="max-w-[800px] h-full min-h-screen rounded-md shadow-lg mx-auto p-4 overflow-y-auto pb-10 md:pb-4 max-h-screen lg:max-h-full md:border-[1px] md:border-zinc-200 md:my-2">
-        <div className="-mx-4 -mt-4 mb-6 md:mb-8 transition duration-400 hover:drop-shadow-md border-b-[1px] border-zinc-300 bg-white">
-          <Header
-            menuOptions={
-              currentPath.includes("my-gym") ? GymNavRoutes : StoreNavRoutes
-            }
-          />
-        </div>
-        {children}
-      </main>
+      <UserContextProvider>
+        <main className="max-w-[800px] h-full min-h-screen rounded-md shadow-lg mx-auto p-4 overflow-y-auto pb-10 md:pb-4 max-h-screen lg:max-h-full md:border-[1px] md:border-zinc-200 md:my-2">
+          <div className="-mx-4 -mt-4 mb-6 md:mb-8 transition duration-400 hover:drop-shadow-md border-b-[1px] border-zinc-300 bg-white">
+            <Header
+              menuOptions={
+                currentPlaceType === "gym" ? GymNavRoutes : StoreNavRoutes
+              }
+            />
+          </div>
+          {children}
+        </main>
+      </UserContextProvider>
     </ModalContextProvider>
   );
 }
