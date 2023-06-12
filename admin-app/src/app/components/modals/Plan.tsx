@@ -1,5 +1,4 @@
 import { ChangeEvent, useContext, useRef } from "react";
-import { RegisterContext } from "@/app/register/layout";
 import { useForm, Controller } from "react-hook-form";
 
 import { formatPrice } from "@/utils/formatPrice";

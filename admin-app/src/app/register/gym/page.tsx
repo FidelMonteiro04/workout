@@ -31,6 +31,7 @@ import { UserContext } from "@/contexts/User";
 import { registerGym } from "@/services/place/registerGym";
 import useKeepUser from "@/hooks/useKeepUser";
 import { User } from "@/interfaces/User";
+import { createPlan } from "@/services/plan/createPlan";
 
 const RegisterGym = () => {
   const router = useRouter();
@@ -97,6 +98,16 @@ const RegisterGym = () => {
       "user",
       JSON.stringify({ ...user, token, ownId: gymId })
     );
+
+    if (plans.length) {
+      const formattedPlans: {days: number, price: string}[] = plans.map((plan) => {
+        return { price: plan.price, days: Number(plan.days) };
+      })
+
+      const { planId } = await createPlan(formattedPlans, token, gymId);
+
+      console.log("PlanId: ", planId);
+    }
 
     router.push(`/home/my-gym`);
   };
