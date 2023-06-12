@@ -35,7 +35,7 @@ const AddPlanModal = ({
     handleSubmit,
     control,
     clearErrors,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setError,
     reset,
   } = useForm({
@@ -74,7 +74,7 @@ const AddPlanModal = ({
     amountRef.current.value = (Number(amountRef.current.value) - 1).toString();
   };
 
-  const Submit = (data: any) => {
+  const Submit = async (data: any) => {
     if (Number(amountRef.current.value) <= 0)
       return setError("days", {
         message: "Os dias são obrigatórios",
@@ -82,9 +82,9 @@ const AddPlanModal = ({
       });
     const formattedData = { price: data.price, days: amountRef.current.value };
     if (!editData) {
-      onAdd(formattedData);
+      await onAdd(formattedData);
     } else {
-      onEdit({ ...formattedData, _id: editData["_id"], id: editData.id });
+      await onEdit({ ...formattedData, _id: editData["_id"], id: editData.id });
     }
     handleClose();
   };
@@ -158,18 +158,25 @@ const AddPlanModal = ({
           {editData && (
             <Button
               text="Excluir"
-              onClick={handleDelete}
+              disabled={isSubmitting}
+              onClick={!isSubmitting ? handleSubmit(handleDelete) : () => null}
               icon={BsFillTrashFill}
             />
           )}
           <Button
             icon={BsCheck}
             text="Salvar"
-            onClick={handleSubmit(Submit, () =>
-              setTimeout(() => {
-                clearErrors();
-              }, 5000)
-            )}
+            isLoading={!editData ? isSubmitting : false}
+            disabled={isSubmitting}
+            onClick={
+              !isSubmitting
+                ? handleSubmit(Submit, () =>
+                    setTimeout(() => {
+                      clearErrors();
+                    }, 5000)
+                  )
+                : () => null
+            }
             outline
           />
         </div>

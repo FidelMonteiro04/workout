@@ -56,6 +56,7 @@ def create_plan(gym_id):
         else:
             return jsonify({"error": "Erro ao cadastrar plano"}), 500
     else:
+        plan_data["gym_id"] = ObjectId(gym_id)
         result = plan_collection.insert_one(plan_data)
 
         if result.acknowledged:
