@@ -61,6 +61,11 @@ const StoreHome = () => {
       const store = await getStore(token);
       if (!store) router.push("/register/store");
       setStore(store);
+      setUser({ ...user, token, ownId: store["_id"] });
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, token, ownId: store["_id"] })
+      );
     } catch (error) {
       console.log(error);
       router.push("/auth/login");

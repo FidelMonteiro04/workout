@@ -56,6 +56,11 @@ const GymHome = () => {
     const gym = await getGym(token);
     console.log("Gym: ", gym);
     setGym(gym);
+    setUser({ ...user, token, ownId: gym["_id"] });
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify({ ...user, token, ownId: gym["_id"] })
+    );
   };
 
   if (!gym) return <></>;
