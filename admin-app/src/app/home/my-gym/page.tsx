@@ -23,6 +23,8 @@ import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
 import { GiWeightLiftingUp } from "react-icons/gi";
 import { UserContext } from "@/contexts/User";
+import { getPlans } from "@/services/plan/getPlans";
+import { createPlan } from "@/services/plan/createPlan";
 
 const GymHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -47,33 +49,48 @@ const GymHome = () => {
     (token) => handleGetGym(token)
   );
 
+  const handleCreatePlan = async (plan: IPlan) => {
+    const formattedData = { price: plan.price, days: Number(plan.days) };
+
+    const { planId } = await createPlan(
+      formattedData,
+      token,
+      user?.ownId as string
+    );
+
+    setPlans((prev) => [{ ...plan, id: planId }, ...prev]);
+  };
+
   const handleEditPlan = (data: any) => {
     setEditData(data);
     setModalOpened("plan");
   };
 
   const handleGetGym = async (token: string) => {
-    const gym = await getGym(token);
-    console.log("Gym: ", gym);
-    setGym(gym);
-    setUser({ ...user, token, ownId: gym["_id"] });
-    sessionStorage.setItem(
-      "user",
-      JSON.stringify({ ...user, token, ownId: gym["_id"] })
-    );
+    try {
+      const gym = await getGym(token);
+      console.log("Gym: ", gym);
+      setGym(gym);
+      setUser({ ...user, token, ownId: gym["_id"], ownType: "gym" });
+      sessionStorage.setItem(
+        "user",
+        JSON.stringify({ ...user, token, ownId: gym["_id"], ownType: "gym" })
+      );
+
+      const { plans } = await getPlans(token, gym["_id"]);
+      setPlans(plans);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   if (!gym) return <></>;
-
-  const urlImage = gym.image;
 
   return (
     <>
       <AddPlanModal
         isOpen={modalOpened === "plan"}
-        onAdd={(plan) =>
-          setPlans((prev) => [{ ...plan, id: plans.length + 1 }, ...prev])
-        }
+        onAdd={(plan) => handleCreatePlan(plan)}
         onDelete={(id) => setPlans((prev) => prev.filter((p) => p.id !== id))}
         onEdit={(plan) => {
           setPlans((prev) => prev.map((p) => (p.id === plan.id ? plan : p)));

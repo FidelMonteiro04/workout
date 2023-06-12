@@ -58,10 +58,15 @@ const StoreHome = () => {
       const store = await getStore(token);
       if (!store) router.push("/register/store");
       setStore(store);
-      setUser({ ...user, token, ownId: store["_id"] });
+      setUser({ ...user, token, ownId: store["_id"], ownType: "store" });
       sessionStorage.setItem(
         "user",
-        JSON.stringify({ ...user, token, ownId: store["_id"] })
+        JSON.stringify({
+          ...user,
+          token,
+          ownId: store["_id"],
+          ownType: "store",
+        })
       );
 
       const { products } = await getProducts(token, store["_id"]);
