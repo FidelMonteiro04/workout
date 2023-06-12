@@ -1,7 +1,10 @@
 store_Schema = {
     "type": "object",
-    "required": ["name", "description", "lat", "lng", "address", "contact"],
+    "required": ["image", "name", "description", "lat", "lng", "address", "contact"],
     "properties": {
+        'image': {
+            'type': 'string'
+        },
         "name": {
             "type": "string"
         },
