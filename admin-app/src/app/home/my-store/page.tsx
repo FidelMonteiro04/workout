@@ -25,6 +25,8 @@ import { getStore } from "@/services/place/getStore";
 import { UserContext } from "@/contexts/User";
 import useKeepUser from "@/hooks/useKeepUser";
 import { Store } from "@/interfaces/Store";
+import { cloudinaryURL } from "@/config/cloudinary";
+import { createProduct } from "@/services/product/createProduct";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -65,6 +67,34 @@ const StoreHome = () => {
     }
   };
 
+  const handleAddProduct = async (data: any) => {
+    const formData = new FormData();
+
+    formData.append("file", data.image);
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME_PRODUCT as string
+    );
+    formData.append("folder", "/workout/stores/products");
+
+    const response = await fetch(cloudinaryURL, {
+      method: "POST",
+      body: formData,
+    });
+
+    const { url } = await response.json();
+
+    const { productId } = await createProduct(
+      { ...data, image: url },
+      token,
+      user.ownId as string
+    );
+
+    console.log("Product id: ", productId);
+
+    setProducts((prev) => [{ ...data, id: productId }, ...prev]);
+  };
+
   if (!store) return <></>;
 
   return (
@@ -72,12 +102,7 @@ const StoreHome = () => {
       <ProductModal
         editData={editData}
         isOpen={modalOpened === "product"}
-        onAdd={(product) =>
-          setProducts((prev) => [
-            { ...product, id: product.id || prev.length + 1 },
-            ...prev,
-          ])
-        }
+        onAdd={(product) => handleAddProduct(product)}
         onDelete={(id) =>
           setProducts((prev) => prev.filter((product) => product.id !== id))
         }

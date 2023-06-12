@@ -1,12 +1,15 @@
 "use client";
 import "../../styles/scroll.css";
 
+import Image from "next/image";
+
 import { MdAttachMoney } from "react-icons/md";
 
 interface Props {
   id?: string;
   img: string;
   name: string;
+  category: string;
   distributor?: string;
   price: string;
   onClick: () => void;
@@ -19,11 +22,18 @@ const Product = ({ id, img, name, price, distributor, onClick }: Props) => {
       className="flex flex-col p-2 shrink-0 w-[120px] rounded-md shadow-md cursor-pointer transition hover:shadow-lg"
     >
       <div className="flex w-full items-center justify-center mb-2">
-        <img
+        <Image
+          src={img}
+          alt={`Imagem de ${name}`}
+          height={80}
+          width={80}
+          className="w-auto h-full max-h-[80px]"
+        />
+        {/* <img
           src={img}
           alt={`Imagem de ${name}`}
           className="w-auto h-full max-h-[80px]"
-        />
+        /> */}
       </div>
       <div className="little-scroll transition-all overflow-hidden hover:max-w-full hover:overflow-x-auto hover:text-clip no-scroll text-ellipsis mb-2 max-w-[100px]">
         <span className=" font-semibold w-full  whitespace-nowrap  hover:max-w-full transition-all text-ellipsis text-secondary-500 text-sm mb-1 ">

@@ -54,14 +54,14 @@ const ProductModal = ({
   } = useForm({
     defaultValues: {
       name: "",
-      type: "",
+      category: "",
       distributor: "",
       price: "",
       description: "",
     },
     values: {
       name: editData?.name || "",
-      type: editData?.type || "",
+      category: editData?.category || "",
       distributor: editData?.distributor || "",
       price: editData?.price ? formatPrice(editData?.price) : "",
       description: editData?.description || "",
@@ -138,8 +138,8 @@ const ProductModal = ({
         error={errors.description && "A descrição é obrigatória!"}
       />
       <Input
-        registerField={{ ...register("type", { required: true }) }}
-        error={errors.type && "O tipo do produto é obrigatório!"}
+        registerField={{ ...register("category", { required: true }) }}
+        error={errors.category && "O tipo do produto é obrigatório!"}
         placeholder="Tipo"
         icon={BiCategoryAlt}
       />
