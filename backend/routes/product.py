@@ -7,6 +7,26 @@ from schemas.product import product_Schema
 
 product = Blueprint('product', __name__)
 
+@product.route('/stores/<store_id>/products', methods=['GET'])
+@login_required
+def get_products(store_id):
+    db = get_db()
+    product_collection = db.get_collection("product")
+
+    products_finder = product_collection.find({ "store_id": store_id })
+    
+    products = []
+
+    for product in products_finder:
+        product["_id"] = str(product["_id"])
+        product["store_id"] = str(product["store_id"])
+        products.append(product)
+    print(products)
+    
+    if products is None: return jsonify({ "error": "Não existem produtos cadastrados!"})
+
+    return jsonify({ "message": "Sucesso na busca de produtos!","products": products })
+
 @product.route('/stores/<store_id>/products', methods=['POST'])
 @login_required
 def create_product(store_id):
