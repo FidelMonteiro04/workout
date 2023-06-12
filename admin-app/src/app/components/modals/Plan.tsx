@@ -89,8 +89,8 @@ const AddPlanModal = ({
     handleClose();
   };
 
-  const handleDelete = () => {
-    onDelete(editData._id);
+  const handleDelete = async () => {
+    await onDelete(editData._id);
     handleClose();
   };
 

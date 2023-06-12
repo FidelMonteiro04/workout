@@ -122,7 +122,10 @@ const GymHome = () => {
         onAdd={(plan) => handleCreatePlan(plan)}
         onDelete={(id) => handleDeletePlan(id)}
         onEdit={(plan) => handleEditPlan(plan)}
-        onClose={() => setModalOpened(null)}
+        onClose={() => {
+          setModalOpened(null);
+          setEditData(null);
+        }}
         editData={editData}
       />
       <div className="flex w-full bg-no-repeat items-center justify-center h-full min-h-[140px] md:min-h-[240px] rounded-md relative">
