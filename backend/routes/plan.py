@@ -27,13 +27,23 @@ def create_plan(gym_id):
     plan_data['gym_id'] = gym_id
 
     plan_collection = db.get_collection("plan")
-    result = plan_collection.insert_one(plan_data)
+    if isinstance(plan_data, list):
+        result = plan_collection.insert_many(plan_data)
 
-    if result.acknowledged:
-        inserted_id = str(result.inserted_id)
-        return jsonify({"message": f"Plano cadastrado com sucesso", "id": inserted_id}), 201
+        if result.acknowledged:
+            inserteds_ids = str(result.inserted_ids)
+
+            return jsonify({"message": f"Plano cadastrado com sucesso", "id": inserted_ids}), 201
+        else:
+            return jsonify({"error": "Erro ao cadastrar plano"}), 500
     else:
-        return jsonify({"error": "Erro ao cadastrar plano"}), 500
+        result = plan_collection.insert_one(plan_data)
+
+        if result.acknowledged:
+            inserted_id = str(result.inserted_id)
+            return jsonify({"message": f"Plano cadastrado com sucesso", "id": inserted_id}), 201
+        else:
+            return jsonify({"error": "Erro ao cadastrar plano"}), 500
     
 @plan.route('/gyms/<gym_id>/plans/<plan_id>', methods=['PUT'])
 @login_required

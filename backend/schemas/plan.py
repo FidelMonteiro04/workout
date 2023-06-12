@@ -1,12 +1,9 @@
 plan_Schema = {
     "type": "object",
-    "required": ["name", "price", "days"],
+    "required": ["price", "days"],
     "properties": {
-        "name": { 
-            "type": "string",
-    },
         "price": { 
-            "type": "number",
+            "type": "string",
     },
         "days": {  
             "type": "number",
