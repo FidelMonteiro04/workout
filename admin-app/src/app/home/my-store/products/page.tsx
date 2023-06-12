@@ -1,36 +1,33 @@
 "use client";
-import { useContext, useState, useEffect } from "react";
-import ProductModal from "@/app/components/modals/Product";
+import { useContext, useState } from "react";
 import { ModalContext } from "@/contexts/Modal";
+import { useRouter } from "next/navigation";
+
 import { IProduct } from "@/interfaces/Product";
 
+import ProductModal from "@/app/components/modals/Product";
+
 import { BiSearch } from "react-icons/bi";
-import { AiOutlinePlus } from "react-icons/ai";
 import Product from "@/app/components/Product";
 import AddButton from "@/app/components/AddButton";
-
-const mockProduct = {
-  id: Math.floor(Math.random() * 100),
-  image:
-    "https://integralmedica.vteximg.com.br/arquivos/ids/164894-350-350/DARKNESS-CREATINE-ME3129-2_TAMPA-1000x1000.png?v=638119151036900000",
-  name: "Creatina",
-  description: "Qualquer texto aleatório convincente",
-  price: "89,90",
-  distributor: "DistMonster",
-};
+import useKeepUser from "@/hooks/useKeepUser";
+import { UserContext } from "@/contexts/User";
+import { getProducts } from "@/services/product/getProducts";
 
 const ProductsPage = () => {
+  const { user: { token, ...user }, setUser } = useContext(UserContext);
   const { modalOpened, setModalOpened, editData, setEditData } =
     useContext(ModalContext);
-  const [products, setProducts] = useState<IProduct[]>(
-    Array(20).fill(mockProduct)
-  );
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    setFilteredProducts(products);
-  }, []);
+  const router = useRouter();
+
+  useKeepUser(token, () => router.push("/auth/login"), (user) => {
+    setUser(user)
+    handleGetProducts(user.token, user?.ownId as string);
+  }, (token) => handleGetProducts(token, user?.ownId as string));
 
   const onSearch = () => {
     console.log("onSearch");
@@ -51,6 +48,16 @@ const ProductsPage = () => {
 
     setFilteredProducts(filtereds);
   };
+
+  const handleGetProducts = async (token: string, storeId: string) => {
+    try{
+      const { products: resProducts } = await getProducts(token, storeId);
+      setProducts(resProducts);
+      setFilteredProducts(resProducts);
+    }catch(err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -112,13 +119,6 @@ const ProductsPage = () => {
             {...{ ...product, img: product.image, id: product.id?.toString() }}
           />
         ))}
-        <Product
-          img="https://integralmedica.vteximg.com.br/arquivos/ids/164894-350-350/DARKNESS-CREATINE-ME3129-2_TAMPA-1000x1000.png?v=638119151036900000"
-          name="Juliana"
-          price="89,90"
-          onClick={() => null}
-          distributor="DistMonster"
-        />
       </div>
     </>
   );
