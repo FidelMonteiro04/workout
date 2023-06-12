@@ -1,6 +1,8 @@
 "use client";
 import { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+
 import { formatPhoneNumber } from "@/utils/formatPhone";
 
 import { generateFileName } from "@/utils/generateFileName";
@@ -25,8 +27,14 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 import { ImageContext } from "@/contexts/Image";
 import { ModalContext } from "@/contexts/Modal";
+import { UserContext } from "@/contexts/User";
+import { registerGym } from "@/services/place/registerGym";
+import useKeepUser from "@/hooks/useKeepUser";
+import { User } from "@/interfaces/User";
 
 const RegisterGym = () => {
+  const router = useRouter();
+  const { user, setUser } = useContext(UserContext);
   const { image, setImage } = useContext(ImageContext);
   const { modalOpened, setModalOpened, editData, setEditData } =
     useContext(ModalContext);
@@ -35,9 +43,11 @@ const RegisterGym = () => {
     handleSubmit,
     register,
     setValue,
-    formState: { errors, isLoading },
+    formState: { errors, isSubmitting },
     clearErrors,
   } = useForm();
+
+  useKeepUser(user?.token, () => router.push("/auth/register"), setUser);
 
   const [plans, setPlans] = useState<IPlan[]>([]);
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({
@@ -48,6 +58,7 @@ const RegisterGym = () => {
   const imageRef = useRef({} as HTMLImageElement);
 
   const onSubmit = async (data: any) => {
+    console.log("Token: ", user?.token);
     const formData = new FormData();
     // const newFileName = generateFileName(image);
 
@@ -64,6 +75,24 @@ const RegisterGym = () => {
     });
 
     const { url } = await response.json();
+
+    const formattedData = {
+      ...data,
+      lat: coordinates.lat.toString(),
+      lng: coordinates.lng.toString(),
+      personals: Number(data.personals),
+      airConditioner: data.airConditioner === "true",
+      accessibility: data.accessibility === "true",
+      image: url,
+      contact: data.contact.replace(/\D/g, ""),
+    };
+
+    const { gymId } = await registerGym(formattedData, user?.token as string);
+
+    setUser({ ...user, ownId: gymId });
+    sessionStorage.setItem("user", JSON.stringify({ ...user, ownId: gymId }));
+
+    router.push(`/home/my-${user?.ownType}`);
   };
 
   const handleEditPlan = (data: any) => {
@@ -118,8 +147,8 @@ const RegisterGym = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div className="flex flex-col justify-between gap-3 pt-4">
               <Input
-                registerField={{ ...register("placeName", { required: true }) }}
-                error={errors.placeName && "O nome do local é obrigatório!"}
+                registerField={{ ...register("name", { required: true }) }}
+                error={errors.name && "O nome do local é obrigatório!"}
                 placeholder="Nome"
                 icon={BsBuildings}
               />
@@ -128,11 +157,10 @@ const RegisterGym = () => {
                 min={0}
                 maxLength={4}
                 registerField={{
-                  ...register("quantPersonals", { required: true }),
+                  ...register("personals", { required: true }),
                 }}
                 error={
-                  errors.quantPersonals &&
-                  "O número de personais é obrigatório!"
+                  errors.personals && "O número de personais é obrigatório!"
                 }
                 type="number"
                 placeholder="Número de personais"
@@ -162,7 +190,7 @@ const RegisterGym = () => {
               />
               <Input
                 registerField={{ ...register("contact", { required: true }) }}
-                error={errors.placeName && "O número de contato é obrigatório!"}
+                error={errors.contact && "O número de contato é obrigatório!"}
                 placeholder="Contato"
                 icon={ContactIcon}
                 type="tel"
@@ -198,20 +226,20 @@ const RegisterGym = () => {
                   <div className="flex gap-3">
                     <div className="flex gap-2">
                       <input
-                        {...register("airCondioned")}
+                        {...register("airConditioner")}
                         type="radio"
                         id="has-air"
-                        name="airConditioned"
-                        value="true"
+                        name="airConditioner"
+                        value={"true"}
                       />
                       <label htmlFor="has-air">Sim</label>
                     </div>
                     <div className="flex gap-2">
                       <input
-                        {...register("airCondioned")}
+                        {...register("airConditioner")}
                         type="radio"
                         id="no-air"
-                        name="airConditioned"
+                        name="airConditioner"
                         value={"false"}
                         defaultChecked
                       />
@@ -248,10 +276,15 @@ const RegisterGym = () => {
               </div>
 
               <Button
-                onClick={handleSubmit(onSubmit, () =>
-                  setTimeout(clearErrors, 5000)
-                )}
+                onClick={
+                  !isSubmitting
+                    ? handleSubmit(onSubmit, () =>
+                        setTimeout(clearErrors, 5000)
+                      )
+                    : () => null
+                }
                 text="Finalizar"
+                isLoading={isSubmitting}
                 icon={BsCheck}
               />
             </div>

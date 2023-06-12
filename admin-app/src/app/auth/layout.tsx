@@ -1,4 +1,5 @@
 "use client";
+
 import { UserContextProvider } from "@/contexts/User";
 import Image from "next/image";
 

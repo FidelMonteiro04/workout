@@ -2,6 +2,7 @@
 import { ModalContextProvider } from "@/contexts/Modal";
 import Header from "../components/Header";
 import { ImageContextProvider } from "@/contexts/Image";
+import { UserContextProvider } from "@/contexts/User";
 
 export default function RegisterLayout({
   children,
@@ -12,11 +13,13 @@ export default function RegisterLayout({
     <>
       <Header withMenu={false} />
       <ModalContextProvider>
-        <ImageContextProvider>
-          <section className="flex w-full min-h-full flex-col px-6">
-            {children}
-          </section>
-        </ImageContextProvider>
+        <UserContextProvider>
+          <ImageContextProvider>
+            <section className="flex w-full min-h-full flex-col px-6">
+              {children}
+            </section>
+          </ImageContextProvider>
+        </UserContextProvider>
       </ModalContextProvider>
     </>
   );

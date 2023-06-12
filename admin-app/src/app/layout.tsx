@@ -1,3 +1,4 @@
+"use client";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 import Script from "next/script";
