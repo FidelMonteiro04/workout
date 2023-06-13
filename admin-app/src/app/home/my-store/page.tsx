@@ -24,6 +24,7 @@ import { Store } from "@/interfaces/Store";
 import { cloudinaryURL } from "@/config/cloudinary";
 import { createProduct } from "@/services/product/createProduct";
 import { getProducts } from "@/services/product/getProducts";
+import { updateProduct } from "@/services/product/updateProduct";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -47,9 +48,37 @@ const StoreHome = () => {
     (token) => handleGetStore(token)
   );
 
-  const handleEditProduct = (data: any) => {
-    setEditData(data);
-    setModalOpened("plan");
+  const handleEditProduct = async (data: any) => {
+    const newImage = data.image !== editData.image;
+    let formattedData = { ...data };
+
+    if (newImage) {
+      const formData = new FormData();
+
+      formData.append("file", data.image);
+      formData.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME_PRODUCT as string
+      );
+      formData.append("folder", "/workout/stores/products");
+
+      const response = await fetch(cloudinaryURL, {
+        method: "POST",
+        body: formData,
+      });
+
+      const { url, ...rest } = await response.json();
+
+      console.log("Dados da imagem: ", { url, ...rest })
+
+      formattedData.image = url;
+    }
+
+    await updateProduct(formattedData, token, user.ownId as string);
+
+    setProducts((prev) =>
+      prev.map((p) => (p._id === formattedData._id ? formattedData : p))
+    );
   };
 
   const handleGetStore = async (token: string) => {
@@ -116,10 +145,11 @@ const StoreHome = () => {
         onDelete={(id) =>
           setProducts((prev) => prev.filter((product) => product.id !== id))
         }
-        onEdit={(product) =>
-          setProducts((prev) =>
-            prev.map((p) => (p.id === product.id ? product : p))
-          )
+        onEdit={
+          (product) => handleEditProduct(product)
+          // setProducts((prev) =>
+          //   prev.map((p) => (p.id === product.id ? product : p))
+          // )
         }
         onClose={() => {
           setEditData(null);
