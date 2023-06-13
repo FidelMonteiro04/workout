@@ -77,7 +77,7 @@ const AddImage = ({
       )}
       <input
         {...registerField}
-        accept=".jpg, .png, .jpeg"
+        accept=".jpg, .png, .jpeg, .webp"
         hidden
         id="inputFile"
         type="file"

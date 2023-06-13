@@ -25,6 +25,7 @@ import { cloudinaryURL } from "@/config/cloudinary";
 import { createProduct } from "@/services/product/createProduct";
 import { getProducts } from "@/services/product/getProducts";
 import { updateProduct } from "@/services/product/updateProduct";
+import { deleteImage } from "@/services/deleteImage";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -52,29 +53,36 @@ const StoreHome = () => {
     const newImage = data.image !== editData.image;
     let formattedData = { ...data };
 
-    if (newImage) {
-      const formData = new FormData();
+    try {
+      if (newImage) {
+        const formData = new FormData();
 
-      formData.append("file", data.image);
-      formData.append(
-        "upload_preset",
-        process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME_PRODUCT as string
-      );
-      formData.append("folder", "/workout/stores/products");
+        formData.append("file", data.image);
+        formData.append(
+          "upload_preset",
+          process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME_PRODUCT as string
+        );
+        formData.append("folder", "/workout/stores/products");
 
-      const response = await fetch(cloudinaryURL, {
-        method: "POST",
-        body: formData,
-      });
+        const response = await fetch(cloudinaryURL, {
+          method: "POST",
+          body: formData,
+        });
 
-      const { url, ...rest } = await response.json();
+        const { url, ...rest } = await response.json();
 
-      console.log("Dados da imagem: ", { url, ...rest })
+        console.log("Dados da imagem: ", { url, ...rest });
 
-      formattedData.image = url;
+        formattedData.image = url;
+
+        await deleteImage(editData.image);
+      }
+
+      await updateProduct(formattedData, token, user.ownId as string);
+    } catch (err) {
+      console.log(err);
+      return;
     }
-
-    await updateProduct(formattedData, token, user.ownId as string);
 
     setProducts((prev) =>
       prev.map((p) => (p._id === formattedData._id ? formattedData : p))
