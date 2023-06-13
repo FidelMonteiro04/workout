@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import logo from "../../../public/logo.svg";
+
 import { usePathname } from "next/navigation";
 
 import { IconType } from "react-icons";
@@ -25,7 +27,7 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
         divisor && "border-b-[1px] border-zinc-600 shadow-md"
       }`}
     >
-      <Image src="../logo.svg" width={140} height={140} alt="Workout logo" />
+      <Image src={logo} width={140} height={140} alt="Workout logo" />
       {withMenu && (
         <>
           <nav className="hidden md:flex gap-4 items-center">

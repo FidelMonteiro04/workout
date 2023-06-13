@@ -2,7 +2,7 @@ import "@/styles/animations.css";
 
 interface Props {
   size?: number;
-  alternative?: boolean;
+  alternative?: "whiteBg" | "primaryBg";
   thickness?: number;
 }
 
@@ -12,12 +12,13 @@ const Loading = ({ alternative, size, thickness }: Props) => {
       style={{
         height: size ? `${size}px` : "16px",
         width: size ? `${size}px` : "16px",
+        borderWidth: thickness ? `${thickness}px` : "2px",
       }}
-      className={`spin rounded-full border-2 ${
-        alternative
+      className={`spin rounded-full ${
+        alternative === "primaryBg"
           ? "border-primary-500 border-t-white"
-          : "border-white border-t-zinc-400/60"
-      }`}
+          : "border-zinc-200 border-t-primary-500"
+      } ${!alternative && "border-white border-t-zinc-400/60"}`}
     ></div>
   );
 };

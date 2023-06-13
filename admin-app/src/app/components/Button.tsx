@@ -35,7 +35,9 @@ const Button = ({
       onClick={onClick}
       {...rest}
     >
-      {isLoading && <Loading alternative={outline} size={20} />}
+      {isLoading && (
+        <Loading alternative={outline ? "primaryBg" : undefined} size={20} />
+      )}
       {!isLoading && Icon && <Icon size={20} />}
       {!isLoading && text}
     </button>

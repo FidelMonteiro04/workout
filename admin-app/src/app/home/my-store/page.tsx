@@ -30,6 +30,7 @@ import { UserContext } from "@/contexts/User";
 import useKeepUser from "@/hooks/useKeepUser";
 import { Store } from "@/interfaces/Store";
 import { cloudinaryURL } from "@/config/cloudinary";
+import Loading from "@/app/components/Loading";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -40,6 +41,7 @@ const StoreHome = () => {
   } = useContext(UserContext);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [store, setStore] = useState<Store | null>(null);
+  const [loadingProducts, setLoadingProducts] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -110,11 +112,25 @@ const StoreHome = () => {
         })
       );
 
-      const { products } = await getProducts(token, store["_id"]);
-      setProducts(products);
+      await handleGetProducts(token, store["_id"]);
     } catch (error) {
       console.log(error);
       router.push("/auth/login");
+    }
+  };
+
+  const handleGetProducts = async (tokenParam?: string, storeId?: string) => {
+    setLoadingProducts(true);
+    try {
+      const { products } = await getProducts(
+        tokenParam || token,
+        storeId || (user?.ownId as string)
+      );
+      setProducts(products);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingProducts(false);
     }
   };
 
@@ -220,10 +236,17 @@ const StoreHome = () => {
         )}
       </div>
       <div className="p-2 flex gap-4 mb-2 w-full overflow-x-auto">
-        <div className="my-auto">
-          <AddButton onClick={() => setModalOpened("product")} />
-        </div>
-        {!products.length && (
+        {loadingProducts ? (
+          <div className="my-auto flex items-center justify-center font-semibold gap-3 text-lg">
+            <Loading size={32} thickness={3} />
+            Carregando produtos...
+          </div>
+        ) : (
+          <div className="my-auto">
+            <AddButton onClick={() => setModalOpened("product")} />
+          </div>
+        )}
+        {!products.length && !loadingProducts && (
           <h3 className="self-center text-sm lg:text-base">
             Parece que não há nenhum produto ainda...
           </h3>
