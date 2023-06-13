@@ -238,7 +238,7 @@ const StoreHome = () => {
       <div className="p-2 flex gap-4 mb-2 w-full overflow-x-auto">
         {loadingProducts ? (
           <div className="my-auto flex items-center justify-center font-semibold gap-3 text-lg">
-            <Loading size={32} thickness={3} />
+            <Loading alternative="whiteBg" size={32} thickness={3} />
             Carregando produtos...
           </div>
         ) : (
