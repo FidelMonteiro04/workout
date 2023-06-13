@@ -12,6 +12,14 @@ import StatisticRow from "../../components/StatisticRow";
 import ProductModal from "@/app/components/modals/Product";
 import Product from "@/app/components/Product";
 
+import {
+  getProducts,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "@/services/product";
+import { deleteImage } from "@/services/deleteImage";
+
 import { AiFillEdit } from "react-icons/ai";
 import { AiFillTag } from "react-icons/ai";
 import { AiOutlineUnorderedList as ListProductIcon } from "react-icons/ai";
@@ -22,10 +30,6 @@ import { UserContext } from "@/contexts/User";
 import useKeepUser from "@/hooks/useKeepUser";
 import { Store } from "@/interfaces/Store";
 import { cloudinaryURL } from "@/config/cloudinary";
-import { createProduct } from "@/services/product/createProduct";
-import { getProducts } from "@/services/product/getProducts";
-import { updateProduct } from "@/services/product/updateProduct";
-import { deleteImage } from "@/services/deleteImage";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =
@@ -142,6 +146,16 @@ const StoreHome = () => {
     setProducts((prev) => [{ ...data, _id: productId }, ...prev]);
   };
 
+  const handleDeleteProduct = async (id: string, urlImage: string) => {
+    try {
+      await deleteProduct(id, token, user?.ownId as string);
+      await deleteImage(urlImage);
+      setProducts((prev) => prev.filter((product) => product._id !== id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!store) return <></>;
 
   return (
@@ -150,9 +164,7 @@ const StoreHome = () => {
         editData={editData}
         isOpen={modalOpened === "product"}
         onAdd={(product) => handleAddProduct(product)}
-        onDelete={(id) =>
-          setProducts((prev) => prev.filter((product) => product.id !== id))
-        }
+        onDelete={(id, urlImage) => handleDeleteProduct(id, urlImage)}
         onEdit={
           (product) => handleEditProduct(product)
           // setProducts((prev) =>

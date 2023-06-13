@@ -25,7 +25,7 @@ interface Props {
   editData?: any;
   onAdd: (data: any) => void;
   onEdit: (data: any) => void;
-  onDelete: (data: any) => void;
+  onDelete: (id: string, urlImage: string) => void;
   onClose: () => void;
 }
 
@@ -74,7 +74,7 @@ const ProductModal = ({
   };
 
   const handleDelete = async () => {
-    await onDelete(editData._id);
+    await onDelete(editData._id, editData.image);
     handleClose();
   };
 
