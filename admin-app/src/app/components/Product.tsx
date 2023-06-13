@@ -50,12 +50,12 @@ const Product = ({
       </div>
       <div className="flex justify-between -mt-1 items-center w-full relative">
         <div className="hover:bg-white z-[5] max-w-[50%] hover:max-w-full w-full text-ellipsis transition-all overflow-x-hidden overflow-hidden">
-          <span className="font-semibold text-zinc-600 text-xs  ">
+          <span className="font-semibold text-zinc-600 text-xs whitespace-nowrap ">
             {distributor}
           </span>
         </div>
-        <div className="absolute w-1/2 flex items-center justify-center text-primary-500 right-[3px]">
-          <MdAttachMoney size={16} className="shrink-0" />
+        <div className="absolute w-1/2 flex items-center justify-center text-primary-500 right-[2px]">
+          <MdAttachMoney size={16} className="" />
           <span className="font-bold text-xs">{price}</span>
         </div>
       </div>
