@@ -170,8 +170,8 @@ const GymHome = () => {
           /> */}
         </div>
       </div>
-      <div className="flex justify-between items-center pt-4 mb-6">
-        <h3 className="font-bold text-2xl">{gym.name}</h3>
+      <div className="flex justify-between items-center pt-4 mb-3">
+        <h2 className="font-bold text-2xl">{gym.name}</h2>
 
         <button
           onClick={() => router.push("/edit/gym")}

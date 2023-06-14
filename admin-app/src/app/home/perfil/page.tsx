@@ -79,14 +79,14 @@ const PerfilPage = () => {
           <div className="flex gap-3 md:gap-6">
             <button
               onClick={() => setEdit(true)}
-              className="flex border-[1px] border-primary-500 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
+              className="flex border-[1px] border-primary-500 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold transition hover:text-primary-400 text-primary-500 items-center justify-center text-sm"
             >
               <AiFillEdit size={20} />
               <span className=" ">Editar</span>
             </button>
             <button
               onClick={() => router.push("/auth/login")}
-              className="flex border-[1px] border-primary-500 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
+              className="flex border-[1px] transition hover:text-primary-400 border-primary-500 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
             >
               <BiExit size={20} />
               <span className="">Sair</span>
