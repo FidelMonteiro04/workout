@@ -60,7 +60,7 @@ const GymHome = () => {
       user?.ownId as string
     );
 
-    setPlans((prev) => [{ ...plan, id: planId }, ...prev]);
+    setPlans((prev) => [{ ...plan, _id: planId }, ...prev]);
   };
 
   const handleInitEditPlan = (data: any) => {
@@ -180,6 +180,9 @@ const GymHome = () => {
           <AiFillEdit />
           Editar dados
         </button>
+      </div>
+      <div className="mb-4 max-w-[95%]">
+        <span className="text-lg text-zinc-600 w-full">{gym.description}</span>
       </div>
       <h3 className="text-lg font-semibold mb-2">Planos</h3>
       <div className="p-2 flex gap-4 mb-2 w-full overflow-x-auto">

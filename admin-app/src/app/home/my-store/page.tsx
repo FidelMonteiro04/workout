@@ -229,15 +229,20 @@ const StoreHome = () => {
           Editar dados
         </button>
       </div>
+      <div className="mb-4 max-w-[95%]">
+        <span className="text-lg text-zinc-600 w-full">
+          {store.description}
+        </span>
+      </div>
       <div className="flex w-full justify-between items-center">
         <h3 className="text-lg font-semibold mb-2">Produtos</h3>
         {!!products.length && (
           <Link
             href="/home/my-store/products"
-            className="flex transition text-primary-500 hover:text-primary-600 justify-center items-center text-xs font-semibold gap-1"
+            className="flex transition text-primary-500 hover:text-primary-400 justify-center items-center text-sm font-semibold gap-2"
           >
             <ListProductIcon />
-            Ver em lista
+            <span>Ver em lista</span>
           </Link>
         )}
       </div>

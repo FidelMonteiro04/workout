@@ -5,18 +5,13 @@ import { useRouter } from "next/navigation";
 
 import { formatPhoneNumber } from "@/utils/formatPhone";
 
-import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
 
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-import Plan from "@/app/components/Plan";
-import AddButton from "@/app/components/AddButton";
-import AddPlanModal from "@/app/components/modals/Plan";
-import LocationModal from "@/app/components/modals/Location";
 
-import { IPlan } from "@/interfaces/Plan";
+import LocationModal from "@/app/components/modals/Location";
 
 import { BsBuildings } from "react-icons/bs";
 import { HiOutlineUserGroup as PersonalIcon } from "react-icons/hi";
@@ -24,13 +19,12 @@ import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 
-import { BsCheck } from "react-icons/bs";
 import { ImageContext } from "@/contexts/Image";
 import { ModalContext } from "@/contexts/Modal";
 import { UserContext } from "@/contexts/User";
-import { registerGym } from "@/services/place/registerGym";
+
 import useKeepUser from "@/hooks/useKeepUser";
-import { User } from "@/interfaces/User";
+
 import { getGym } from "@/services/place/getGym";
 import { Gym } from "@/interfaces/Gym";
 import { deleteImage } from "@/services/deleteImage";
@@ -97,14 +91,14 @@ const EditGym = () => {
   const handleGetGym = async (token: string) => {
     setLoadingGym(true);
     try {
-      const gym = await getGym(token);
-      console.log("Gym: ", gym);
-      setGym(gym);
-      setImage(gym.image);
-      if (gym) {
-        setCoordinates({ lat: Number(gym.lat), lng: Number(gym.lng) });
+      const { gym: gymRes } = await getGym(token);
+      console.log("Gym: ", gymRes);
+      setGym(gymRes);
+      setImage(gymRes.image);
+      if (gymRes) {
+        setCoordinates({ lat: Number(gymRes.lat), lng: Number(gymRes.lng) });
       }
-      console.log("Gym: ", gym);
+      console.log("Gym: ", gymRes);
     } catch (err) {
       console.log(err);
     } finally {
@@ -190,7 +184,7 @@ const EditGym = () => {
                 error={errors.image && "É necessário ter uma imagem!"}
                 alt="Imagem da academia"
               />
-              <div className="grid grid-cols-1 gap-1">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-4">
                 <div className="flex flex-col justify-between gap-3 pt-4">
                   <Input
                     registerField={{ ...register("name", { required: true }) }}
@@ -235,6 +229,13 @@ const EditGym = () => {
                     onClick={() => setModalOpened("location")}
                   />
 
+                  {/* {<Button
+                text="Localização"
+                icon={LocationIcon}
+                onClick={() => setModalOpened("location")}
+              />} */}
+                </div>
+                <div className="flex flex-col pt-4 h-full justify-between">
                   <Input
                     registerField={{
                       ...register("instagram", {
@@ -263,14 +264,7 @@ const EditGym = () => {
                       )
                     }
                   />
-                  {/* {<Button
-                text="Localização"
-                icon={LocationIcon}
-                onClick={() => setModalOpened("location")}
-              />} */}
-                </div>
-                <div className="flex flex-col pt-4 h-full justify-between">
-                  <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col gap-2">
                       <span className="font-semibold text-sm">
                         Climatizado?
