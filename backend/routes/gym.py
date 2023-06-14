@@ -73,7 +73,7 @@ def update_gym(gym_id):
         jsonschema.validate(gym_data, gymSchema)
     except jsonschema.exceptions.ValidationError as err:
         return jsonify({'message': 'Dados de academia inválidos', 'erro': str(err)}), 400
-
+    
     result = gym_collection.update_one({"_id": ObjectId(gym_id)}, {"$set": gym_data})
 
     if result.modified_count > 0:
