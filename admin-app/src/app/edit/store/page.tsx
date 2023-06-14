@@ -168,7 +168,7 @@ const EditStore = () => {
                 error={errors.image && "É necessário ter uma imagem!"}
                 alt="Imagem da academia"
               />
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-3 pt-4">
                   <Input
                     registerField={{ ...register("name", { required: true }) }}
@@ -197,13 +197,16 @@ const EditStore = () => {
                     icon={AddressIcon}
                     onClick={() => setModalOpened("location")}
                   />
-
+                </div>
+                <div className="flex flex-col gap-3 pt-4">
                   <Input
                     registerField={{
                       ...register("instagram", {
-                        pattern:
-                          /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/i,
-                        message: "Instagram inválido!",
+                        pattern: {
+                          value:
+                            /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/i,
+                          message: "Instagram inválido!",
+                        },
                       }),
                     }}
                     error={errors.instagram && "Instagram inválido!"}
