@@ -6,9 +6,6 @@ import useKeepUser from "@/hooks/useKeepUser";
 
 import { formatPhoneNumber } from "@/utils/formatPhone";
 
-import { IProduct } from "@/interfaces/Product";
-
-import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
 import { ImageContext } from "@/contexts/Image";
 import { ModalContext } from "@/contexts/Modal";
@@ -16,24 +13,20 @@ import { ModalContext } from "@/contexts/Modal";
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-import AddButton from "@/app/components/AddButton";
-import Product from "@/app/components/Product";
-import ProductModal from "@/app/components/modals/Product";
+
 import LocationModal from "@/app/components/modals/Location";
 
 import { BsBuildings } from "react-icons/bs";
 import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
-import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
-import { BsCheck } from "react-icons/bs";
-import { registerStore } from "@/services/place/registerStore";
 import { UserContext } from "@/contexts/User";
 import { getStore } from "@/services/place/getStore";
 import { Store } from "@/interfaces/Store";
 import { updateStore } from "@/services/place/updateStore";
 import { deleteImage } from "@/services/deleteImage";
 import Loading from "@/app/components/Loading";
+import TextArea from "@/app/components/TextArea";
 
 const EditStore = () => {
   const {
@@ -71,6 +64,7 @@ const EditStore = () => {
   } = useForm({
     values: {
       name: store?.name || "",
+      description: store?.description || "",
       instagram: store?.instagram || "",
       contact: formatPhoneNumber(store?.contact || "", () => null) || "",
       address: store?.address || "",
@@ -138,15 +132,6 @@ const EditStore = () => {
     }
   };
 
-  // const handleProductEdit = (product: IProduct) => {
-  //   setEditData(product);
-  //   setModalOpened("product");
-  // };
-
-  // const editProduct = (product: IProduct) => {
-  //   setProducts((prev) => prev.map((p) => (p.id !== product.id ? p : product)));
-  // };
-
   const handleAddAddress = (
     address: string,
     coordinates: { lat: number; lng: number }
@@ -162,14 +147,6 @@ const EditStore = () => {
         onFinish={handleAddAddress}
         isOpen={modalOpened === "location"}
       />
-      {/* {<ProductModal
-        onDelete={(id) =>
-          setProducts((prev) => prev.filter((p) => p.id !== id))
-        }
-        onAdd={handleAddProduct}
-        onEdit={editProduct}
-        isOpen={modalOpened === "product"}
-      />} */}
 
       <h2 className="text-2xl lg:text-3xl text-secondary-500 max-w-[240px] lg:max-w-full font-semibold mb-6 lg:mb-0">
         Cadastro da Loja
@@ -199,7 +176,17 @@ const EditStore = () => {
                     placeholder="Nome"
                     icon={BsBuildings}
                   />
-
+                  <TextArea
+                    registerField={{
+                      ...register("description", {
+                        required: {
+                          value: true,
+                          message: "A descrição é obrigatória!",
+                        },
+                      }),
+                    }}
+                    error={errors.description?.message}
+                  />
                   <Input
                     registerField={{
                       ...register("address", { required: true }),

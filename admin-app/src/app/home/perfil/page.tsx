@@ -36,7 +36,6 @@ const PerfilPage = () => {
     values: {
       name: owner?.name || "",
       email: owner?.email || "",
-      password: owner?.password || "",
       cnpj: formatCnpj(owner?.cnpj || "", () => null) || "",
     },
   });

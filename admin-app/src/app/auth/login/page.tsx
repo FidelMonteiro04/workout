@@ -23,6 +23,7 @@ export default function Login() {
   } = useForm();
 
   const { setUser } = useContext(UserContext);
+  const [responseError, setResponseError] = useState("");
 
   const router = useRouter();
 
@@ -32,11 +33,15 @@ export default function Login() {
 
   const onLogin = async (data: any) => {
     try {
-      const { token, ownType } = await signin(data);
+      const { token, ownType, error } = await signin(data);
+      if (error || !token) {
+        console.log(error);
+        return;
+      }
       setUser({ ownType, token });
       router.push(`/home/my-${ownType}`);
     } catch (error) {
-      console.log(error);
+      console.log("Entrou no catch");
     }
   };
 

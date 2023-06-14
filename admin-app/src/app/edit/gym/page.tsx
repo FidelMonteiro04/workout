@@ -36,6 +36,7 @@ import { Gym } from "@/interfaces/Gym";
 import { deleteImage } from "@/services/deleteImage";
 import { updateGym } from "@/services/place/updateGym";
 import Loading from "@/app/components/Loading";
+import TextArea from "@/app/components/TextArea";
 
 const EditGym = () => {
   const router = useRouter();
@@ -59,6 +60,7 @@ const EditGym = () => {
   } = useForm({
     values: {
       name: gym?.name || "",
+      description: gym?.description || "",
       personals: gym?.personals || "",
       instagram: gym?.instagram || "",
       contact: formatPhoneNumber(gym?.contact || "", () => null) || "",
@@ -195,6 +197,17 @@ const EditGym = () => {
                     error={errors.name && "O nome do local é obrigatório!"}
                     placeholder="Nome"
                     icon={BsBuildings}
+                  />
+                  <TextArea
+                    registerField={{
+                      ...register("description", {
+                        required: {
+                          value: true,
+                          message: "A descrição é obrigatória!",
+                        },
+                      }),
+                    }}
+                    error={errors.description?.message}
                   />
                   <Input
                     max={200}

@@ -3,6 +3,7 @@ export interface Store {
   owner_id: string;
   image: string;
   name: string;
+  description: string;
   address: string;
   lat: string;
   lng: string;
