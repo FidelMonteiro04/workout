@@ -20,10 +20,12 @@ import { getOwner } from "@/services/owner/getOwner";
 import { Owner } from "@/interfaces/Owner";
 import { updateOwner } from "@/services/owner/updateOwner";
 import { formatCnpj } from "@/utils/formatCnpj";
+import Loading from "@/app/components/Loading";
 
 const PerfilPage = () => {
   const [edit, setEdit] = useState(false);
   const [owner, setOwner] = useState<Owner | null>(null);
+  const [loadingOwner, setLoadingOwner] = useState(false);
 
   const {
     register,
@@ -56,8 +58,15 @@ const PerfilPage = () => {
   );
 
   const getUser = async (token: string) => {
-    const { owner: resOwner } = await getOwner(token);
-    setOwner(resOwner);
+    setLoadingOwner(true);
+    try {
+      const { owner: resOwner } = await getOwner(token);
+      setOwner(resOwner);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingOwner(false);
+    }
   };
 
   const handleUpdateUser = async (data: any) => {
@@ -75,7 +84,7 @@ const PerfilPage = () => {
         <h3 className="text-2xl text-secondary-500 font-semibold mb-4 text-center">
           Meu Perfil
         </h3>
-        {!edit && (
+        {!edit && !loadingOwner && (
           <div className="flex gap-3 md:gap-6">
             <button
               onClick={() => setEdit(true)}
@@ -94,80 +103,90 @@ const PerfilPage = () => {
           </div>
         )}
       </div>
-      <div className="grid grid-cols-1 justify-center items-center gap-4 mb-4">
-        <div className="flex flex-col items-center justify-center">
-          <div>
-            <label>Nome</label>
-            <Input
-              registerField={{
-                ...register("name", {
-                  required: {
-                    value: true,
-                    message: "O nome é obrigatório",
-                  },
-                }),
-              }}
-              placeholder="Nome"
-              icon={BiRename}
-              readOnly={!edit}
-              error={errors.name?.message}
-            />
+      {loadingOwner ? (
+        <div className="flex w-full justify-center">
+          <div className="mt-3 flex items-center font-semibold gap-3 text-lg">
+            <Loading alternative="whiteBg" size={32} thickness={3} />
+            Carregando seus dados...
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center">
-          <div>
-            <label>Email</label>
-            <Input
-              registerField={{
-                ...register("email", {
-                  required: {
-                    value: true,
-                    message: "Email é obrigatório",
-                  },
-                }),
-              }}
-              placeholder="Email"
-              icon={MdAlternateEmail}
-              readOnly={!edit}
-              error={errors.email?.message}
-              type="email"
-            />
+      ) : (
+        <div className="grid grid-cols-1 justify-center items-center gap-4 mb-4">
+          <div className="flex flex-col items-center justify-center">
+            <div>
+              <label>Nome</label>
+              <Input
+                registerField={{
+                  ...register("name", {
+                    required: {
+                      value: true,
+                      message: "O nome é obrigatório",
+                    },
+                  }),
+                }}
+                placeholder="Nome"
+                icon={BiRename}
+                readOnly={!edit}
+                error={errors.name?.message}
+              />
+            </div>
           </div>
-        </div>
+          <div className="flex flex-col items-center justify-center">
+            <div>
+              <label>Email</label>
+              <Input
+                registerField={{
+                  ...register("email", {
+                    required: {
+                      value: true,
+                      message: "Email é obrigatório",
+                    },
+                  }),
+                }}
+                placeholder="Email"
+                icon={MdAlternateEmail}
+                readOnly={!edit}
+                error={errors.email?.message}
+                type="email"
+              />
+            </div>
+          </div>
 
-        <div className="flex flex-col items-center justify-center">
-          <div>
-            <label>CNPJ</label>
-            <Input
-              registerField={{
-                ...register("cnpj", {
-                  required: {
-                    value: true,
-                    message: "CNPJ é obrigatório",
-                  },
-                  maxLength: {
-                    message: "CNPJ precisa de 14 dígitos",
-                    value: 18,
-                  },
-                  minLength: {
-                    message: "CNPJ precisa de 14 dígitos",
-                    value: 18,
-                  },
-                }),
-              }}
-              placeholder="CNPJ"
-              icon={HiOutlineDocumentText}
-              readOnly={!edit}
-              onChange={(e) =>
-                formatCnpj(e.target.value, (field, value) =>
-                  setValue(field as "cnpj", value)
-                )
-              }
-              error={errors.cnpj?.message}
-            />
+          <div className="flex flex-col items-center justify-center">
+            <div>
+              <label>CNPJ</label>
+              <Input
+                registerField={{
+                  ...register("cnpj", {
+                    required: {
+                      value: true,
+                      message: "CNPJ é obrigatório",
+                    },
+                    maxLength: {
+                      message: "CNPJ precisa de 14 dígitos",
+                      value: 18,
+                    },
+                    minLength: {
+                      message: "CNPJ precisa de 14 dígitos",
+                      value: 18,
+                    },
+                  }),
+                }}
+                placeholder="CNPJ"
+                icon={HiOutlineDocumentText}
+                readOnly={!edit}
+                onChange={(e) =>
+                  formatCnpj(e.target.value, (field, value) =>
+                    setValue(field as "cnpj", value)
+                  )
+                }
+                error={errors.cnpj?.message}
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
       {edit && (
         <div className="slide-in flex w-full justify-center items-center">
           <div className="flex gap-4 w-full max-w-[240px]">
