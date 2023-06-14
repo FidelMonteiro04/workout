@@ -27,7 +27,7 @@ const Header = ({ withMenu = true, divisor = false, menuOptions }: Props) => {
         divisor && "border-b-[1px] border-zinc-600 shadow-md"
       }`}
     >
-      <Image src={logo} width={140} height={140} alt="Workout logo" />
+      <Image src={logo} width={140} height={40} alt="Workout logo" />
       {withMenu && (
         <>
           <nav className="hidden md:flex gap-4 items-center">
