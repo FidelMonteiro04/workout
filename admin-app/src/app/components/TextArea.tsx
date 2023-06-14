@@ -25,7 +25,7 @@ const TextArea = ({ error, registerField }: Props) => {
           placeholder="Descrição"
           className={`resize-none font-light w-full ${
             focus ? "h-[64px]" : "h-[28px]"
-          } transition-all pr-1 outline-transparent text-zinc-600 placeholder:text-zinc-400`}
+          } transition-all text-lg pr-1 outline-transparent text-zinc-600 placeholder:text-zinc-400`}
         />
       </div>
       <small className="text-red-600 text-xs">{error}</small>

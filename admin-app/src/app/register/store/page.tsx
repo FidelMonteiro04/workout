@@ -29,6 +29,7 @@ import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
 import { registerStore } from "@/services/place/registerStore";
 import { UserContext } from "@/contexts/User";
+import TextArea from "@/app/components/TextArea";
 
 const RegisterStore = () => {
   const {
@@ -155,7 +156,17 @@ const RegisterStore = () => {
                 placeholder="Nome"
                 icon={BsBuildings}
               />
-
+              <TextArea
+                registerField={{
+                  ...register("description", {
+                    required: {
+                      value: true,
+                      message: "A descrição é obrigatória!",
+                    },
+                  }),
+                }}
+                error={errors.description?.message as string}
+              />
               <Input
                 registerField={{
                   ...register("address", { required: true }),

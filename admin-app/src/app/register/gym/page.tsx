@@ -32,6 +32,7 @@ import { registerGym } from "@/services/place/registerGym";
 import useKeepUser from "@/hooks/useKeepUser";
 import { User } from "@/interfaces/User";
 import { createPlan } from "@/services/plan/createPlan";
+import TextArea from "@/app/components/TextArea";
 
 const RegisterGym = () => {
   const router = useRouter();
@@ -100,9 +101,11 @@ const RegisterGym = () => {
     );
 
     if (plans.length) {
-      const formattedPlans: {days: number, price: string}[] = plans.map((plan) => {
-        return { price: plan.price, days: Number(plan.days) };
-      })
+      const formattedPlans: { days: number; price: string }[] = plans.map(
+        (plan) => {
+          return { price: plan.price, days: Number(plan.days) };
+        }
+      );
 
       const { planId } = await createPlan(formattedPlans, token, gymId);
 
@@ -168,6 +171,17 @@ const RegisterGym = () => {
                 error={errors.name && "O nome do local é obrigatório!"}
                 placeholder="Nome"
                 icon={BsBuildings}
+              />
+              <TextArea
+                registerField={{
+                  ...register("description", {
+                    required: {
+                      value: true,
+                      message: "A descrição é obrigatória!",
+                    },
+                  }),
+                }}
+                error={errors.description?.message as string}
               />
               <Input
                 max={200}

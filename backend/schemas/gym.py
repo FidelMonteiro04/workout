@@ -2,12 +2,15 @@ from schemas.owner import ownerSchema
 
 gymSchema = {
     'type': 'object',
-    'required': ['image', 'name', 'airConditioner', 'personals','accessibility', "contact", 'lat', 'lng', 'address'],
+    'required': ['image', 'name', "description", 'airConditioner', 'personals','accessibility', "contact", 'lat', 'lng', 'address'],
     'properties': {
         'image': {
             'type': 'string'
         },
         'name': {
+            'type': 'string'
+        },
+        'description': {
             'type': 'string'
         },
         'airConditioner': {
