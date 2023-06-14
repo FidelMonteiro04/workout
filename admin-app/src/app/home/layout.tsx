@@ -36,7 +36,7 @@ export default function HomeLayout({
 }) {
   const pathName = usePathname();
 
-  const currentPlaceType = JSON.parse(sessionStorage.getItem("user") || "")[
+  const currentPlaceType = JSON.parse(sessionStorage.getItem("user") || "{}")[
     "ownType"
   ];
   return (
