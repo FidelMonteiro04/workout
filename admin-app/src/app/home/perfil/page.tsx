@@ -1,13 +1,12 @@
 "use client";
 import "@/styles/animations.css";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { BiRename } from "react-icons/bi";
 import { MdAlternateEmail } from "react-icons/md";
-import { FaLock } from "react-icons/fa";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { AiFillEdit } from "react-icons/ai";
 import { BiExit } from "react-icons/bi";
@@ -45,6 +44,9 @@ const PerfilPage = () => {
     user: { token, ...user },
     setUser,
   } = useContext(UserContext);
+
+  const buttonsDivRef = useRef({} as HTMLDivElement);
+
   const router = useRouter();
 
   useKeepUser(
@@ -78,6 +80,13 @@ const PerfilPage = () => {
     setEdit(false);
   };
 
+  const cancelEditing = () => {
+    reset();
+    buttonsDivRef.current.classList.remove("slide-in");
+    buttonsDivRef.current.classList.add("slide-out");
+    setTimeout(() => setEdit(false), 400);
+  };
+
   return (
     <div className="-mt-4">
       <div className="flex w-full justify-between items-center">
@@ -85,7 +94,7 @@ const PerfilPage = () => {
           Meu Perfil
         </h3>
         {!edit && !loadingOwner && (
-          <div className="flex gap-3 md:gap-6">
+          <div className="flex gap-3 md:gap-6 simple-fade">
             <button
               onClick={() => setEdit(true)}
               className="flex border-[1px] border-primary-500 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold transition hover:text-primary-400 text-primary-500 items-center justify-center text-sm"
@@ -188,16 +197,16 @@ const PerfilPage = () => {
       )}
 
       {edit && (
-        <div className="slide-in flex w-full justify-center items-center">
+        <div
+          ref={buttonsDivRef}
+          className="slide-in flex w-full justify-center items-center"
+        >
           <div className="flex gap-4 w-full max-w-[240px]">
             <Button
               outline
               disabled={isSubmitting}
               text="Cancelar"
-              onClick={() => {
-                reset();
-                setEdit(false);
-              }}
+              onClick={cancelEditing}
             />
             <Button
               text="Salvar"

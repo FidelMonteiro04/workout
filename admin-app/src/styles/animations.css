@@ -47,6 +47,15 @@
   }
 }
 
+@keyframes simpleFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -58,7 +67,14 @@
 .slide-in {
   animation: slideIn 0.5s ease-in-out;
 }
+.slide-out {
+  animation: slideOut 0.5s ease-in-out;
+}
 
 .spin {
   animation: spin 0.5s ease-in-out infinite;
+}
+
+.simple-fade {
+  animation: simpleFade 0.2s ease-in-out;
 }
