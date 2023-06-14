@@ -16,12 +16,12 @@ import { IProduct } from "@/interfaces/Product";
 
 import ProductModal from "@/app/components/modals/Product";
 
-import { BiSearch } from "react-icons/bi";
 import Product from "@/app/components/Product";
 import AddButton from "@/app/components/AddButton";
 import useKeepUser from "@/hooks/useKeepUser";
 import { UserContext } from "@/contexts/User";
 import Loading from "@/app/components/Loading";
+import InputSearch from "@/app/components/InputSearch";
 
 const ProductsPage = () => {
   const {
@@ -34,8 +34,6 @@ const ProductsPage = () => {
 
   const [products, setProducts] = useState<IProduct[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([]);
-
-  const [search, setSearch] = useState("");
 
   const [loadingProducts, setLoadingProducts] = useState(false);
 
@@ -51,9 +49,9 @@ const ProductsPage = () => {
     (token) => handleGetProducts(token, user?.ownId as string)
   );
 
-  const onSearch = () => {
-    console.log("onSearch");
+  const onSearch = (search: string) => {
     const filtereds: IProduct[] = [];
+
     for (let product of products) {
       let productName = product.name.toLowerCase();
       let isEqual = true;
@@ -191,24 +189,7 @@ const ProductsPage = () => {
         }}
       />
       <div className="flex w-full -mt-4 justify-between items-center mb-4">
-        <div className="flex gap-2 px-2 items-center py-3 rounded-lg bg-zinc-100 text-zinc-400">
-          <input
-            placeholder="Pesquise por produtos..."
-            className="outline-none bg-transparent placeholder:text-zinc-400"
-            value={search}
-            onChange={
-              !loadingProducts ? (e) => setSearch(e.target.value) : () => null
-            }
-            onKeyUp={
-              !loadingProducts
-                ? (event) => {
-                    if (event.key === "Enter") onSearch();
-                  }
-                : () => null
-            }
-          />
-          <BiSearch size={20} />
-        </div>
+        <InputSearch onSearch={onSearch} disableSearch={loadingProducts} />
         <AddButton onClick={() => setModalOpened("product")} />
       </div>
 
