@@ -210,9 +210,11 @@ const RegisterGym = () => {
               <Input
                 registerField={{
                   ...register("instagram", {
-                    pattern:
-                      /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/i,
-                    message: "Instagram inválido!",
+                    pattern: {
+                      value:
+                        /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/i,
+                      message: "Instagram inválido!",
+                    },
                   }),
                 }}
                 error={errors.instagram && "Instagram inválido!"}
