@@ -11,12 +11,11 @@ import { getGym } from "@/services/place/getGym";
 import { IPlan } from "@/interfaces/Plan";
 import { Gym } from "@/interfaces/Gym";
 
-import Button from "../../components/Button";
-import Header from "../../components/Header";
 import AddButton from "../../components/AddButton";
 import Plan from "../../components/Plan";
 import StatisticRow from "../../components/StatisticRow";
 import AddPlanModal from "../../components/modals/Plan";
+import Loading from "@/app/components/Loading";
 
 import { AiFillEdit } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
@@ -36,6 +35,8 @@ const GymHome = () => {
   } = useContext(UserContext);
   const [gym, setGym] = useState<Gym | null>(null);
   const [plans, setPlans] = useState<IPlan[]>([]);
+
+  const [plansLoading, setPlansLoading] = useState(false);
 
   const router = useRouter();
 
@@ -106,10 +107,24 @@ const GymHome = () => {
         JSON.stringify({ ...user, token, ownId: gym["_id"], ownType: "gym" })
       );
 
-      const { plans } = await getPlans(token, gym["_id"]);
-      setPlans(plans);
+      await handleGetPlans(token, gym["_id"]);
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleGetPlans = async (tokenParam: string, gymId: string) => {
+    setPlansLoading(true);
+    try {
+      const { plans } = await getPlans(
+        tokenParam || token,
+        gymId || (user?.ownId as string)
+      );
+      setPlans(plans);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setPlansLoading(false);
     }
   };
 
@@ -154,17 +169,27 @@ const GymHome = () => {
       <div className="flex justify-between items-center pt-4 mb-6">
         <h3 className="font-bold text-2xl">{gym.name}</h3>
 
-        <button className="flex gap-2 py-2 px-4 border-[1px] border-primary-500 font-semibold transition hover:shadow-md rounded-sm text-primary-500 text-xs font items-center">
+        <button
+          onClick={() => router.push("/edit/gym")}
+          className="flex gap-2 py-2 px-4 border-[1px] border-primary-500 font-semibold transition hover:shadow-md rounded-sm text-primary-500 text-xs font items-center"
+        >
           <AiFillEdit />
           Editar dados
         </button>
       </div>
       <h3 className="text-lg font-semibold mb-2">Planos</h3>
       <div className="p-2 flex gap-4 mb-2 w-full overflow-x-auto">
-        <div className="my-auto">
-          <AddButton onClick={() => setModalOpened("plan")} />
-        </div>
-        {!plans.length && (
+        {plansLoading ? (
+          <div className="my-auto flex items-center justify-center font-semibold gap-3 text-lg">
+            <Loading alternative="whiteBg" size={32} thickness={3} />
+            Carregando planos...
+          </div>
+        ) : (
+          <div className="my-auto">
+            <AddButton onClick={() => setModalOpened("plan")} />
+          </div>
+        )}
+        {!plans.length && !plansLoading && (
           <h3 className="self-center text-sm lg:text-base">
             Parece que não há nenhum plano ainda...
           </h3>

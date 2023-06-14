@@ -20,4 +20,6 @@ export const formatPhoneNumber = (
     );
   }
   callback("contact", formattedValue);
+
+  return formattedValue;
 };

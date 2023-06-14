@@ -218,7 +218,10 @@ const StoreHome = () => {
       </div>
       <div className="flex justify-between items-center pt-4 mb-6">
         <h3 className="font-bold text-2xl">{store.name}</h3>
-        <button className="flex gap-2 py-2 px-4 border-[1px] border-primary-500 font-semibold transition hover:shadow-md rounded-sm text-primary-500 text-xs font items-center">
+        <button
+          onClick={() => router.push("/edit/store")}
+          className="flex gap-2 py-2 px-4 border-[1px] border-primary-500 font-semibold transition hover:shadow-md rounded-sm text-primary-500 text-xs font items-center"
+        >
           <AiFillEdit />
           Editar dados
         </button>
