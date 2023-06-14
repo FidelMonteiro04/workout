@@ -17,4 +17,6 @@ export const formatCnpj = (
     "$1.$2.$3/$4-$5"
   );
   callback("cnpj", formattedValue);
+
+  return formattedValue;
 };
