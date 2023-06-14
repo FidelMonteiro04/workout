@@ -1,12 +1,15 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
-import { ModalContext } from "@/contexts/Modal";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ModalContext } from "@/contexts/Modal";
+import { UserContext } from "@/contexts/User";
 import Image from "next/image";
+
 import useKeepUser from "@/hooks/useKeepUser";
 
-import { getGym } from "@/services/place/getGym";
+import { getGym } from "@/services/place/gym/getGym";
+import { getPlans, createPlan, updatePlan, deletePlan } from "@/services/plan";
 
 import { IPlan } from "@/interfaces/Plan";
 import { Gym } from "@/interfaces/Gym";
@@ -20,11 +23,6 @@ import Loading from "@/app/components/Loading";
 import { AiFillEdit } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
-import { UserContext } from "@/contexts/User";
-import { getPlans } from "@/services/plan/getPlans";
-import { createPlan } from "@/services/plan/createPlan";
-import { updatePlan } from "@/services/plan/updatePlan";
-import { deletePlan } from "@/services/plan/deletePlan";
 
 const GymHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =

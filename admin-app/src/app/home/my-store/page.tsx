@@ -1,16 +1,21 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ModalContext } from "@/contexts/Modal";
 import { IProduct } from "@/interfaces/Product";
 import Image from "next/image";
 import Link from "next/link";
+import { UserContext } from "@/contexts/User";
 
 import AddButton from "../../components/AddButton";
 import StatisticRow from "../../components/StatisticRow";
 import ProductModal from "@/app/components/modals/Product";
+import { getStore } from "@/services/place/store";
+import Loading from "@/app/components/Loading";
 import Product from "@/app/components/Product";
+
+import useKeepUser from "@/hooks/useKeepUser";
 
 import {
   getProducts,
@@ -18,19 +23,16 @@ import {
   updateProduct,
   deleteProduct,
 } from "@/services/product";
+import { cloudinaryURL } from "@/config/cloudinary";
 import { deleteImage } from "@/services/deleteImage";
+
+import { Store } from "@/interfaces/Store";
 
 import { AiFillEdit } from "react-icons/ai";
 import { AiFillTag } from "react-icons/ai";
 import { AiOutlineUnorderedList as ListProductIcon } from "react-icons/ai";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { TbStarsFilled } from "react-icons/tb";
-import { getStore } from "@/services/place/getStore";
-import { UserContext } from "@/contexts/User";
-import useKeepUser from "@/hooks/useKeepUser";
-import { Store } from "@/interfaces/Store";
-import { cloudinaryURL } from "@/config/cloudinary";
-import Loading from "@/app/components/Loading";
 
 const StoreHome = () => {
   const { modalOpened, setModalOpened, editData, setEditData } =

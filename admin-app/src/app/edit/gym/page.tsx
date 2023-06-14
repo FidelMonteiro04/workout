@@ -25,7 +25,7 @@ import { UserContext } from "@/contexts/User";
 
 import useKeepUser from "@/hooks/useKeepUser";
 
-import { getGym } from "@/services/place/getGym";
+import { getGym } from "@/services/place/gym/getGym";
 import { Gym } from "@/interfaces/Gym";
 import { deleteImage } from "@/services/deleteImage";
 import { updateGym } from "@/services/place/updateGym";

@@ -21,7 +21,7 @@ import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { UserContext } from "@/contexts/User";
-import { getStore } from "@/services/place/getStore";
+import { getStore } from "@/services/place/store/getStore";
 import { Store } from "@/interfaces/Store";
 import { updateStore } from "@/services/place/updateStore";
 import { deleteImage } from "@/services/deleteImage";
