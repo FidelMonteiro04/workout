@@ -251,7 +251,7 @@ const EditStore = () => {
                       outline
                       onClick={
                         !isSubmitting
-                          ? () => router.push("home/my-gym")
+                          ? () => router.push("home/my-store")
                           : () => null
                       }
                       text="Cancelar"
