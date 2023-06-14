@@ -99,7 +99,10 @@ const StoreHome = () => {
     console.log("Executou o getStore");
     try {
       const store = await getStore(token);
-      if (!store) router.push("/register/store");
+      if (!store) {
+        router.push("/register/store");
+        return;
+      }
       setStore(store);
       setUser({ ...user, token, ownId: store["_id"], ownType: "store" });
       sessionStorage.setItem(

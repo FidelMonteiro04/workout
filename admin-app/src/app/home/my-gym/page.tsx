@@ -98,7 +98,11 @@ const GymHome = () => {
 
   const handleGetGym = async (token: string) => {
     try {
-      const gym = await getGym(token);
+      const { gym } = await getGym(token);
+      if (!gym) {
+        router.push("/register/gym");
+        return;
+      }
       console.log("Gym: ", gym);
       setGym(gym);
       setUser({ ...user, token, ownId: gym["_id"], ownType: "gym" });

@@ -12,7 +12,7 @@ export const getGym = async (token: string) => {
 
     const { gym } = await response.json();
 
-    return gym;
+    return { gym };
   } catch (error) {
     return { error };
   }
