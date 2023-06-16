@@ -31,7 +31,7 @@ def register():
     if owner_exists(owner_collection, "cnpj", owner_data["cnpj"]):
         return jsonify({"error": "Já existe um proprietário com esse CNPJ"}), 400
     
-    hashed_password = generate_password_hash(owner_data["password"], method='pbkdf2', salt_length=12)
+    hashed_password = generate_password_hash(owner_data["password"], method='PBKDF2', salt_length=12)
     owner_data["password"] = hashed_password
 
     result = owner_collection.insert_one(owner_data)
