@@ -6,7 +6,8 @@ packages = [
     'jsonschema',
     'PyJWT',
     'Werkzeug',
-    "flask-cors"
+    "flask-cors",
+    "python-dotenv"
 ]
 
 for package in packages:

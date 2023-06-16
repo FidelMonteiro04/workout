@@ -6,10 +6,14 @@ from routes.plan import plan
 from routes.store import store
 from routes.product import product
 from extensions.db import init_app
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def create_app():
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "123456789"
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
     init_app(app)
     app.register_blueprint(admin)
     app.register_blueprint(plan)
