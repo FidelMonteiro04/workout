@@ -18,7 +18,6 @@ export const createPlan = async (
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
-      cache: "no-store",
     });
 
     const { id: planId } = await response.json();

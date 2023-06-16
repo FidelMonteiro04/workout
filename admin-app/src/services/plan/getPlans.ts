@@ -8,7 +8,6 @@ export const getPlans = async (token: string, placeId: string) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      cache: "no-store",
     });
 
     const { plans } = await response.json();

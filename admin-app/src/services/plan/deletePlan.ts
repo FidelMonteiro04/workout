@@ -12,7 +12,6 @@ export const deletePlan = async (
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      cache: "no-store",
     });
 
     return response;

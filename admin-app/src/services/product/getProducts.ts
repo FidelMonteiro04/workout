@@ -8,7 +8,6 @@ export const getProducts = async (token: string, placeId: string) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      cache: "no-store",
     });
 
     const { products } = await response.json();

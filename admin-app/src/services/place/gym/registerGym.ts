@@ -22,7 +22,6 @@ export const registerGym = async (data: DataRequest, token: string) => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
-      cache: "no-store",
     });
 
     const { id: gymId } = await response.json();
