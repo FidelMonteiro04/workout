@@ -89,7 +89,10 @@ export default function Register() {
         <Input
           registerField={{
             ...register("password", {
-              required: true,
+              required: {
+                value: true,
+                message: "A senha é obrigatória!",
+              },
               minLength: {
                 message: "A senha deve ter pelo menos 8 dígitos",
                 value: 8,
