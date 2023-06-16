@@ -22,6 +22,7 @@ export const createProduct = async (
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
+      cache: "no-store",
     });
 
     const { id: productId } = await response.json();

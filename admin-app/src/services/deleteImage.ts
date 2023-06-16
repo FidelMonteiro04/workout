@@ -31,6 +31,7 @@ export const deleteImage = async (url: string) => {
     await fetch(requestUrl, {
       method: "POST",
       body: formData,
+      cache: "no-store",
     });
 
     return "Image deleted!";

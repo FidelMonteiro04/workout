@@ -25,6 +25,7 @@ export const updateProduct = async (
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
+        cache: "no-store",
       }
     );
 

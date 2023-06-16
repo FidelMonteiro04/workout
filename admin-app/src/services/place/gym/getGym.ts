@@ -8,6 +8,7 @@ export const getGym = async (token: string) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      cache: "no-store",
     });
 
     const { gym } = await response.json();

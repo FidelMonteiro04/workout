@@ -14,6 +14,7 @@ export const deleteProduct = async (
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        cache: "no-store",
       }
     );
 

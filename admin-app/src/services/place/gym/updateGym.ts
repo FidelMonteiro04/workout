@@ -26,6 +26,7 @@ export const updateGym = async (
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
+      cache: "no-store",
     });
 
     return response;

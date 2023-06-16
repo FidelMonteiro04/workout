@@ -15,6 +15,7 @@ export const updateOwner = async (token: string, data: DataRequest) => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
+      cache: "no-store",
     });
 
     return response;

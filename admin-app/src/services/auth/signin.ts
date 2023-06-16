@@ -13,6 +13,7 @@ export const signin = async (data: DataRequest) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      cache: "no-store",
     });
 
     const { token, ownType } = await response.json();
