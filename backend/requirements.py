@@ -7,7 +7,8 @@ packages = [
     'PyJWT',
     'Werkzeug',
     "flask-cors",
-    "python-dotenv"
+    "python-dotenv",
+    "gunicorn"
 ]
 
 for package in packages:
