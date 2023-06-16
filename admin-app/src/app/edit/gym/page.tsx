@@ -5,13 +5,20 @@ import { useRouter } from "next/navigation";
 
 import { formatPhoneNumber } from "@/utils/formatPhone";
 
+import useKeepUser from "@/hooks/useKeepUser";
+
+import { getGym, updateGym } from "@/services/place/gym";
+import { deleteImage } from "@/services/deleteImage";
 import { cloudinaryURL } from "@/config/cloudinary";
 
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-
 import LocationModal from "@/app/components/modals/Location";
+import Loading from "@/app/components/Loading";
+import TextArea from "@/app/components/TextArea";
+
+import { Gym } from "@/interfaces/Gym";
 
 import { BsBuildings } from "react-icons/bs";
 import { HiOutlineUserGroup as PersonalIcon } from "react-icons/hi";
@@ -22,15 +29,6 @@ import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { ImageContext } from "@/contexts/Image";
 import { ModalContext } from "@/contexts/Modal";
 import { UserContext } from "@/contexts/User";
-
-import useKeepUser from "@/hooks/useKeepUser";
-
-import { getGym } from "@/services/place/gym/getGym";
-import { Gym } from "@/interfaces/Gym";
-import { deleteImage } from "@/services/deleteImage";
-import { updateGym } from "@/services/place/updateGym";
-import Loading from "@/app/components/Loading";
-import TextArea from "@/app/components/TextArea";
 
 const EditGym = () => {
   const router = useRouter();

@@ -6,27 +6,27 @@ import useKeepUser from "@/hooks/useKeepUser";
 
 import { formatPhoneNumber } from "@/utils/formatPhone";
 
+import { Store } from "@/interfaces/Store";
+
 import { cloudinaryURL } from "@/config/cloudinary";
+import { getStore, updateStore } from "@/services/place/store";
+import { deleteImage } from "@/services/deleteImage";
+
 import { ImageContext } from "@/contexts/Image";
 import { ModalContext } from "@/contexts/Modal";
 
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-
 import LocationModal from "@/app/components/modals/Location";
+import Loading from "@/app/components/Loading";
+import TextArea from "@/app/components/TextArea";
 
 import { BsBuildings } from "react-icons/bs";
 import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
 import { UserContext } from "@/contexts/User";
-import { getStore } from "@/services/place/store/getStore";
-import { Store } from "@/interfaces/Store";
-import { updateStore } from "@/services/place/updateStore";
-import { deleteImage } from "@/services/deleteImage";
-import Loading from "@/app/components/Loading";
-import TextArea from "@/app/components/TextArea";
 
 const EditStore = () => {
   const {
