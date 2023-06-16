@@ -7,6 +7,14 @@ import { formatPhoneNumber } from "@/utils/formatPhone";
 
 import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
+import { createPlan } from "@/services/plan";
+import { registerGym } from "@/services/place/gym";
+
+import { ImageContext } from "@/contexts/Image";
+import { ModalContext } from "@/contexts/Modal";
+import { UserContext } from "@/contexts/User";
+
+import useKeepUser from "@/hooks/useKeepUser";
 
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
@@ -15,6 +23,7 @@ import Plan from "@/app/components/Plan";
 import AddButton from "@/app/components/AddButton";
 import AddPlanModal from "@/app/components/modals/Plan";
 import LocationModal from "@/app/components/modals/Location";
+import TextArea from "@/app/components/TextArea";
 
 import { IPlan } from "@/interfaces/Plan";
 
@@ -23,16 +32,7 @@ import { HiOutlineUserGroup as PersonalIcon } from "react-icons/hi";
 import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
-import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
-import { ImageContext } from "@/contexts/Image";
-import { ModalContext } from "@/contexts/Modal";
-import { UserContext } from "@/contexts/User";
-import { registerGym } from "@/services/place/registerGym";
-import useKeepUser from "@/hooks/useKeepUser";
-import { User } from "@/interfaces/User";
-import { createPlan } from "@/services/plan/createPlan";
-import TextArea from "@/app/components/TextArea";
 
 const RegisterGym = () => {
   const router = useRouter();

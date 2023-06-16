@@ -2,34 +2,29 @@
 import { useContext, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+
 import useKeepUser from "@/hooks/useKeepUser";
 
 import { formatPhoneNumber } from "@/utils/formatPhone";
 
-import { IProduct } from "@/interfaces/Product";
-
-import { generateFileName } from "@/utils/generateFileName";
 import { cloudinaryURL } from "@/config/cloudinary";
+import { registerStore } from "@/services/place/store";
+
 import { ImageContext } from "@/contexts/Image";
 import { ModalContext } from "@/contexts/Modal";
+import { UserContext } from "@/contexts/User";
 
 import AddImage from "@/app/components/AddImage";
 import Button from "@/app/components/Button";
 import Input from "@/app/components/Input";
-import AddButton from "@/app/components/AddButton";
-import Product from "@/app/components/Product";
-import ProductModal from "@/app/components/modals/Product";
 import LocationModal from "@/app/components/modals/Location";
+import TextArea from "@/app/components/TextArea";
 
 import { BsBuildings } from "react-icons/bs";
 import { BsFillSignpostSplitFill as AddressIcon } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { BsFillTelephoneFill as ContactIcon } from "react-icons/bs";
-import { HiOutlineLocationMarker as LocationIcon } from "react-icons/hi";
 import { BsCheck } from "react-icons/bs";
-import { registerStore } from "@/services/place/registerStore";
-import { UserContext } from "@/contexts/User";
-import TextArea from "@/app/components/TextArea";
 
 const RegisterStore = () => {
   const {
