@@ -15,8 +15,6 @@ import { MdAttachMoney } from "react-icons/md";
 import { BsTruck } from "react-icons/bs";
 import { BsCheck } from "react-icons/bs";
 import { BsFillTrashFill } from "react-icons/bs";
-import { BsChatLeftText } from "react-icons/bs";
-import { MdClose } from "react-icons/md";
 import { BiCategoryAlt } from "react-icons/bi";
 import TextArea from "../TextArea";
 
@@ -58,6 +56,7 @@ const ProductModal = ({
       distributor: "",
       price: "",
       description: "",
+      image: "",
     },
     values: {
       name: editData?.name || "",
@@ -70,6 +69,7 @@ const ProductModal = ({
 
   const handleClose = () => {
     reset();
+    setImage(null);
     onClose();
   };
 

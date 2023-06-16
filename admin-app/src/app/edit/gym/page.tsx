@@ -50,6 +50,9 @@ const EditGym = () => {
     formState: { errors, isSubmitting },
     clearErrors,
   } = useForm({
+    defaultValues: {
+      image: "",
+    },
     values: {
       name: gym?.name || "",
       description: gym?.description || "",
@@ -237,9 +240,11 @@ const EditGym = () => {
                   <Input
                     registerField={{
                       ...register("instagram", {
-                        pattern:
-                          /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/i,
-                        message: "Instagram inválido!",
+                        pattern: {
+                          value:
+                            /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/i,
+                          message: "Instagram inválido!",
+                        },
                       }),
                     }}
                     error={errors.instagram && "Instagram inválido!"}
@@ -258,7 +263,7 @@ const EditGym = () => {
                     type="tel"
                     onChange={(e) =>
                       formatPhoneNumber(e.target.value, (field, value) =>
-                        setValue(field, value)
+                        setValue(field as "contact", value)
                       )
                     }
                   />

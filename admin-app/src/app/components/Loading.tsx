@@ -18,7 +18,7 @@ const Loading = ({ alternative, size, thickness }: Props) => {
         alternative === "primaryBg"
           ? "border-primary-500 border-t-white"
           : "border-zinc-200 border-t-primary-500"
-      } ${!alternative && "border-white border-t-zinc-400/60"}`}
+      } ${!alternative && "border-zinc-100 border-t-white"}`}
     ></div>
   );
 };

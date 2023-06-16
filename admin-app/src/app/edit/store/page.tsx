@@ -62,6 +62,9 @@ const EditStore = () => {
     setValue,
     clearErrors,
   } = useForm({
+    defaultValues: {
+      image: "",
+    },
     values: {
       name: store?.name || "",
       description: store?.description || "",
@@ -223,7 +226,7 @@ const EditStore = () => {
                     placeholder="Contato"
                     onChange={(e) =>
                       formatPhoneNumber(e.target.value, (field, value) =>
-                        setValue(field, value)
+                        setValue(field as "contact", value)
                       )
                     }
                     icon={ContactIcon}
