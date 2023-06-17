@@ -1,6 +1,8 @@
 # WorkOut
 O WorkOut é um projeto de AP II, que visa desenvolver um sistema completo de gerenciamento de academias e lojas voltadas para a área fitness. Ele consiste em um ambiente integrado, fornecendo uma plataforma para clientes, academias e lojas interagirem de forma eficiente e eficaz.
 
+[Prototipação no Figma](https://www.figma.com/file/IpAoLRqilbTroIX8pcW1sm/Workout?type=design&node-id=0%3A1&t=vGJEUlS505a67pGe-1)
+
 <br>
 <p align="center">  
   <img src="https://img.shields.io/static/v1?label=STATUS&message=FINALIZADO&color=RED&style=for-the-badge" />
@@ -29,21 +31,26 @@ O WorkOut possui recursos avançados de gerenciamento que ajudam as academias e 
 
 
 ## ⚙️ Ferramentas <a id="ferramentas"></a>
-<a href="https://www.javascript.com/"><img src="https://cdn.iconscout.com/icon/free/png-256/free-javascript-2038874-1720087.png" width="50" height="50"></a>
-<a href="https://www.css3.com/"><img src="https://cdn.iconscout.com/icon/free/png-256/free-css-38-226095.png?f=webp" width="50" height="50"></a>
-<a href="https://www.typescriptlang.org/"><img src="https://cdn.iconscout.com/icon/free/png-256/free-typescript-1174965.png" width="50" height="50"></a>
-<a href="https://nodejs.org/"><img src="https://cdn.iconscout.com/icon/free/png-256/free-node-js-1174925.png" width="50" height="50"></a>
-<a href="https://www.python.org/"><img src="https://cdn.iconscout.com/icon/free/png-512/free-python-3629591-3032289.png?f=avif&w=256" width="50" height="50"></a>
-<a href="https://flask.palletsprojects.com/"><img src="https://www.pngfind.com/pngs/m/128-1286693_flask-framework-logo-svg-hd-png-download.png" width="50" height="50"></a>
-<a href="https://www.mongodb.com/"><img src="https://cdn.iconscout.com/icon/free/png-256/free-mongodb-5-1175140.png" width="50" height="50"></a>
-<a href="https://vercel.com/"><img src="https://logovtor.com/wp-content/uploads/2020/10/vercel-inc-logo-vector.png" width="50" height="50"></a>
+### Front-end
+<div style="display: inline-block">
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="Typescript" />
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+</div>
 
+### Back-end
+<div style="display: inline-block">
+  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask" />
+  <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="Mongo DB" />
+</div>
 
 ## 👥 Equipe <a id="equipe"></a>
-* [Felipe](https://github.com/Felipe-15)
-* [Julio](https://github.com/JC-Rodrigues)
-* [Fidel](https://github.com/FidelMonteiro04)
-* [Kaue](https://github.com/kaue154510)
+* [Felipe (Prototipação e Front-end)](https://github.com/Felipe-15)
+* [Julio (Back-end)](https://github.com/JC-Rodrigues)
+* [Fidel (Back-end)](https://github.com/FidelMonteiro04)
+* [Kaue (Front-end)](https://github.com/kaue154510)
 
 
 ## ✅ Conclusão <a id="conclusão"></a>
