@@ -88,22 +88,22 @@ const PerfilPage = () => {
 
   return (
     <div className="-mt-4">
-      <div className="flex w-full justify-between items-center">
-        <h3 className="text-2xl text-secondary-500 font-semibold mb-4 text-center">
+      <div className="flex w-full justify-between items-center mb-6">
+        <h3 className="text-2xl text-secondary-500 font-semibold">
           Meu Perfil
         </h3>
         {!edit && !loadingOwner && (
           <div className="flex gap-3 md:gap-6 simple-fade">
             <button
               onClick={() => setEdit(true)}
-              className="flex border-[1px] border-primary-500 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold transition hover:text-primary-400 text-primary-500 items-center justify-center text-sm"
+              className="flex rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold transition hover:text-primary-400 text-primary-500 items-center justify-center text-sm"
             >
               <AiFillEdit size={20} />
               <span className=" ">Editar</span>
             </button>
             <button
               onClick={() => router.push("/auth/login")}
-              className="flex border-[1px] transition hover:text-primary-400 border-primary-500 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
+              className="flex transition hover:text-primary-400 rounded-sm p-1 md:border-none md:p-0 gap-2 font-semibold text-primary-500 items-center justify-center text-sm"
             >
               <BiExit size={20} />
               <span className="">Sair</span>
