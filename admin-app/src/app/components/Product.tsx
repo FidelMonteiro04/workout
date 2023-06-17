@@ -49,7 +49,7 @@ const Product = ({
         </span>
       </div>
       <div className="flex justify-between -mt-1 items-center w-full relative">
-        <div className="hover:bg-white z-[5] max-w-[50%] hover:max-w-full w-full text-ellipsis transition-all overflow-x-hidden overflow-hidden">
+        <div className="hover:bg-white z-[5] max-w-[50%] hover:w-full hover:max-w-full w-fit text-ellipsis transition-all overflow-x-hidden overflow-hidden">
           <span className="font-semibold text-zinc-600 text-xs whitespace-nowrap ">
             {distributor}
           </span>

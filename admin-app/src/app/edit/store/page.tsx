@@ -168,7 +168,7 @@ const EditStore = () => {
                 error={errors.image && "É necessário ter uma imagem!"}
                 alt="Imagem da academia"
               />
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-4">
                 <div className="flex flex-col gap-3 pt-4">
                   <Input
                     registerField={{ ...register("name", { required: true }) }}
@@ -198,7 +198,7 @@ const EditStore = () => {
                     onClick={() => setModalOpened("location")}
                   />
                 </div>
-                <div className="flex flex-col gap-3 pt-4">
+                <div className="flex flex-col gap-3 pt-2 md:pt-4">
                   <Input
                     registerField={{
                       ...register("instagram", {

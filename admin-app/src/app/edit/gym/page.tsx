@@ -181,7 +181,7 @@ const EditGym = () => {
                 error={errors.image && "É necessário ter uma imagem!"}
                 alt="Imagem da academia"
               />
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 lg:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-1 lg:gap-4">
                 <div className="flex flex-col justify-between gap-3 pt-4">
                   <Input
                     registerField={{ ...register("name", { required: true }) }}
@@ -232,7 +232,7 @@ const EditGym = () => {
                 onClick={() => setModalOpened("location")}
               />} */}
                 </div>
-                <div className="flex flex-col pt-4 h-full justify-between">
+                <div className="flex flex-col pt-2 gap-3 md:pt-4 h-full justify-between">
                   <Input
                     registerField={{
                       ...register("instagram", {
