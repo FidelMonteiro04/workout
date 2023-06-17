@@ -122,8 +122,23 @@ export default function Register() {
           placeholder="Confirme a senha"
         />
         <Input
-          registerField={{ ...register("cnpj", { required: true }) }}
-          error={errors.cnpj && "CNPJ é obrigatório!"}
+          registerField={{
+            ...register("cnpj", {
+              required: {
+                value: true,
+                message: "O CNPJ é obrigatório!",
+              },
+              minLength: {
+                value: 18,
+                message: "O CNPJ deve ter pelo menos 14 dígitos",
+              },
+              maxLength: {
+                value: 18,
+                message: "O CNPJ deve ter no máximo 14 dígitos",
+              },
+            }),
+          }}
+          error={errors.cnpj && (errors.cnpj.message as string)}
           onChange={(e) =>
             formatCnpj(e.target.value, (field, value) => setValue(field, value))
           }
