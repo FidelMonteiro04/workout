@@ -8,7 +8,6 @@ export default function useKeepUser(
   keepOnToken?: (token: string) => Promise<void> | void
 ) {
   useEffect(() => {
-    console.log("Chamou o keep user!");
     if (!token && typeof window !== "undefined") {
       const recoverData = sessionStorage.getItem("user");
       if (!recoverData) {
@@ -16,7 +15,7 @@ export default function useKeepUser(
         return;
       }
       const user = JSON.parse(recoverData);
-      console.log("Dados recuperados: ", user);
+
       callback(user);
     } else if (keepOnToken && token) {
       keepOnToken(token);

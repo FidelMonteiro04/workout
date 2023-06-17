@@ -116,9 +116,7 @@ const EditStore = () => {
       };
       await updateStore(formattedData, token, store?._id as string);
       router.push(`/home/my-store`);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleGetStore = async (token: string) => {
@@ -128,7 +126,6 @@ const EditStore = () => {
       setCoordinates({ lat: Number(store.lat), lng: Number(store.lng) });
       setImage(store.image);
     } catch (error) {
-      console.log(error);
       router.push("/auth/login");
     } finally {
       setStoreLoading(false);

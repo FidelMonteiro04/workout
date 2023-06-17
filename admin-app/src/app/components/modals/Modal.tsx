@@ -23,7 +23,7 @@ const Modal = ({ title, body, handleClose, header }: Props) => {
   return (
     <div
       onClick={onClose}
-      className="fade-in fixed overflow-hidden z-10 inset-0 bg-black/20 flex items-center justify-center"
+      className="fade-in fixed overflow-hidden z-20 inset-0 bg-black/20 flex items-center justify-center"
       ref={backgroundRef}
     >
       <div

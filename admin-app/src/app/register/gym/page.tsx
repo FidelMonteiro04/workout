@@ -63,7 +63,6 @@ const RegisterGym = () => {
   const imageRef = useRef({} as HTMLImageElement);
 
   const onSubmit = async (data: any) => {
-    console.log("Token: ", token);
     const formData = new FormData();
     // const newFileName = generateFileName(image);
 
@@ -108,8 +107,6 @@ const RegisterGym = () => {
       );
 
       const { planId } = await createPlan(formattedPlans, token, gymId);
-
-      console.log("PlanId: ", planId);
     }
 
     router.push(`/home/my-gym`);

@@ -6,3 +6,17 @@
   width: 4px;
   height: 4px;
 }
+
+.invisible-scroll::-webkit-scrollbar {
+  opacity: 0;
+  height: 0px;
+  width: 0px;
+}
+
+.invisible-scroll::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.invisible-scroll::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}

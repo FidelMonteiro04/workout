@@ -1,4 +1,5 @@
 import { IconType } from "react-icons";
+import "@/styles/scroll.css";
 
 interface Props {
   icon: IconType;
@@ -7,7 +8,7 @@ interface Props {
 
 const StatisticRow = ({ icon: Icon, statistics }: Props) => {
   return (
-    <div className="flex justify-between lg:justify-center pb-2 mb-4 lg:mb-0 gap-2 w-full whitespace-nowrap overflow-x-auto items-center">
+    <div className="flex justify-between invisible-scroll lg:justify-center pb-2 mb-4 lg:mb-0 gap-2 w-full whitespace-nowrap overflow-x-auto items-center">
       <Icon size={20} className=" text-zinc-500 mr-1 shrink-0" />
       {statistics.map(({ title, value }, index) => (
         <div

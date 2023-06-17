@@ -38,8 +38,6 @@ const GymHome = () => {
 
   const router = useRouter();
 
-  console.log("My gym montou!");
-
   useKeepUser(
     token,
     () => router.push("/auth/login"),
@@ -62,13 +60,11 @@ const GymHome = () => {
   };
 
   const handleInitEditPlan = (data: any) => {
-    console.log("Plano inicial: ", data);
     setEditData(data);
     setModalOpened("plan");
   };
 
   const handleEditPlan = async (plan: any) => {
-    console.log("Plan: ", plan);
     try {
       const formattedData = {
         _id: plan._id,
@@ -79,9 +75,7 @@ const GymHome = () => {
 
       setPlans((prev) => prev.map((p) => (p._id === plan._id ? plan : p)));
       setEditData(null);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleDeletePlan = async (id: string) => {
@@ -89,9 +83,7 @@ const GymHome = () => {
       await deletePlan(id, token, user?.ownId as string);
 
       setPlans((prev) => prev.filter((p) => p._id !== id));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleGetGym = async (token: string) => {
@@ -101,7 +93,7 @@ const GymHome = () => {
         router.push("/register/gym");
         return;
       }
-      console.log("Gym: ", gym);
+
       setGym(gym);
       setUser({ ...user, token, ownId: gym["_id"], ownType: "gym" });
       sessionStorage.setItem(
@@ -110,9 +102,7 @@ const GymHome = () => {
       );
 
       await handleGetPlans(token, gym["_id"]);
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const handleGetPlans = async (tokenParam: string, gymId: string) => {
@@ -124,7 +114,6 @@ const GymHome = () => {
       );
       setPlans(plans);
     } catch (error) {
-      console.log(error);
     } finally {
       setPlansLoading(false);
     }

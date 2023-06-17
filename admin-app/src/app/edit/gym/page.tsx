@@ -93,15 +93,13 @@ const EditGym = () => {
     setLoadingGym(true);
     try {
       const { gym: gymRes } = await getGym(token);
-      console.log("Gym: ", gymRes);
+
       setGym(gymRes);
       setImage(gymRes.image);
       if (gymRes) {
         setCoordinates({ lat: Number(gymRes.lat), lng: Number(gymRes.lng) });
       }
-      console.log("Gym: ", gymRes);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoadingGym(false);
     }
@@ -141,12 +139,10 @@ const EditGym = () => {
         accessibility: data.accessibility === "true",
         contact: data.contact.replace(/\D/g, ""),
       };
-      console.log("Era pra rodar o update gym");
+
       await updateGym(formattedData, token, gym?._id as string);
       router.push(`/home/my-gym`);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleAddAddress = (

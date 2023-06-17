@@ -76,7 +76,6 @@ const ProductsPage = () => {
       setProducts(resProducts);
       setFilteredProducts(resProducts);
     } catch (err) {
-      console.log(err);
     } finally {
       setLoadingProducts(false);
     }
@@ -105,8 +104,6 @@ const ProductsPage = () => {
       user.ownId as string
     );
 
-    console.log("Product id: ", productId);
-
     const updatedData = [{ ...data, _id: productId }, ...products];
 
     setProducts(updatedData);
@@ -122,9 +119,7 @@ const ProductsPage = () => {
 
       setProducts(updatedData);
       setFilteredProducts(updatedData);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handleEditProduct = async (data: any) => {
@@ -149,8 +144,6 @@ const ProductsPage = () => {
 
         const { url, ...rest } = await response.json();
 
-        console.log("Dados da imagem: ", { url, ...rest });
-
         formattedData.image = url;
 
         await deleteImage(editData.image);
@@ -158,7 +151,6 @@ const ProductsPage = () => {
 
       await updateProduct(formattedData, token, user.ownId as string);
     } catch (err) {
-      console.log(err);
       return;
     }
 

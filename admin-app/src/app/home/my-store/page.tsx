@@ -79,8 +79,6 @@ const StoreHome = () => {
 
         const { url, ...rest } = await response.json();
 
-        console.log("Dados da imagem: ", { url, ...rest });
-
         formattedData.image = url;
 
         await deleteImage(editData.image);
@@ -88,7 +86,6 @@ const StoreHome = () => {
 
       await updateProduct(formattedData, token, user.ownId as string);
     } catch (err) {
-      console.log(err);
       return;
     }
 
@@ -98,7 +95,6 @@ const StoreHome = () => {
   };
 
   const handleGetStore = async (token: string) => {
-    console.log("Executou o getStore");
     try {
       const store = await getStore(token);
       if (!store) {
@@ -119,7 +115,6 @@ const StoreHome = () => {
 
       await handleGetProducts(token, store["_id"]);
     } catch (error) {
-      console.log(error);
       router.push("/auth/login");
     }
   };
@@ -133,7 +128,6 @@ const StoreHome = () => {
       );
       setProducts(products);
     } catch (error) {
-      console.log(error);
     } finally {
       setLoadingProducts(false);
     }
@@ -162,8 +156,6 @@ const StoreHome = () => {
       user.ownId as string
     );
 
-    console.log("Product id: ", productId);
-
     setProducts((prev) => [{ ...data, _id: productId }, ...prev]);
   };
 
@@ -172,9 +164,7 @@ const StoreHome = () => {
       await deleteProduct(id, token, user?.ownId as string);
       await deleteImage(urlImage);
       setProducts((prev) => prev.filter((product) => product._id !== id));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   if (!store) return <></>;
@@ -248,8 +238,8 @@ const StoreHome = () => {
           </Link>
         )}
       </div>
-      <div className="p-2 flex gap-4 mb-2 w-full overflow-x-auto">
-        {loadingProducts ? (
+      <div className="p-2 flex gap-4 mb-2 w-full pb-4 overflow-x-auto">
+        {loadingProducts && !products.length ? (
           <div className="my-auto flex items-center justify-center font-semibold gap-3 text-lg">
             <Loading alternative="whiteBg" size={32} thickness={3} />
             Carregando produtos...
@@ -279,8 +269,8 @@ const StoreHome = () => {
           />
         ))}
       </div>
-      <h3 className="text-lg font-semibold mb-2 lg:mb-4">Estatísticas</h3>
-      <div className="flex w-full justify-center flex-col lg:flex-row lg:gap-2 items-center md:mb-2">
+      <h3 className="text-lg pt-4 md:pt-0 font-semibold mb-4">Estatísticas</h3>
+      <div className="flex w-full gap-4 justify-center flex-col lg:flex-row lg:gap-2 items-center md:mb-2">
         <StatisticRow
           icon={HiOutlineUserGroup}
           statistics={[
@@ -298,7 +288,7 @@ const StoreHome = () => {
           ]}
         />
       </div>
-      <div className="flex w-full justify-center flex-col lg:flex-row lg:gap-2 items-center mb-2 md:pt-4">
+      <div className="flex w-full justify-center gap-4 flex-col lg:flex-row lg:gap-2 items-center mb-2 pt-4">
         <StatisticRow
           icon={AiFillTag}
           statistics={[

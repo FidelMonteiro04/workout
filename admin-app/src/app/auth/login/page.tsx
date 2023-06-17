@@ -35,14 +35,11 @@ export default function Login() {
     try {
       const { token, ownType, error } = await signin(data);
       if (error || !token) {
-        console.log(error);
         return;
       }
       setUser({ ownType, token });
       router.push(`/home/my-${ownType}`);
-    } catch (error) {
-      console.log("Entrou no catch");
-    }
+    } catch (error) {}
   };
 
   return (

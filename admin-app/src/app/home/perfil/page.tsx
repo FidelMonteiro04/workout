@@ -65,7 +65,6 @@ const PerfilPage = () => {
       const { owner: resOwner } = await getOwner(token);
       setOwner(resOwner);
     } catch (error) {
-      console.log(error);
     } finally {
       setLoadingOwner(false);
     }
